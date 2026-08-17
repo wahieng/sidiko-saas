@@ -23,6 +23,10 @@ class DatabaseSeeder extends Seeder
             PermissionSeeder::class,
             RolePermissionSeeder::class,
             PaketLanggananSeeder::class,
+            TahunAjaranSeeder::class,
+            SemesterSeeder::class,
+            RombelSeeder::class,
+            KelompokRombelSeeder::class,
         ]);
 
         $tenant = Tenant::where('code', 'DEMO')->firstOrFail();
