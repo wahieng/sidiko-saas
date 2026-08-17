@@ -14,6 +14,9 @@ class TahunAjaranController
     ) {
     }
 
+    /**
+     * Daftar tahun ajaran tenant aktif.
+     */
     public function index(): JsonResponse
     {
         return response()->json(
@@ -21,6 +24,9 @@ class TahunAjaranController
         );
     }
 
+    /**
+     * Simpan tahun ajaran.
+     */
     public function store(
         TahunAjaranRequest $request
     ): JsonResponse {
@@ -34,14 +40,22 @@ class TahunAjaranController
         );
     }
 
+    /**
+     * Detail tahun ajaran.
+     */
     public function show(
         TahunAjaran $tahunAjaran
     ): JsonResponse {
         return response()->json(
-            $tahunAjaran->load('semesters')
+            $tahunAjaran->load([
+                'semesters',
+            ])
         );
     }
 
+    /**
+     * Update tahun ajaran.
+     */
     public function update(
         TahunAjaranRequest $request,
         TahunAjaran $tahunAjaran
@@ -56,21 +70,45 @@ class TahunAjaranController
         );
     }
 
+    /**
+     * Nonaktifkan tahun ajaran.
+     */
     public function destroy(
         TahunAjaran $tahunAjaran
     ): JsonResponse {
-        $this->service->delete($tahunAjaran);
+        $this->service->nonaktifkan(
+            $tahunAjaran
+        );
 
         return response()->json([
-            'message' => 'Tahun ajaran berhasil dihapus.',
+            'message' => 'Tahun ajaran berhasil dinonaktifkan.',
         ]);
     }
 
+    /**
+     * Aktifkan tahun ajaran.
+     */
+    public function aktifkan(
+        TahunAjaran $tahunAjaran
+    ): JsonResponse {
+        return response()->json(
+            $this->service->aktifkan(
+                $tahunAjaran
+            )
+        );
+    }
+
+    /**
+     * Ambil semester tahun ajaran.
+     */
     public function semester(
         TahunAjaran $tahunAjaran
     ): JsonResponse {
         return response()->json(
-            $tahunAjaran->semesters()->get()
+            $tahunAjaran
+                ->semesters()
+                ->orderBy('tanggal_mulai')
+                ->get()
         );
     }
 }

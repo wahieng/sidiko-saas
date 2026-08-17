@@ -2,8 +2,8 @@
 
 namespace App\Core\Tenant\Context;
 
-use App\Core\Tenant\Models\Tenant;
 use App\Core\Identity\Models\User;
+use App\Core\Tenant\Models\Tenant;
 
 class TenantContext
 {
@@ -28,7 +28,9 @@ class TenantContext
             return;
         }
 
-        $tenant = Tenant::find($user->tenant_id);
+        $tenant = Tenant::query()
+            ->whereKey($user->tenant_id)
+            ->first();
 
         if (! $tenant) {
             abort(403, 'Tenant tidak ditemukan.');

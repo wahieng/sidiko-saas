@@ -10,7 +10,10 @@ use RuntimeException;
 class TahunAjaranService
 {
     /**
-     * Ambil semua tahun ajaran.
+     * Ambil semua tahun ajaran tenant aktif.
+     *
+     * Global scope BelongsToTenant akan otomatis
+     * membatasi query berdasarkan tenant aktif.
      */
     public function all(): Collection
     {
@@ -20,7 +23,7 @@ class TahunAjaranService
     }
 
     /**
-     * Ambil tahun ajaran aktif.
+     * Ambil tahun ajaran aktif tenant aktif.
      */
     public function aktif(): ?TahunAjaran
     {
@@ -31,6 +34,9 @@ class TahunAjaranService
 
     /**
      * Buat tahun ajaran.
+     *
+     * tenant_id otomatis diisi oleh BelongsToTenant
+     * ketika model dibuat.
      */
     public function create(array $data): TahunAjaran
     {
@@ -39,7 +45,9 @@ class TahunAjaranService
             if (($data['aktif'] ?? false) === true) {
                 TahunAjaran::query()
                     ->where('aktif', true)
-                    ->update(['aktif' => false]);
+                    ->update([
+                        'aktif' => false,
+                    ]);
             }
 
             return TahunAjaran::create($data);
@@ -48,18 +56,26 @@ class TahunAjaranService
 
     /**
      * Update tahun ajaran.
+     *
+     * Global scope memastikan model hanya berasal
+     * dari tenant aktif.
      */
     public function update(
         TahunAjaran $tahunAjaran,
         array $data
     ): TahunAjaran {
-        return DB::transaction(function () use ($tahunAjaran, $data) {
+        return DB::transaction(function () use (
+            $tahunAjaran,
+            $data
+        ) {
 
             if (($data['aktif'] ?? false) === true) {
                 TahunAjaran::query()
                     ->where('id', '!=', $tahunAjaran->id)
                     ->where('aktif', true)
-                    ->update(['aktif' => false]);
+                    ->update([
+                        'aktif' => false,
+                    ]);
             }
 
             $tahunAjaran->update($data);
@@ -71,14 +87,19 @@ class TahunAjaranService
     /**
      * Aktifkan tahun ajaran.
      */
-    public function aktifkan(TahunAjaran $tahunAjaran): TahunAjaran
-    {
-        return DB::transaction(function () use ($tahunAjaran) {
+    public function aktifkan(
+        TahunAjaran $tahunAjaran
+    ): TahunAjaran {
+        return DB::transaction(function () use (
+            $tahunAjaran
+        ) {
 
             TahunAjaran::query()
                 ->where('id', '!=', $tahunAjaran->id)
                 ->where('aktif', true)
-                ->update(['aktif' => false]);
+                ->update([
+                    'aktif' => false,
+                ]);
 
             $tahunAjaran->update([
                 'aktif' => true,
@@ -91,11 +112,13 @@ class TahunAjaranService
     /**
      * Nonaktifkan tahun ajaran.
      *
-     * Tidak boleh jika tahun ajaran masih satu-satunya
-     * tahun ajaran aktif.
+     * Tidak boleh jika tahun ajaran tersebut
+     * adalah satu-satunya tahun ajaran aktif
+     * pada tenant.
      */
-    public function nonaktifkan(TahunAjaran $tahunAjaran): TahunAjaran
-    {
+    public function nonaktifkan(
+        TahunAjaran $tahunAjaran
+    ): TahunAjaran {
         if (! $tahunAjaran->aktif) {
             return $tahunAjaran;
         }

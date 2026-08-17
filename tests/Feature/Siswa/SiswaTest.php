@@ -2,9 +2,12 @@
 
 namespace Tests\Feature\Siswa;
 
+use App\Core\Tenant\Context\TenantContext;
+use App\Core\Tenant\Models\Tenant;
 use App\Modules\Siswa\Models\Siswa;
 use App\Modules\Siswa\Services\SiswaService;
 use Database\Seeders\SiswaSeeder;
+use Database\Seeders\TenantSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -16,6 +19,18 @@ class SiswaTest extends TestCase
     {
         parent::setUp();
 
+        // Buat tenant DEMO
+        $this->seed(TenantSeeder::class);
+
+        // Ambil tenant DEMO
+        $tenant = Tenant::query()
+            ->where('code', 'DEMO')
+            ->firstOrFail();
+
+        // Aktifkan tenant context
+        app(TenantContext::class)->set($tenant);
+
+        // Seed data siswa
         $this->seed(SiswaSeeder::class);
     }
 
@@ -37,7 +52,11 @@ class SiswaTest extends TestCase
             ->findByNis($siswa->nis);
 
         $this->assertNotNull($hasil);
-        $this->assertEquals($siswa->id, $hasil->id);
+
+        $this->assertEquals(
+            $siswa->id,
+            $hasil->id
+        );
     }
 
     public function test_service_dapat_mengambil_semua_siswa(): void
@@ -66,7 +85,10 @@ class SiswaTest extends TestCase
         $this->assertNotNull($siswa);
 
         $this->assertTrue(
-            array_key_exists('foto', $siswa->getAttributes())
+            array_key_exists(
+                'foto',
+                $siswa->getAttributes()
+            )
         );
     }
 }

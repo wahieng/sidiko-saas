@@ -11,8 +11,11 @@ return new class extends Migration
         Schema::create('rombel', function (Blueprint $table) {
             $table->id();
 
-            $table->string('kode', 20)
-                ->unique();
+            $table->foreignId('tenant_id')
+                ->constrained('tenants')
+                ->cascadeOnDelete();
+
+            $table->string('kode', 20);
 
             $table->string('nama', 50);
 
@@ -23,7 +26,19 @@ return new class extends Migration
 
             $table->timestamps();
 
-            $table->index('aktif');
+            /*
+             * Kode rombel boleh sama di sekolah berbeda,
+             * tetapi tidak boleh duplikat dalam satu sekolah.
+             */
+            $table->unique([
+                'tenant_id',
+                'kode',
+            ]);
+
+            $table->index([
+                'tenant_id',
+                'aktif',
+            ]);
         });
     }
 

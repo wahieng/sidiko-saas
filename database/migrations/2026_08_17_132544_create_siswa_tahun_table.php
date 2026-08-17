@@ -11,6 +11,13 @@ return new class extends Migration
         Schema::create('siswa_tahun', function (Blueprint $table) {
             $table->id();
 
+            /*
+             * Tenant / sekolah pemilik data.
+             */
+            $table->foreignId('tenant_id')
+                ->constrained('tenants')
+                ->cascadeOnDelete();
+
             $table->foreignId('siswa_id')
                 ->constrained('siswa')
                 ->cascadeOnDelete();
@@ -38,18 +45,34 @@ return new class extends Migration
 
             $table->timestamps();
 
+            /*
+             * Satu siswa hanya memiliki satu
+             * record pada satu tahun ajaran.
+             */
             $table->unique(
-                ['siswa_id', 'tahun_ajaran_id'],
+                [
+                    'tenant_id',
+                    'siswa_id',
+                    'tahun_ajaran_id',
+                ],
                 'siswa_tahun_unique'
             );
 
             $table->index(
-                ['tahun_ajaran_id', 'status'],
+                [
+                    'tenant_id',
+                    'tahun_ajaran_id',
+                    'status',
+                ],
                 'siswa_tahun_tahun_status_index'
             );
 
             $table->index(
-                ['kelompok_rombel_id', 'status'],
+                [
+                    'tenant_id',
+                    'kelompok_rombel_id',
+                    'status',
+                ],
                 'siswa_tahun_kelompok_status_index'
             );
         });

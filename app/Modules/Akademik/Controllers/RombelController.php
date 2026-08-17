@@ -14,6 +14,9 @@ class RombelController
     ) {
     }
 
+    /**
+     * Daftar rombel aktif.
+     */
     public function index(): JsonResponse
     {
         return response()->json(
@@ -21,6 +24,9 @@ class RombelController
         );
     }
 
+    /**
+     * Simpan rombel.
+     */
     public function store(
         RombelRequest $request
     ): JsonResponse {
@@ -34,14 +40,20 @@ class RombelController
         );
     }
 
+    /**
+     * Detail rombel.
+     */
     public function show(
         Rombel $rombel
     ): JsonResponse {
         return response()->json(
-            $rombel
+            $rombel->load('kelompokRombel')
         );
     }
 
+    /**
+     * Update rombel.
+     */
     public function update(
         RombelRequest $request,
         Rombel $rombel
@@ -56,13 +68,18 @@ class RombelController
         );
     }
 
+    /**
+     * Nonaktifkan rombel.
+     */
     public function destroy(
         Rombel $rombel
     ): JsonResponse {
-        $this->service->delete($rombel);
+        $this->service->nonaktifkan(
+            $rombel
+        );
 
         return response()->json([
-            'message' => 'Rombel berhasil dihapus.',
+            'message' => 'Rombel berhasil dinonaktifkan.',
         ]);
     }
 }

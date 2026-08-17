@@ -24,7 +24,7 @@ class KelompokRombelService
     ): Collection {
         return KelompokRombel::query()
             ->with('rombel')
-            ->where('tahun_ajaran_id', $tahunAjaranId)
+            ->where('kelompok_rombel.tahun_ajaran_id', $tahunAjaranId)
             ->join(
                 'rombel',
                 'rombel.id',
@@ -45,7 +45,7 @@ class KelompokRombelService
     ): Collection {
         return KelompokRombel::query()
             ->with('rombel')
-            ->where('tahun_ajaran_id', $tahunAjaranId)
+            ->where('kelompok_rombel.tahun_ajaran_id', $tahunAjaranId)
             ->where('kelompok_rombel.aktif', true)
             ->join(
                 'rombel',
@@ -60,7 +60,8 @@ class KelompokRombelService
     }
 
     /**
-     * Ambil semua kelompok berdasarkan Rombel.
+     * Ambil kelompok berdasarkan Rombel
+     * pada tahun ajaran tertentu.
      *
      * Contoh:
      * VII → VII-A, VII-B
@@ -79,6 +80,8 @@ class KelompokRombelService
 
     /**
      * Buat kelompok rombel.
+     *
+     * tenant_id otomatis diisi oleh BelongsToTenant.
      */
     public function create(array $data): KelompokRombel
     {
@@ -94,9 +97,14 @@ class KelompokRombelService
         KelompokRombel $kelompokRombel,
         array $data
     ): KelompokRombel {
-        $kelompokRombel->update($data);
+        return DB::transaction(function () use (
+            $kelompokRombel,
+            $data
+        ) {
+            $kelompokRombel->update($data);
 
-        return $kelompokRombel->refresh();
+            return $kelompokRombel->refresh();
+        });
     }
 
     /**
@@ -105,11 +113,15 @@ class KelompokRombelService
     public function aktifkan(
         KelompokRombel $kelompokRombel
     ): KelompokRombel {
-        $kelompokRombel->update([
-            'aktif' => true,
-        ]);
+        return DB::transaction(function () use (
+            $kelompokRombel
+        ) {
+            $kelompokRombel->update([
+                'aktif' => true,
+            ]);
 
-        return $kelompokRombel->refresh();
+            return $kelompokRombel->refresh();
+        });
     }
 
     /**
@@ -118,10 +130,14 @@ class KelompokRombelService
     public function nonaktifkan(
         KelompokRombel $kelompokRombel
     ): KelompokRombel {
-        $kelompokRombel->update([
-            'aktif' => false,
-        ]);
+        return DB::transaction(function () use (
+            $kelompokRombel
+        ) {
+            $kelompokRombel->update([
+                'aktif' => false,
+            ]);
 
-        return $kelompokRombel->refresh();
+            return $kelompokRombel->refresh();
+        });
     }
 }

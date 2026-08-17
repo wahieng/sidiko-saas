@@ -11,6 +11,10 @@ return new class extends Migration
         Schema::create('kelompok_rombel', function (Blueprint $table) {
             $table->id();
 
+            $table->foreignId('tenant_id')
+                ->constrained('tenants')
+                ->cascadeOnDelete();
+
             $table->foreignId('tahun_ajaran_id')
                 ->constrained('tahun_ajaran')
                 ->cascadeOnDelete();
@@ -32,12 +36,14 @@ return new class extends Migration
             $table->timestamps();
 
             $table->unique([
+                'tenant_id',
                 'tahun_ajaran_id',
                 'rombel_id',
                 'kode',
             ]);
 
             $table->index([
+                'tenant_id',
                 'tahun_ajaran_id',
                 'rombel_id',
                 'aktif',

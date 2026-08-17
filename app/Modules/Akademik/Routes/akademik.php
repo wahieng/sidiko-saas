@@ -2,19 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Modules\Akademik\Controllers\TahunAjaranController;
+use App\Modules\Akademik\Controllers\SemesterController;
 use App\Modules\Akademik\Controllers\RombelController;
 use App\Modules\Akademik\Controllers\KelompokRombelController;
 
-/*
-|--------------------------------------------------------------------------
-| Akademik Routes
-|--------------------------------------------------------------------------
-|
-| Semua route yang berkaitan dengan pengelolaan akademik.
-|
-*/
-
-Route::middleware(['auth'])->prefix('akademik')->name('akademik.')->group(function () {
+Route::middleware(['auth'])
+    ->prefix('akademik')
+    ->name('akademik.')
+    ->group(function () {
 
     /*
     |--------------------------------------------------------------------------
@@ -46,6 +41,63 @@ Route::middleware(['auth'])->prefix('akademik')->name('akademik.')->group(functi
         TahunAjaranController::class,
         'destroy',
     ])->name('tahun-ajaran.destroy');
+
+    Route::post('/tahun-ajaran/{tahunAjaran}/aktifkan', [
+        TahunAjaranController::class,
+        'aktifkan',
+    ])->name('tahun-ajaran.aktifkan');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Semester
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/semester/aktif', [
+        SemesterController::class,
+        'aktif',
+    ])->name('semester.aktif');
+
+    Route::get('/tahun-ajaran/{tahunAjaran}/semester', [
+        SemesterController::class,
+        'byTahunAjaran',
+    ])->name('tahun-ajaran.semester');
+
+    Route::get('/semester', [
+        SemesterController::class,
+        'index',
+    ])->name('semester.index');
+
+    Route::post('/semester', [
+        SemesterController::class,
+        'store',
+    ])->name('semester.store');
+
+    Route::get('/semester/{semester}', [
+        SemesterController::class,
+        'show',
+    ])->name('semester.show');
+
+    Route::put('/semester/{semester}', [
+        SemesterController::class,
+        'update',
+    ])->name('semester.update');
+
+    Route::delete('/semester/{semester}', [
+        SemesterController::class,
+        'destroy',
+    ])->name('semester.destroy');
+
+    Route::post('/semester/{semester}/aktifkan', [
+        SemesterController::class,
+        'aktifkan',
+    ])->name('semester.aktifkan');
+
+    Route::get('/tahun-ajaran/{tahunAjaran}/semester-aktif', [
+        SemesterController::class,
+        'aktifByTahunAjaran',
+    ])->name('tahun-ajaran.semester-aktif');
 
 
     /*
@@ -111,20 +163,11 @@ Route::middleware(['auth'])->prefix('akademik')->name('akademik.')->group(functi
         'destroy',
     ])->name('kelompok-rombel.destroy');
 
-
     /*
     |--------------------------------------------------------------------------
     | Relasi / Data Pendukung
     |--------------------------------------------------------------------------
-    |
-    | Digunakan untuk kebutuhan form dan AJAX.
-    |
     */
-
-    Route::get('/tahun-ajaran/{tahunAjaran}/semester', [
-        TahunAjaranController::class,
-        'semester',
-    ])->name('tahun-ajaran.semester');
 
     Route::get('/tahun-ajaran/{tahunAjaran}/kelompok-rombel', [
         KelompokRombelController::class,

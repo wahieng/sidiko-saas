@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Siswa;
 
+use App\Core\Tenant\Context\TenantContext;
+use App\Core\Tenant\Models\Tenant;
 use App\Modules\Siswa\Models\SiswaTahun;
 use App\Modules\Siswa\Services\SiswaTahunService;
 use Database\Seeders\DatabaseSeeder;
@@ -16,7 +18,25 @@ class SiswaTahunTest extends TestCase
     {
         parent::setUp();
 
+        /*
+        |--------------------------------------------------------------------------
+        | Seed seluruh data demo
+        |--------------------------------------------------------------------------
+        */
+
         $this->seed(DatabaseSeeder::class);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Pastikan Tenant Context tersedia
+        |--------------------------------------------------------------------------
+        */
+
+        $tenant = Tenant::query()
+            ->where('code', 'DEMO')
+            ->firstOrFail();
+
+        app(TenantContext::class)->set($tenant);
     }
 
     public function test_siswa_tahun_seeder_tersedia(): void

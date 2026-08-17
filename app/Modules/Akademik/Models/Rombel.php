@@ -2,11 +2,14 @@
 
 namespace App\Modules\Akademik\Models;
 
+use App\Core\Tenant\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Rombel extends Model
 {
+    use BelongsToTenant;
+
     protected $table = 'rombel';
 
     protected $fillable = [
@@ -21,6 +24,15 @@ class Rombel extends Model
         'aktif' => 'boolean',
     ];
 
+    /*
+    |--------------------------------------------------------------------------
+    | Relationships
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Kelompok rombel.
+     */
     public function kelompokRombel(): HasMany
     {
         return $this->hasMany(
@@ -29,6 +41,15 @@ class Rombel extends Model
         );
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Scopes
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Rombel aktif berdasarkan urutan.
+     */
     public function scopeAktif($query)
     {
         return $query

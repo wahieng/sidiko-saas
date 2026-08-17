@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 class SiswaService
 {
     /**
-     * Ambil seluruh siswa.
+     * Ambil seluruh siswa dalam tenant aktif.
      */
     public function all(): Collection
     {
@@ -34,7 +34,8 @@ class SiswaService
      */
     public function find(int $id): ?Siswa
     {
-        return Siswa::find($id);
+        return Siswa::query()
+            ->find($id);
     }
 
     /**
@@ -42,7 +43,9 @@ class SiswaService
      */
     public function findByNis(string $nis): ?Siswa
     {
-        return Siswa::where('nis', $nis)->first();
+        return Siswa::query()
+            ->where('nis', $nis)
+            ->first();
     }
 
     /**
@@ -50,7 +53,9 @@ class SiswaService
      */
     public function findByNisn(string $nisn): ?Siswa
     {
-        return Siswa::where('nisn', $nisn)->first();
+        return Siswa::query()
+            ->where('nisn', $nisn)
+            ->first();
     }
 
     /**
@@ -58,11 +63,46 @@ class SiswaService
      */
     public function findByNik(string $nik): ?Siswa
     {
-        return Siswa::where('nik', $nik)->first();
+        return Siswa::query()
+            ->where('nik', $nik)
+            ->first();
+    }
+
+    /**
+     * Ambil siswa beserta riwayat tahun ajaran.
+     */
+    public function withRiwayat(int $id): ?Siswa
+    {
+        return Siswa::query()
+            ->with([
+                'siswaTahun.tahunAjaran',
+                'siswaTahun.kelompokRombel.rombel',
+            ])
+            ->find($id);
+    }
+
+    /**
+     * Ambil siswa beserta data tahun ajaran aktif.
+     */
+    public function withTahunAjaranAktif(int $id): ?Siswa
+    {
+        return Siswa::query()
+            ->with([
+                'siswaTahun' => function ($query) {
+                    $query->where('status', 'AKTIF')
+                        ->with([
+                            'tahunAjaran',
+                            'kelompokRombel.rombel',
+                        ]);
+                },
+            ])
+            ->find($id);
     }
 
     /**
      * Buat siswa baru.
+     *
+     * tenant_id diisi otomatis oleh BelongsToTenant.
      */
     public function create(array $data): Siswa
     {
@@ -74,8 +114,10 @@ class SiswaService
     /**
      * Update identitas siswa.
      */
-    public function update(Siswa $siswa, array $data): Siswa
-    {
+    public function update(
+        Siswa $siswa,
+        array $data
+    ): Siswa {
         return DB::transaction(function () use ($siswa, $data) {
             $siswa->update($data);
 

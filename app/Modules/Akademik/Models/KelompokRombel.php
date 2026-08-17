@@ -2,11 +2,14 @@
 
 namespace App\Modules\Akademik\Models;
 
+use App\Core\Tenant\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class KelompokRombel extends Model
 {
+    use BelongsToTenant;
+
     protected $table = 'kelompok_rombel';
 
     protected $fillable = [
@@ -25,6 +28,15 @@ class KelompokRombel extends Model
         'aktif' => 'boolean',
     ];
 
+    /*
+    |--------------------------------------------------------------------------
+    | Relationships
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Tahun ajaran kelompok rombel.
+     */
     public function tahunAjaran(): BelongsTo
     {
         return $this->belongsTo(
@@ -33,11 +45,25 @@ class KelompokRombel extends Model
         );
     }
 
+    /**
+     * Rombel induk.
+     */
     public function rombel(): BelongsTo
     {
         return $this->belongsTo(
             Rombel::class,
             'rombel_id'
         );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Scopes
+    |--------------------------------------------------------------------------
+    */
+
+    public function scopeAktif($query)
+    {
+        return $query->where('aktif', true);
     }
 }

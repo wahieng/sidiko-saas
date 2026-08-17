@@ -10,7 +10,9 @@ class TahunAjaranSeeder extends Seeder
     public function run(): void
     {
         TahunAjaran::updateOrCreate(
-            ['kode' => '2026/2027'],
+            [
+                'kode' => '2026/2027',
+            ],
             [
                 'nama' => 'Tahun Ajaran 2026/2027',
                 'tanggal_mulai' => '2026-07-01',

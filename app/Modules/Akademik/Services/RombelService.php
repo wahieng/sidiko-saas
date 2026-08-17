@@ -42,6 +42,8 @@ class RombelService
 
     /**
      * Buat rombel.
+     *
+     * tenant_id otomatis diisi oleh BelongsToTenant.
      */
     public function create(array $data): Rombel
     {
@@ -52,14 +54,21 @@ class RombelService
 
     /**
      * Update rombel.
+     *
+     * Model yang diterima harus berasal dari tenant aktif.
      */
     public function update(
         Rombel $rombel,
         array $data
     ): Rombel {
-        $rombel->update($data);
+        return DB::transaction(function () use (
+            $rombel,
+            $data
+        ) {
+            $rombel->update($data);
 
-        return $rombel->refresh();
+            return $rombel->refresh();
+        });
     }
 
     /**
@@ -67,32 +76,41 @@ class RombelService
      */
     public function aktifkan(Rombel $rombel): Rombel
     {
-        $rombel->update([
-            'aktif' => true,
-        ]);
+        return DB::transaction(function () use ($rombel) {
+            $rombel->update([
+                'aktif' => true,
+            ]);
 
-        return $rombel->refresh();
+            return $rombel->refresh();
+        });
     }
 
     /**
      * Nonaktifkan rombel.
+     *
+     * Tidak boleh jika masih memiliki
+     * kelompok rombel aktif.
      */
     public function nonaktifkan(Rombel $rombel): Rombel
     {
-        if (
-            $rombel->kelompokRombel()
+        return DB::transaction(function () use ($rombel) {
+
+            $masihDigunakan = $rombel
+                ->kelompokRombel()
                 ->where('aktif', true)
-                ->exists()
-        ) {
-            throw new RuntimeException(
-                'Rombel masih memiliki kelompok rombel aktif.'
-            );
-        }
+                ->exists();
 
-        $rombel->update([
-            'aktif' => false,
-        ]);
+            if ($masihDigunakan) {
+                throw new RuntimeException(
+                    'Rombel masih memiliki kelompok rombel aktif.'
+                );
+            }
 
-        return $rombel->refresh();
+            $rombel->update([
+                'aktif' => false,
+            ]);
+
+            return $rombel->refresh();
+        });
     }
 }

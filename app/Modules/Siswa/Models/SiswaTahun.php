@@ -2,6 +2,7 @@
 
 namespace App\Modules\Siswa\Models;
 
+use App\Core\Tenant\Traits\BelongsToTenant;
 use App\Modules\Akademik\Models\KelompokRombel;
 use App\Modules\Akademik\Models\TahunAjaran;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class SiswaTahun extends Model
 {
     use HasFactory;
+    use BelongsToTenant;
 
     protected $table = 'siswa_tahun';
 
@@ -35,6 +37,9 @@ class SiswaTahun extends Model
     |--------------------------------------------------------------------------
     */
 
+    /**
+     * Siswa.
+     */
     public function siswa(): BelongsTo
     {
         return $this->belongsTo(
@@ -43,6 +48,9 @@ class SiswaTahun extends Model
         );
     }
 
+    /**
+     * Tahun ajaran.
+     */
     public function tahunAjaran(): BelongsTo
     {
         return $this->belongsTo(
@@ -51,6 +59,9 @@ class SiswaTahun extends Model
         );
     }
 
+    /**
+     * Kelompok rombel siswa.
+     */
     public function kelompokRombel(): BelongsTo
     {
         return $this->belongsTo(

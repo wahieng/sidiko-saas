@@ -5,9 +5,17 @@ namespace App\Modules\Siswa\Services;
 use App\Modules\Siswa\Models\SiswaTahun;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
+use InvalidArgumentException;
 
 class SiswaTahunService
 {
+    private const STATUS = [
+        'AKTIF',
+        'LULUS',
+        'PINDAH',
+        'KELUAR',
+    ];
+
     /**
      * Ambil seluruh riwayat tahun siswa.
      */
@@ -41,8 +49,9 @@ class SiswaTahunService
     /**
      * Ambil data siswa pada tahun ajaran tertentu.
      */
-    public function byTahunAjaran(int $tahunAjaranId): Collection
-    {
+    public function byTahunAjaran(
+        int $tahunAjaranId
+    ): Collection {
         return SiswaTahun::query()
             ->with([
                 'siswa',
@@ -107,6 +116,8 @@ class SiswaTahunService
 
     /**
      * Buat penempatan siswa.
+     *
+     * tenant_id diisi otomatis oleh BelongsToTenant.
      */
     public function create(array $data): SiswaTahun
     {
@@ -147,10 +158,20 @@ class SiswaTahunService
         SiswaTahun $siswaTahun,
         string $status
     ): SiswaTahun {
+        if (! in_array($status, self::STATUS, true)) {
+            throw new InvalidArgumentException(
+                'Status siswa tidak valid.'
+            );
+        }
+
         $siswaTahun->update([
             'status' => $status,
         ]);
 
-        return $siswaTahun->refresh();
+        return $siswaTahun->refresh()->load([
+            'siswa',
+            'tahunAjaran',
+            'kelompokRombel.rombel',
+        ]);
     }
 }

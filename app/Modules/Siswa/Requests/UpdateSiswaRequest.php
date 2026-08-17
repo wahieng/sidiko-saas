@@ -2,6 +2,7 @@
 
 namespace App\Modules\Siswa\Requests;
 
+use App\Core\Tenant\Context\TenantContext;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -14,6 +15,8 @@ class UpdateSiswaRequest extends FormRequest
 
     public function rules(): array
     {
+        $tenantId = app(TenantContext::class)->require()->id;
+
         $siswaId = $this->route('siswa')?->id
             ?? $this->route('siswa');
 
@@ -22,21 +25,39 @@ class UpdateSiswaRequest extends FormRequest
                 'nullable',
                 'string',
                 'max:50',
-                Rule::unique('siswa', 'nis')->ignore($siswaId),
+
+                Rule::unique('siswa', 'nis')
+                    ->where(fn ($query) => $query->where(
+                        'tenant_id',
+                        $tenantId
+                    ))
+                    ->ignore($siswaId),
             ],
 
             'nisn' => [
                 'nullable',
                 'string',
                 'max:20',
-                Rule::unique('siswa', 'nisn')->ignore($siswaId),
+
+                Rule::unique('siswa', 'nisn')
+                    ->where(fn ($query) => $query->where(
+                        'tenant_id',
+                        $tenantId
+                    ))
+                    ->ignore($siswaId),
             ],
 
             'nik' => [
                 'nullable',
                 'string',
                 'max:20',
-                Rule::unique('siswa', 'nik')->ignore($siswaId),
+
+                Rule::unique('siswa', 'nik')
+                    ->where(fn ($query) => $query->where(
+                        'tenant_id',
+                        $tenantId
+                    ))
+                    ->ignore($siswaId),
             ],
 
             'no_kk' => [

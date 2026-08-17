@@ -6,6 +6,7 @@ use App\Modules\Akademik\Models\KelompokRombel;
 use App\Modules\Akademik\Requests\KelompokRombelRequest;
 use App\Modules\Akademik\Services\KelompokRombelService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class KelompokRombelController
 {
@@ -14,15 +15,31 @@ class KelompokRombelController
     ) {
     }
 
-    public function index(): JsonResponse
+    /**
+     * Daftar kelompok rombel berdasarkan tahun ajaran.
+     */
+    public function index(Request $request): JsonResponse
     {
+        $tahunAjaranId = $request->integer(
+            'tahun_ajaran_id'
+        );
+
+        if ($tahunAjaranId <= 0) {
+            return response()->json([
+                'message' => 'tahun_ajaran_id wajib diisi.',
+            ], 422);
+        }
+
         return response()->json(
             $this->service->byTahunAjaran(
-                request()->integer('tahun_ajaran_id')
+                $tahunAjaranId
             )
         );
     }
 
+    /**
+     * Simpan kelompok rombel.
+     */
     public function store(
         KelompokRombelRequest $request
     ): JsonResponse {
@@ -31,11 +48,17 @@ class KelompokRombelController
         );
 
         return response()->json(
-            $kelompokRombel->load('rombel'),
+            $kelompokRombel->load([
+                'tahunAjaran',
+                'rombel',
+            ]),
             201
         );
     }
 
+    /**
+     * Detail kelompok rombel.
+     */
     public function show(
         KelompokRombel $kelompokRombel
     ): JsonResponse {
@@ -47,6 +70,9 @@ class KelompokRombelController
         );
     }
 
+    /**
+     * Update kelompok rombel.
+     */
     public function update(
         KelompokRombelRequest $request,
         KelompokRombel $kelompokRombel
@@ -57,10 +83,16 @@ class KelompokRombelController
         );
 
         return response()->json(
-            $kelompokRombel->load('rombel')
+            $kelompokRombel->load([
+                'tahunAjaran',
+                'rombel',
+            ])
         );
     }
 
+    /**
+     * Nonaktifkan kelompok rombel.
+     */
     public function destroy(
         KelompokRombel $kelompokRombel
     ): JsonResponse {
@@ -73,6 +105,9 @@ class KelompokRombelController
         ]);
     }
 
+    /**
+     * Ambil kelompok rombel aktif berdasarkan tahun ajaran.
+     */
     public function byTahunAjaran(
         int $tahunAjaran
     ): JsonResponse {
@@ -83,6 +118,10 @@ class KelompokRombelController
         );
     }
 
+    /**
+     * Ambil kelompok rombel berdasarkan Rombel
+     * pada tahun ajaran tertentu.
+     */
     public function byRombel(
         int $tahunAjaran,
         int $rombel

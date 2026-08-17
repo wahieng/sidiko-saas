@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Core\Tenant\Models\Tenant;
 use App\Modules\Akademik\Models\Rombel;
 use Illuminate\Database\Seeder;
 
@@ -9,6 +10,10 @@ class RombelSeeder extends Seeder
 {
     public function run(): void
     {
+        $tenant = Tenant::query()
+            ->where('code', 'DEMO')
+            ->firstOrFail();
+
         $rombel = [
             [
                 'kode' => 'VII',
@@ -31,10 +36,19 @@ class RombelSeeder extends Seeder
         ];
 
         foreach ($rombel as $data) {
-            Rombel::updateOrCreate(
-                ['kode' => $data['kode']],
-                $data
-            );
+            Rombel::withoutGlobalScopes()
+                ->updateOrCreate(
+                    [
+                        'tenant_id' => $tenant->id,
+                        'kode' => $data['kode'],
+                    ],
+                    [
+                        'tenant_id' => $tenant->id,
+                        'nama' => $data['nama'],
+                        'urutan' => $data['urutan'],
+                        'aktif' => $data['aktif'],
+                    ]
+                );
         }
     }
 }

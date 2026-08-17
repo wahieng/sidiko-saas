@@ -11,8 +11,11 @@ return new class extends Migration
         Schema::create('tahun_ajaran', function (Blueprint $table) {
             $table->id();
 
-            $table->string('kode', 20)
-                ->unique();
+            $table->foreignId('tenant_id')
+                ->constrained('tenants')
+                ->cascadeOnDelete();
+
+            $table->string('kode', 20);
 
             $table->string('nama', 50);
 
@@ -25,7 +28,20 @@ return new class extends Migration
 
             $table->timestamps();
 
-            $table->index('aktif');
+            /*
+             * Satu kode tahun ajaran boleh digunakan
+             * oleh banyak sekolah, tetapi tidak boleh
+             * duplikat dalam sekolah yang sama.
+             */
+            $table->unique([
+                'tenant_id',
+                'kode',
+            ]);
+
+            $table->index([
+                'tenant_id',
+                'aktif',
+            ]);
         });
     }
 
