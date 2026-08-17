@@ -8,18 +8,36 @@ Route::middleware(['auth', 'verified'])
     ->name('siswa.')
     ->group(function () {
 
-        Route::get('/', [SiswaController::class, 'index'])
-            ->name('index');
+        Route::get('/', [
+            SiswaController::class,
+            'index',
+        ])->name('index');
 
-        Route::post('/', [SiswaController::class, 'store'])
-            ->name('store');
+        Route::post('/', [
+            SiswaController::class,
+            'store',
+        ])->name('store');
 
-        Route::get('/{siswa}', [SiswaController::class, 'show'])
-            ->name('show');
+        Route::get('/{siswa}', [
+            SiswaController::class,
+            'show',
+        ])->name('show');
 
-        Route::put('/{siswa}', [SiswaController::class, 'update'])
-            ->name('update');
+        Route::put('/{siswa}', [
+            SiswaController::class,
+            'update',
+        ])->name('update');
 
-        Route::delete('/{siswa}', [SiswaController::class, 'destroy'])
-            ->name('destroy');
+        Route::delete('/{siswa}', [
+            SiswaController::class,
+            'destroy',
+        ])->name('destroy');
     });
+
+/*
+|--------------------------------------------------------------------------
+| Siswa Tahun
+|--------------------------------------------------------------------------
+*/
+
+require __DIR__ . '/siswatahun.php';

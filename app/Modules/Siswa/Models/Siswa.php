@@ -2,7 +2,10 @@
 
 namespace App\Modules\Siswa\Models;
 
+use App\Modules\Akademik\Models\TahunAjaran;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Siswa extends Model
 {
@@ -42,4 +45,24 @@ class Siswa extends Model
         'anak_ke' => 'integer',
         'jumlah_saudara' => 'integer',
     ];
+
+    public function siswaTahun(): HasMany
+    {
+        return $this->hasMany(
+            SiswaTahun::class,
+            'siswa_id'
+        );
+    }
+
+    public function tahunAjaran(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            TahunAjaran::class,
+            SiswaTahun::class,
+            'siswa_id',
+            'id',
+            'id',
+            'tahun_ajaran_id'
+        );
+    }
 }
