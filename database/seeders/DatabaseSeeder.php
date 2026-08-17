@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             SemesterSeeder::class,
             RombelSeeder::class,
             KelompokRombelSeeder::class,
+            SiswaSeeder::class,
         ]);
 
         $tenant = Tenant::where('code', 'DEMO')->firstOrFail();

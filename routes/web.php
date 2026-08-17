@@ -39,3 +39,4 @@ require base_path('app/Core/Billing/Routes/billing.php');
 */
 
 require base_path('app/Modules/Akademik/Routes/akademik.php');
+require base_path('app/Modules/Siswa/Routes/siswa.php');
