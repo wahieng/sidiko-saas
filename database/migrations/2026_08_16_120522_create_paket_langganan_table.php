@@ -28,8 +28,9 @@ return new class extends Migration
 
             $table->enum('siklus_tagihan', [
                 'bulanan',
+                'semester',
                 'tahunan',
-            ])->default('bulanan');
+            ])->default('bulanan');;
 
             $table->unsignedInteger('batas_siswa')
                 ->nullable();
