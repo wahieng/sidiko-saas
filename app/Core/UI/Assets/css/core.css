@@ -1,0 +1,604 @@
+/*
+|--------------------------------------------------------------------------
+| SIDIKO SaaS - Core UI
+|--------------------------------------------------------------------------
+| Global visual foundation for all SIDIKO modules.
+|
+| Location:
+| app/Core/UI/CSS/core.css
+|
+| Prinsip desain:
+| - Clean
+| - Modern
+| - Lega
+| - Professional SaaS
+| - Soft border
+| - Subtle shadow
+| - Konsisten dengan halaman Login SIDIKO
+|
+| Jangan masukkan styling khusus halaman/modul di sini.
+|--------------------------------------------------------------------------
+*/
+
+
+/* ==========================================================================
+   1. DESIGN TOKENS
+   ========================================================================== */
+
+:root {
+
+    /* ----------------------------------------------------------------------
+       BRAND
+    ---------------------------------------------------------------------- */
+
+    --sidiko-primary: #2563eb;
+    --sidiko-primary-dark: #1d4ed8;
+    --sidiko-primary-light: #dbeafe;
+
+    --sidiko-primary-hover: #1d4ed8;
+
+
+    /* ----------------------------------------------------------------------
+       SEMANTIC
+    ---------------------------------------------------------------------- */
+
+    --sidiko-success: #16a34a;
+    --sidiko-success-light: #ecfdf5;
+
+    --sidiko-warning: #d97706;
+    --sidiko-warning-light: #fffbeb;
+
+    --sidiko-danger: #dc2626;
+    --sidiko-danger-light: #fef2f2;
+
+    --sidiko-info: #0891b2;
+    --sidiko-info-light: #ecfeff;
+
+
+    /* ----------------------------------------------------------------------
+       NEUTRAL
+    ---------------------------------------------------------------------- */
+
+    --sidiko-white: #ffffff;
+    --sidiko-black: #111827;
+
+    --sidiko-gray-50: #f9fafb;
+    --sidiko-gray-100: #f3f4f6;
+    --sidiko-gray-200: #e5e7eb;
+    --sidiko-gray-300: #d1d5db;
+    --sidiko-gray-400: #9ca3af;
+    --sidiko-gray-500: #6b7280;
+    --sidiko-gray-600: #4b5563;
+    --sidiko-gray-700: #374151;
+    --sidiko-gray-800: #1f2937;
+    --sidiko-gray-900: #111827;
+
+
+    /* ----------------------------------------------------------------------
+       BACKGROUND
+    ---------------------------------------------------------------------- */
+
+    --sidiko-bg: #f8fafc;
+    --sidiko-surface: #ffffff;
+    --sidiko-surface-muted: #f9fafb;
+    --sidiko-surface-hover: #f3f4f6;
+
+
+    /* ----------------------------------------------------------------------
+       TEXT
+    ---------------------------------------------------------------------- */
+
+    --sidiko-text: #111827;
+    --sidiko-text-secondary: #6b7280;
+    --sidiko-text-muted: #9ca3af;
+    --sidiko-text-disabled: #d1d5db;
+
+
+    /* ----------------------------------------------------------------------
+       BORDER
+    ---------------------------------------------------------------------- */
+
+    --sidiko-border: #dbe1ea;
+    --sidiko-border-light: #e5e7eb;
+    --sidiko-border-dark: #cbd5e1;
+
+
+    /* ----------------------------------------------------------------------
+       RADIUS
+       Mengikuti karakter Login SIDIKO.
+    ---------------------------------------------------------------------- */
+
+    --sidiko-radius-sm: 8px;
+    --sidiko-radius-md: 11px;
+    --sidiko-radius-lg: 14px;
+    --sidiko-radius-xl: 16px;
+    --sidiko-radius-2xl: 20px;
+
+    --sidiko-radius-full: 9999px;
+
+
+    /* ----------------------------------------------------------------------
+       SHADOW
+       Jangan terlalu berat.
+    ---------------------------------------------------------------------- */
+
+    --sidiko-shadow-xs:
+        0 1px 2px rgb(15 23 42 / 0.03);
+
+    --sidiko-shadow-sm:
+        0 2px 6px rgb(15 23 42 / 0.05);
+
+    --sidiko-shadow-md:
+        0 6px 16px rgb(15 23 42 / 0.07);
+
+    --sidiko-shadow-lg:
+        0 12px 30px rgb(15 23 42 / 0.09);
+
+    --sidiko-shadow-xl:
+        0 20px 40px rgb(15 23 42 / 0.12);
+
+
+    /* ----------------------------------------------------------------------
+       TYPOGRAPHY
+    ---------------------------------------------------------------------- */
+
+    --sidiko-font-sans:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    --sidiko-font-mono:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Monaco,
+        Consolas,
+        "Liberation Mono",
+        monospace;
+
+
+    /* ----------------------------------------------------------------------
+       FONT SIZE
+    ---------------------------------------------------------------------- */
+
+    --sidiko-text-xs: 0.75rem;
+    --sidiko-text-sm: 0.8125rem;
+    --sidiko-text-base: 0.9375rem;
+    --sidiko-text-lg: 1rem;
+    --sidiko-text-xl: 1.125rem;
+    --sidiko-text-2xl: 1.5rem;
+    --sidiko-text-3xl: 1.875rem;
+    --sidiko-text-4xl: 2.25rem;
+
+
+    /* ----------------------------------------------------------------------
+       FONT WEIGHT
+    ---------------------------------------------------------------------- */
+
+    --sidiko-weight-normal: 400;
+    --sidiko-weight-medium: 500;
+    --sidiko-weight-semibold: 600;
+    --sidiko-weight-bold: 700;
+    --sidiko-weight-extrabold: 800;
+
+
+    /* ----------------------------------------------------------------------
+       CONTROL
+       Ukuran input/button mengikuti Login.
+    ---------------------------------------------------------------------- */
+
+    --sidiko-input-height: 52px;
+    --sidiko-input-height-sm: 42px;
+    --sidiko-input-height-lg: 56px;
+
+    --sidiko-button-height: 52px;
+    --sidiko-button-height-sm: 40px;
+    --sidiko-button-height-lg: 56px;
+
+
+    /* ----------------------------------------------------------------------
+       SPACING
+    ---------------------------------------------------------------------- */
+
+    --sidiko-space-1: 0.25rem;
+    --sidiko-space-2: 0.5rem;
+    --sidiko-space-3: 0.75rem;
+    --sidiko-space-4: 1rem;
+    --sidiko-space-5: 1.25rem;
+    --sidiko-space-6: 1.5rem;
+    --sidiko-space-8: 2rem;
+    --sidiko-space-10: 2.5rem;
+    --sidiko-space-12: 3rem;
+    --sidiko-space-16: 4rem;
+
+
+    /* ----------------------------------------------------------------------
+       LAYOUT
+    ---------------------------------------------------------------------- */
+
+    --sidiko-container-sm: 640px;
+    --sidiko-container-md: 768px;
+    --sidiko-container-lg: 1024px;
+    --sidiko-container-xl: 1280px;
+    --sidiko-container-2xl: 1440px;
+
+
+    /* ----------------------------------------------------------------------
+       TRANSITION
+    ---------------------------------------------------------------------- */
+
+    --sidiko-transition-fast: 150ms ease;
+    --sidiko-transition: 200ms ease;
+    --sidiko-transition-slow: 300ms ease;
+}
+
+
+/* ==========================================================================
+   2. CSS RESET
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+
+    background: var(--sidiko-bg);
+    color: var(--sidiko-text);
+
+    font-family: var(--sidiko-font-sans);
+    font-size: var(--sidiko-text-base);
+    line-height: 1.6;
+
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+/* ==========================================================================
+   3. ELEMENT NORMALIZATION
+   ========================================================================== */
+
+img,
+svg,
+video,
+canvas {
+    display: block;
+    max-width: 100%;
+}
+
+img {
+    height: auto;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+button:disabled,
+input:disabled,
+textarea:disabled,
+select:disabled {
+    cursor: not-allowed;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+
+/* ==========================================================================
+   4. TYPOGRAPHY
+   ========================================================================== */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-top: 0;
+
+    color: var(--sidiko-text);
+
+    font-weight: var(--sidiko-weight-bold);
+    line-height: 1.25;
+}
+
+p {
+    margin-top: 0;
+    color: var(--sidiko-text-secondary);
+}
+
+ul,
+ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+
+/* ==========================================================================
+   5. TEXT UTILITIES
+   ========================================================================== */
+
+.sidiko-text-xs {
+    font-size: var(--sidiko-text-xs);
+}
+
+.sidiko-text-sm {
+    font-size: var(--sidiko-text-sm);
+}
+
+.sidiko-text-base {
+    font-size: var(--sidiko-text-base);
+}
+
+.sidiko-text-lg {
+    font-size: var(--sidiko-text-lg);
+}
+
+.sidiko-text-xl {
+    font-size: var(--sidiko-text-xl);
+}
+
+.sidiko-text-2xl {
+    font-size: var(--sidiko-text-2xl);
+}
+
+.sidiko-text-3xl {
+    font-size: var(--sidiko-text-3xl);
+}
+
+.sidiko-text-4xl {
+    font-size: var(--sidiko-text-4xl);
+}
+
+
+/* ==========================================================================
+   6. FONT WEIGHT
+   ========================================================================== */
+
+.sidiko-font-normal {
+    font-weight: var(--sidiko-weight-normal);
+}
+
+.sidiko-font-medium {
+    font-weight: var(--sidiko-weight-medium);
+}
+
+.sidiko-font-semibold {
+    font-weight: var(--sidiko-weight-semibold);
+}
+
+.sidiko-font-bold {
+    font-weight: var(--sidiko-weight-bold);
+}
+
+.sidiko-font-extrabold {
+    font-weight: var(--sidiko-weight-extrabold);
+}
+
+
+/* ==========================================================================
+   7. COLORS
+   ========================================================================== */
+
+.sidiko-text-primary {
+    color: var(--sidiko-primary);
+}
+
+.sidiko-text-success {
+    color: var(--sidiko-success);
+}
+
+.sidiko-text-warning {
+    color: var(--sidiko-warning);
+}
+
+.sidiko-text-danger {
+    color: var(--sidiko-danger);
+}
+
+.sidiko-text-muted {
+    color: var(--sidiko-text-muted);
+}
+
+.sidiko-text-white {
+    color: var(--sidiko-white);
+}
+
+.sidiko-bg-primary {
+    background-color: var(--sidiko-primary);
+}
+
+.sidiko-bg-white {
+    background-color: var(--sidiko-white);
+}
+
+.sidiko-bg-muted {
+    background-color: var(--sidiko-surface-muted);
+}
+
+
+/* ==========================================================================
+   8. CONTAINER
+   ========================================================================== */
+
+.sidiko-container {
+    width: 100%;
+    max-width: var(--sidiko-container-xl);
+
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+}
+
+.sidiko-container-sm {
+    width: 100%;
+    max-width: var(--sidiko-container-sm);
+
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+}
+
+.sidiko-container-md {
+    width: 100%;
+    max-width: var(--sidiko-container-md);
+
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+}
+
+.sidiko-container-lg {
+    width: 100%;
+    max-width: var(--sidiko-container-lg);
+
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+}
+
+.sidiko-container-2xl {
+    width: 100%;
+    max-width: var(--sidiko-container-2xl);
+
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+}
+
+
+/* ==========================================================================
+   9. FOCUS
+   ========================================================================== */
+
+:focus {
+    outline: none;
+}
+
+:focus-visible {
+    outline: 2px solid var(--sidiko-primary);
+    outline-offset: 2px;
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    outline: none;
+}
+
+
+/* ==========================================================================
+   10. SELECTION
+   ========================================================================== */
+
+::selection {
+    background: var(--sidiko-primary);
+    color: var(--sidiko-white);
+}
+
+
+/* ==========================================================================
+   11. SCROLLBAR
+   ========================================================================== */
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color:
+        var(--sidiko-gray-300)
+        transparent;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--sidiko-gray-300);
+    border-radius: var(--sidiko-radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--sidiko-gray-400);
+}
+
+
+/* ==========================================================================
+   12. RESPONSIVE FOUNDATION
+   ========================================================================== */
+
+@media (max-width: 768px) {
+
+    body {
+        font-size: 0.875rem;
+    }
+
+    .sidiko-container,
+    .sidiko-container-sm,
+    .sidiko-container-md,
+    .sidiko-container-lg,
+    .sidiko-container-2xl {
+        padding-inline: 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .sidiko-container,
+    .sidiko-container-sm,
+    .sidiko-container-md,
+    .sidiko-container-lg,
+    .sidiko-container-2xl {
+        padding-inline: 1rem;
+    }
+}
+
+
+/* ==========================================================================
+   13. REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

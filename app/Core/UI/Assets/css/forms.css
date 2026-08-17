@@ -1,0 +1,540 @@
+ /*
+|--------------------------------------------------------------------------
+| SIDIKO SaaS - Form Components
+|--------------------------------------------------------------------------
+| Reusable form styles for all SIDIKO modules.
+|
+| Location:
+| app/Core/UI/CSS/forms.css
+|--------------------------------------------------------------------------
+*/
+
+
+/* ==========================================================================
+   1. FORM GROUP
+   ========================================================================== */
+
+.sidiko-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+}
+
+.sidiko-form-group + .sidiko-form-group {
+    margin-top: 1rem;
+}
+
+
+/* ==========================================================================
+   2. LABEL
+   ========================================================================== */
+
+.sidiko-label {
+    display: block;
+
+    color: var(--sidiko-text);
+
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.sidiko-label-required::after {
+    content: " *";
+
+    color: var(--sidiko-danger);
+}
+
+
+/* ==========================================================================
+   3. INPUT
+   ========================================================================== */
+
+.sidiko-input,
+.sidiko-select,
+.sidiko-textarea {
+    width: 100%;
+
+    padding: 0.6875rem 0.875rem;
+
+    background: var(--sidiko-white);
+
+    border: 1px solid var(--sidiko-border-dark);
+    border-radius: var(--sidiko-radius-md);
+
+    color: var(--sidiko-text);
+
+    font-family: inherit;
+    font-size: 0.875rem;
+    line-height: 1.5;
+
+    outline: none;
+
+    transition:
+        border-color var(--sidiko-transition),
+        box-shadow var(--sidiko-transition),
+        background-color var(--sidiko-transition);
+}
+
+.sidiko-input::placeholder,
+.sidiko-textarea::placeholder {
+    color: var(--sidiko-gray-400);
+}
+
+.sidiko-input:hover,
+.sidiko-select:hover,
+.sidiko-textarea:hover {
+    border-color: var(--sidiko-gray-400);
+}
+
+.sidiko-input:focus,
+.sidiko-select:focus,
+.sidiko-textarea:focus {
+    border-color: var(--sidiko-primary);
+
+    box-shadow: 0 0 0 3px var(--sidiko-primary-light);
+}
+
+
+/* ==========================================================================
+   4. INPUT STATES
+   ========================================================================== */
+
+.sidiko-input-error,
+.sidiko-select-error,
+.sidiko-textarea-error {
+    border-color: var(--sidiko-danger);
+}
+
+.sidiko-input-error:focus,
+.sidiko-select-error:focus,
+.sidiko-textarea-error:focus {
+    border-color: var(--sidiko-danger);
+
+    box-shadow: 0 0 0 3px rgb(239 68 68 / 0.12);
+}
+
+.sidiko-input-success {
+    border-color: var(--sidiko-success);
+}
+
+.sidiko-input-success:focus {
+    border-color: var(--sidiko-success);
+
+    box-shadow: 0 0 0 3px rgb(34 197 94 / 0.12);
+}
+
+.sidiko-input:disabled,
+.sidiko-select:disabled,
+.sidiko-textarea:disabled {
+    cursor: not-allowed;
+
+    background: var(--sidiko-gray-100);
+    color: var(--sidiko-gray-500);
+
+    opacity: 0.8;
+}
+
+
+/* ==========================================================================
+   5. INPUT SIZES
+   ========================================================================== */
+
+.sidiko-input-sm,
+.sidiko-select-sm {
+    padding: 0.5rem 0.6875rem;
+
+    font-size: 0.8125rem;
+}
+
+.sidiko-input-lg,
+.sidiko-select-lg {
+    padding: 0.8125rem 1rem;
+
+    font-size: 1rem;
+}
+
+
+/* ==========================================================================
+   6. TEXTAREA
+   ========================================================================== */
+
+.sidiko-textarea {
+    min-height: 7rem;
+
+    resize: vertical;
+}
+
+
+/* ==========================================================================
+   7. SELECT
+   ========================================================================== */
+
+.sidiko-select {
+    cursor: pointer;
+}
+
+
+/* ==========================================================================
+   8. CHECKBOX
+   ========================================================================== */
+
+.sidiko-checkbox-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    cursor: pointer;
+}
+
+.sidiko-checkbox {
+    width: 1rem;
+    height: 1rem;
+
+    margin: 0;
+
+    cursor: pointer;
+
+    accent-color: var(--sidiko-primary);
+}
+
+.sidiko-checkbox-label {
+    color: var(--sidiko-gray-700);
+
+    font-size: 0.875rem;
+}
+
+
+/* ==========================================================================
+   9. RADIO
+   ========================================================================== */
+
+.sidiko-radio-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    cursor: pointer;
+}
+
+.sidiko-radio {
+    width: 1rem;
+    height: 1rem;
+
+    margin: 0;
+
+    cursor: pointer;
+
+    accent-color: var(--sidiko-primary);
+}
+
+.sidiko-radio-label {
+    color: var(--sidiko-gray-700);
+
+    font-size: 0.875rem;
+}
+
+
+/* ==========================================================================
+   10. HELP TEXT
+   ========================================================================== */
+
+.sidiko-help {
+    margin: 0;
+
+    color: var(--sidiko-text-muted);
+
+    font-size: 0.75rem;
+    line-height: 1.5;
+}
+
+
+/* ==========================================================================
+   11. ERROR MESSAGE
+   ========================================================================== */
+
+.sidiko-error {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.375rem;
+
+    margin: 0;
+
+    color: var(--sidiko-danger);
+
+    font-size: 0.75rem;
+    line-height: 1.5;
+}
+
+
+/* ==========================================================================
+   12. FORM ACTIONS
+   ========================================================================== */
+
+.sidiko-form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.75rem;
+
+    margin-top: 1.5rem;
+}
+
+.sidiko-form-actions-between {
+    justify-content: space-between;
+}
+
+.sidiko-form-actions-start {
+    justify-content: flex-start;
+}
+
+
+/* ==========================================================================
+   13. INPUT GROUP
+   ========================================================================== */
+
+.sidiko-input-group {
+    display: flex;
+    align-items: stretch;
+
+    width: 100%;
+}
+
+.sidiko-input-group .sidiko-input {
+    min-width: 0;
+
+    border-radius: 0;
+}
+
+.sidiko-input-group > :first-child {
+    border-top-left-radius: var(--sidiko-radius-md);
+    border-bottom-left-radius: var(--sidiko-radius-md);
+}
+
+.sidiko-input-group > :last-child {
+    border-top-right-radius: var(--sidiko-radius-md);
+    border-bottom-right-radius: var(--sidiko-radius-md);
+}
+
+
+/* ==========================================================================
+   14. INPUT PREFIX / SUFFIX
+   ========================================================================== */
+
+.sidiko-input-addon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 0.875rem;
+
+    background: var(--sidiko-gray-50);
+
+    border: 1px solid var(--sidiko-border-dark);
+
+    color: var(--sidiko-gray-600);
+
+    font-size: 0.875rem;
+    white-space: nowrap;
+}
+
+.sidiko-input-addon-prefix {
+    border-right: 0;
+
+    border-radius:
+        var(--sidiko-radius-md)
+        0
+        0
+        var(--sidiko-radius-md);
+}
+
+.sidiko-input-addon-suffix {
+    border-left: 0;
+
+    border-radius:
+        0
+        var(--sidiko-radius-md)
+        var(--sidiko-radius-md)
+        0;
+}
+
+
+/* ==========================================================================
+   15. PASSWORD FIELD
+   ========================================================================== */
+
+.sidiko-password {
+    position: relative;
+}
+
+.sidiko-password .sidiko-input {
+    padding-right: 3rem;
+}
+
+.sidiko-password-toggle {
+    position: absolute;
+
+    top: 50%;
+    right: 0.75rem;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 2rem;
+    height: 2rem;
+
+    transform: translateY(-50%);
+
+    background: transparent;
+
+    border: 0;
+
+    color: var(--sidiko-gray-500);
+
+    cursor: pointer;
+}
+
+.sidiko-password-toggle:hover {
+    color: var(--sidiko-gray-700);
+}
+
+
+/* ==========================================================================
+   16. SEARCH FIELD
+   ========================================================================== */
+
+.sidiko-search {
+    position: relative;
+}
+
+.sidiko-search .sidiko-input {
+    padding-left: 2.5rem;
+}
+
+.sidiko-search-icon {
+    position: absolute;
+
+    top: 50%;
+    left: 0.875rem;
+
+    transform: translateY(-50%);
+
+    color: var(--sidiko-gray-400);
+
+    pointer-events: none;
+}
+
+
+/* ==========================================================================
+   17. FORM GRID
+   ========================================================================== */
+
+.sidiko-form-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 1rem;
+}
+
+.sidiko-form-grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.sidiko-form-grid-full {
+    grid-column: 1 / -1;
+}
+
+
+/* ==========================================================================
+   18. FORM SECTION
+   ========================================================================== */
+
+.sidiko-form-section {
+    padding: 1.5rem;
+
+    background: var(--sidiko-surface);
+
+    border: 1px solid var(--sidiko-border);
+    border-radius: var(--sidiko-radius-xl);
+}
+
+.sidiko-form-section + .sidiko-form-section {
+    margin-top: 1rem;
+}
+
+.sidiko-form-section-header {
+    margin-bottom: 1.25rem;
+}
+
+.sidiko-form-section-title {
+    margin: 0;
+
+    color: var(--sidiko-text);
+
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.sidiko-form-section-description {
+    margin: 0.25rem 0 0;
+
+    color: var(--sidiko-text-muted);
+
+    font-size: 0.8125rem;
+}
+
+
+/* ==========================================================================
+   19. FILE INPUT
+   ========================================================================== */
+
+.sidiko-file {
+    display: block;
+
+    width: 100%;
+
+    padding: 0.625rem;
+
+    background: var(--sidiko-white);
+
+    border: 1px dashed var(--sidiko-border-dark);
+    border-radius: var(--sidiko-radius-md);
+
+    color: var(--sidiko-gray-600);
+
+    font-size: 0.875rem;
+
+    cursor: pointer;
+}
+
+.sidiko-file:hover {
+    border-color: var(--sidiko-primary);
+    background: var(--sidiko-gray-50);
+}
+
+
+/* ==========================================================================
+   20. RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .sidiko-form-grid,
+    .sidiko-form-grid-3 {
+        grid-template-columns: 1fr;
+    }
+
+    .sidiko-form-grid-full {
+        grid-column: auto;
+    }
+
+    .sidiko-form-section {
+        padding: 1rem;
+    }
+
+    .sidiko-form-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+}

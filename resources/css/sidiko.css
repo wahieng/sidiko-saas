@@ -1,0 +1,16 @@
+@import "../../app/Core/UI/Assets/css/core.css";
+@import "../../app/Core/UI/Assets/css/utilities.css";
+@import "../../app/Core/UI/Assets/css/layouts.css";
+@import "../../app/Core/UI/Assets/css/components.css";
+
+
+/* ==========================================================
+   LOGIN
+   ========================================================== */
+@import "../../app/Core/UI/Assets/css/login.css";
+
+
+/* ==========================================================
+   SIDEBAR
+   ========================================================== */
+@import "./layouts/sidebar.css";

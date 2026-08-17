@@ -1,0 +1,312 @@
+/* ==========================================================
+   SIDIKO FORM FOUNDATION
+   Mengikuti visual language halaman login
+   ========================================================== */
+
+.sidiko-form-group {
+    margin-bottom: 1.25rem;
+}
+
+.sidiko-label,
+.sidiko-form-label {
+    display: block;
+
+    margin-bottom: 0.5rem;
+
+    color: var(--sidiko-gray-700);
+
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.sidiko-input,
+.sidiko-form-input,
+.sidiko-select,
+.sidiko-textarea {
+    display: block;
+
+    width: 100%;
+
+    min-height: 52px;
+
+    padding: 0.75rem 1rem;
+
+    border: 1px solid var(--sidiko-border-dark);
+    border-radius: 11px;
+
+    background: var(--sidiko-white);
+    color: var(--sidiko-text);
+
+    font-size: 0.9375rem;
+    line-height: 1.5;
+
+    outline: none;
+
+    transition:
+        border-color var(--sidiko-transition),
+        box-shadow var(--sidiko-transition),
+        background-color var(--sidiko-transition);
+}
+
+.sidiko-textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.sidiko-input:hover,
+.sidiko-form-input:hover,
+.sidiko-select:hover,
+.sidiko-textarea:hover {
+    border-color: var(--sidiko-gray-300);
+}
+
+.sidiko-input:focus,
+.sidiko-form-input:focus,
+.sidiko-select:focus,
+.sidiko-textarea:focus {
+    border-color: var(--sidiko-primary);
+
+    box-shadow:
+        0 0 0 4px rgb(37 99 235 / 0.10);
+}
+
+.sidiko-input::placeholder,
+.sidiko-form-input::placeholder,
+.sidiko-textarea::placeholder {
+    color: var(--sidiko-gray-400);
+}
+
+.sidiko-error,
+.sidiko-error-message {
+    display: block;
+
+    margin-top: 0.45rem;
+
+    color: var(--sidiko-danger);
+
+    font-size: 0.8125rem;
+    line-height: 1.4;
+}
+
+.sidiko-form-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    margin-top: 1.5rem;
+}
+
+.sidiko-form-actions-start {
+    justify-content: flex-start;
+}
+
+
+/* ==========================================================
+   FORM SECTION
+   ========================================================== */
+
+.sidiko-form-section {
+    padding: 1.5rem;
+
+    background: var(--sidiko-surface);
+
+    border: 1px solid var(--sidiko-border);
+
+    border-radius: 12px;
+}
+
+.sidiko-form-section-header {
+    margin-bottom: 1.5rem;
+}
+
+.sidiko-form-section-title {
+    margin: 0;
+
+    color: var(--sidiko-text);
+
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.sidiko-form-section-description {
+    margin: 0.35rem 0 0;
+
+    color: var(--sidiko-text-muted);
+
+    font-size: 0.875rem;
+    line-height: 1.6;
+}
+
+
+/* ==========================================================
+   BUTTON
+   ========================================================== */
+
+.sidiko-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+
+    min-height: 44px;
+
+    padding: 0.7rem 1rem;
+
+    border: 1px solid transparent;
+    border-radius: 10px;
+
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background-color var(--sidiko-transition),
+        border-color var(--sidiko-transition),
+        color var(--sidiko-transition),
+        box-shadow var(--sidiko-transition),
+        transform var(--sidiko-transition);
+}
+
+.sidiko-btn:hover {
+    transform: translateY(-1px);
+}
+
+.sidiko-btn:active {
+    transform: translateY(0);
+}
+
+.sidiko-btn-primary {
+    background: var(--sidiko-primary);
+    color: var(--sidiko-white);
+
+    box-shadow:
+        0 8px 20px rgb(37 99 235 / 0.18);
+}
+
+.sidiko-btn-primary:hover {
+    background: var(--sidiko-primary-dark);
+
+    box-shadow:
+        0 10px 24px rgb(37 99 235 / 0.25);
+}
+
+.sidiko-btn-secondary {
+    background: var(--sidiko-white);
+    color: var(--sidiko-gray-700);
+
+    border-color: var(--sidiko-border-dark);
+}
+
+.sidiko-btn-secondary:hover {
+    background: var(--sidiko-gray-50);
+}
+
+.sidiko-btn-danger {
+    background: var(--sidiko-danger);
+    color: var(--sidiko-white);
+}
+
+.sidiko-btn-danger:hover {
+    background: #b91c1c;
+}
+
+.sidiko-btn-ghost {
+    background: transparent;
+    color: var(--sidiko-gray-600);
+}
+
+.sidiko-btn-ghost:hover {
+    background: var(--sidiko-gray-100);
+}
+
+.sidiko-btn-block {
+    width: 100%;
+}
+
+
+/* ==========================================================
+   CARD
+   ========================================================== */
+
+.sidiko-card {
+    background: var(--sidiko-surface);
+
+    border: 1px solid var(--sidiko-border);
+    border-radius: 12px;
+
+    box-shadow: var(--sidiko-shadow-sm);
+}
+
+.sidiko-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+
+    padding: 1.25rem 1.5rem;
+
+    border-bottom: 1px solid var(--sidiko-border);
+}
+
+.sidiko-card-body {
+    padding: 1.5rem;
+}
+
+.sidiko-card-footer {
+    padding: 1rem 1.5rem;
+
+    border-top: 1px solid var(--sidiko-border);
+}
+
+.sidiko-card-title {
+    margin: 0;
+
+    color: var(--sidiko-text);
+
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.sidiko-card-description {
+    margin: 0.35rem 0 0;
+
+    color: var(--sidiko-text-muted);
+
+    font-size: 0.875rem;
+    line-height: 1.6;
+}
+
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+
+@media (max-width: 640px) {
+
+    .sidiko-form-section {
+        padding: 1.25rem;
+    }
+
+    .sidiko-card-body {
+        padding: 1.25rem;
+    }
+
+    .sidiko-input,
+    .sidiko-form-input,
+    .sidiko-select {
+        min-height: 50px;
+    }
+
+    .sidiko-form-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .sidiko-form-actions .sidiko-btn {
+        width: 100%;
+    }
+}

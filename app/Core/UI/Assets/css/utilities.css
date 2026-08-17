@@ -1,0 +1,534 @@
+/*
+|--------------------------------------------------------------------------
+| SIDIKO SaaS - Utilities
+|--------------------------------------------------------------------------
+| Utility classes yang dapat digunakan lintas modul.
+| Jangan masukkan styling khusus halaman/modul di sini.
+|--------------------------------------------------------------------------
+*/
+
+
+/* ==========================================================================
+   DISPLAY
+   ========================================================================== */
+
+.sidiko-hidden {
+    display: none !important;
+}
+
+.sidiko-block {
+    display: block;
+}
+
+.sidiko-inline {
+    display: inline;
+}
+
+.sidiko-inline-block {
+    display: inline-block;
+}
+
+.sidiko-flex {
+    display: flex;
+}
+
+.sidiko-inline-flex {
+    display: inline-flex;
+}
+
+.sidiko-grid {
+    display: grid;
+}
+
+
+/* ==========================================================================
+   FLEX
+   ========================================================================== */
+
+.sidiko-flex-row {
+    flex-direction: row;
+}
+
+.sidiko-flex-column {
+    flex-direction: column;
+}
+
+.sidiko-items-start {
+    align-items: flex-start;
+}
+
+.sidiko-items-center {
+    align-items: center;
+}
+
+.sidiko-items-end {
+    align-items: flex-end;
+}
+
+.sidiko-justify-start {
+    justify-content: flex-start;
+}
+
+.sidiko-justify-center {
+    justify-content: center;
+}
+
+.sidiko-justify-end {
+    justify-content: flex-end;
+}
+
+.sidiko-justify-between {
+    justify-content: space-between;
+}
+
+.sidiko-flex-wrap {
+    flex-wrap: wrap;
+}
+
+
+/* ==========================================================================
+   GAP
+   ========================================================================== */
+
+.sidiko-gap-xs {
+    gap: var(--sidiko-space-1);
+}
+
+.sidiko-gap-sm {
+    gap: var(--sidiko-space-2);
+}
+
+.sidiko-gap-md {
+    gap: var(--sidiko-space-3);
+}
+
+.sidiko-gap-lg {
+    gap: var(--sidiko-space-4);
+}
+
+.sidiko-gap-xl {
+    gap: var(--sidiko-space-6);
+}
+
+
+/* ==========================================================================
+   WIDTH
+   ========================================================================== */
+
+.sidiko-w-full {
+    width: 100%;
+}
+
+.sidiko-w-auto {
+    width: auto;
+}
+
+.sidiko-max-w-sm {
+    max-width: 384px;
+}
+
+.sidiko-max-w-md {
+    max-width: 448px;
+}
+
+.sidiko-max-w-lg {
+    max-width: 512px;
+}
+
+.sidiko-max-w-xl {
+    max-width: 576px;
+}
+
+.sidiko-max-w-2xl {
+    max-width: 672px;
+}
+
+.sidiko-max-w-full {
+    max-width: 100%;
+}
+
+
+/* ==========================================================================
+   HEIGHT
+   ========================================================================== */
+
+.sidiko-h-full {
+    height: 100%;
+}
+
+.sidiko-min-h-screen {
+    min-height: 100vh;
+}
+
+
+/* ==========================================================================
+   MARGIN
+   ========================================================================== */
+
+.sidiko-m-0 {
+    margin: 0;
+}
+
+.sidiko-m-auto {
+    margin: auto;
+}
+
+.sidiko-mt-sm {
+    margin-top: var(--sidiko-space-2);
+}
+
+.sidiko-mt-md {
+    margin-top: var(--sidiko-space-3);
+}
+
+.sidiko-mt-lg {
+    margin-top: var(--sidiko-space-4);
+}
+
+.sidiko-mb-sm {
+    margin-bottom: var(--sidiko-space-2);
+}
+
+.sidiko-mb-md {
+    margin-bottom: var(--sidiko-space-3);
+}
+
+.sidiko-mb-lg {
+    margin-bottom: var(--sidiko-space-4);
+}
+
+
+/* ==========================================================================
+   PADDING
+   ========================================================================== */
+
+.sidiko-p-0 {
+    padding: 0;
+}
+
+.sidiko-p-sm {
+    padding: var(--sidiko-space-2);
+}
+
+.sidiko-p-md {
+    padding: var(--sidiko-space-4);
+}
+
+.sidiko-p-lg {
+    padding: var(--sidiko-space-6);
+}
+
+.sidiko-p-xl {
+    padding: var(--sidiko-space-8);
+}
+
+
+/* ==========================================================================
+   TEXT ALIGNMENT
+   ========================================================================== */
+
+.sidiko-text-left {
+    text-align: left;
+}
+
+.sidiko-text-center {
+    text-align: center;
+}
+
+.sidiko-text-right {
+    text-align: right;
+}
+
+
+/* ==========================================================================
+   FONT WEIGHT
+   ========================================================================== */
+
+.sidiko-font-normal {
+    font-weight: 400;
+}
+
+.sidiko-font-medium {
+    font-weight: 500;
+}
+
+.sidiko-font-semibold {
+    font-weight: 600;
+}
+
+.sidiko-font-bold {
+    font-weight: 700;
+}
+
+.sidiko-font-extrabold {
+    font-weight: 800;
+}
+
+
+/* ==========================================================================
+   TEXT COLOR
+   ========================================================================== */
+
+.sidiko-text-primary {
+    color: var(--sidiko-primary);
+}
+
+.sidiko-text-muted {
+    color: var(--sidiko-text-muted);
+}
+
+.sidiko-text-success {
+    color: var(--sidiko-success);
+}
+
+.sidiko-text-danger {
+    color: var(--sidiko-danger);
+}
+
+.sidiko-text-warning {
+    color: var(--sidiko-warning);
+}
+
+.sidiko-text-white {
+    color: var(--sidiko-white);
+}
+
+
+/* ==========================================================================
+   BACKGROUND
+   ========================================================================== */
+
+.sidiko-bg-white {
+    background: var(--sidiko-white);
+}
+
+.sidiko-bg-primary {
+    background: var(--sidiko-primary);
+}
+
+.sidiko-bg-success {
+    background: var(--sidiko-success);
+}
+
+.sidiko-bg-danger {
+    background: var(--sidiko-danger);
+}
+
+.sidiko-bg-warning {
+    background: var(--sidiko-warning);
+}
+
+
+/* ==========================================================================
+   BORDER
+   ========================================================================== */
+
+.sidiko-border {
+    border: 1px solid var(--sidiko-border);
+}
+
+.sidiko-border-none {
+    border: none;
+}
+
+
+/* ==========================================================================
+   RADIUS
+   ========================================================================== */
+
+.sidiko-rounded-sm {
+    border-radius: var(--sidiko-radius-sm);
+}
+
+.sidiko-rounded-md {
+    border-radius: var(--sidiko-radius-md);
+}
+
+.sidiko-rounded-lg {
+    border-radius: var(--sidiko-radius-lg);
+}
+
+.sidiko-rounded-xl {
+    border-radius: var(--sidiko-radius-xl);
+}
+
+.sidiko-rounded-full {
+    border-radius: 9999px;
+}
+
+
+/* ==========================================================================
+   SHADOW
+   ========================================================================== */
+
+.sidiko-shadow-sm {
+    box-shadow: var(--sidiko-shadow-sm);
+}
+
+.sidiko-shadow-md {
+    box-shadow: var(--sidiko-shadow-md);
+}
+
+.sidiko-shadow-lg {
+    box-shadow: var(--sidiko-shadow-lg);
+}
+
+.sidiko-shadow-none {
+    box-shadow: none;
+}
+
+
+/* ==========================================================================
+   POSITION
+   ========================================================================== */
+
+.sidiko-relative {
+    position: relative;
+}
+
+.sidiko-absolute {
+    position: absolute;
+}
+
+.sidiko-fixed {
+    position: fixed;
+}
+
+.sidiko-sticky {
+    position: sticky;
+}
+
+
+/* ==========================================================================
+   OVERFLOW
+   ========================================================================== */
+
+.sidiko-overflow-hidden {
+    overflow: hidden;
+}
+
+.sidiko-overflow-auto {
+    overflow: auto;
+}
+
+.sidiko-overflow-visible {
+    overflow: visible;
+}
+
+
+/* ==========================================================================
+   CURSOR
+   ========================================================================== */
+
+.sidiko-cursor-pointer {
+    cursor: pointer;
+}
+
+.sidiko-cursor-not-allowed {
+    cursor: not-allowed;
+}
+
+
+/* ==========================================================================
+   OPACITY
+   ========================================================================== */
+
+.sidiko-opacity-50 {
+    opacity: 0.5;
+}
+
+.sidiko-opacity-75 {
+    opacity: 0.75;
+}
+
+.sidiko-opacity-100 {
+    opacity: 1;
+}
+
+
+/* ==========================================================================
+   VISIBILITY
+   ========================================================================== */
+
+.sidiko-visible {
+    visibility: visible;
+}
+
+.sidiko-invisible {
+    visibility: hidden;
+}
+
+
+/* ==========================================================================
+   TRANSITION
+   ========================================================================== */
+
+.sidiko-transition {
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease,
+        opacity 0.2s ease;
+}
+
+
+/* ==========================================================================
+   HOVER
+   ========================================================================== */
+
+.sidiko-hover-lift:hover {
+    transform: translateY(-2px);
+}
+
+.sidiko-hover-shadow:hover {
+    box-shadow: var(--sidiko-shadow-md);
+}
+
+
+/* ==========================================================================
+   SCREEN READER
+   ========================================================================== */
+
+.sidiko-sr-only {
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    padding: 0;
+    margin: -1px;
+
+    overflow: hidden;
+
+    clip: rect(0, 0, 0, 0);
+
+    white-space: nowrap;
+
+    border: 0;
+}
+
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 640px) {
+
+    .sidiko-sm-hidden {
+        display: none !important;
+    }
+
+    .sidiko-sm-flex-column {
+        flex-direction: column;
+    }
+
+    .sidiko-sm-w-full {
+        width: 100%;
+    }
+
+    .sidiko-sm-text-center {
+        text-align: center;
+    }
+}

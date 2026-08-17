@@ -1,0 +1,321 @@
+/*
+|--------------------------------------------------------------------------
+| SIDIKO SaaS - Sidebar
+|--------------------------------------------------------------------------
+| Vertical navigation untuk seluruh halaman aplikasi.
+| Mengikuti visual language Login SIDIKO.
+|--------------------------------------------------------------------------
+*/
+
+
+/* ==========================================================================
+   SIDEBAR
+   ========================================================================== */
+
+.sidiko-sidebar {
+    width: 260px;
+    min-width: 260px;
+
+    height: calc(100vh - 64px);
+
+    position: sticky;
+    top: 64px;
+
+    display: flex;
+    flex-direction: column;
+
+    background: var(--sidiko-gray-50);
+
+    border-right: 1px solid var(--sidiko-border);
+
+    box-shadow: var(--sidiko-shadow-xs);
+
+    box-sizing: border-box;
+
+    overflow: hidden;
+}
+
+/* ==========================================================================
+   SIDEBAR MENU
+   ========================================================================== */
+
+.sidiko-sidebar-menu {
+    flex: 1;
+
+    padding: var(--sidiko-space-5) var(--sidiko-space-4);
+
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+
+/* ==========================================================================
+   GROUP
+   ========================================================================== */
+
+.sidiko-sidebar-group {
+    margin-top: var(--sidiko-space-6);
+}
+
+.sidiko-sidebar-group:first-child {
+    margin-top: 0;
+}
+
+
+/* ==========================================================================
+   GROUP TITLE
+   ========================================================================== */
+
+.sidiko-sidebar-title {
+    margin-bottom: var(--sidiko-space-2);
+
+    padding-inline: var(--sidiko-space-3);
+
+    color: var(--sidiko-text-muted);
+
+    font-size: var(--sidiko-text-xs);
+    font-weight: var(--sidiko-weight-semibold);
+
+    letter-spacing: 0.08em;
+
+    text-transform: uppercase;
+}
+
+
+/* ==========================================================================
+   SIDEBAR LINK
+   ========================================================================== */
+
+.sidiko-sidebar-link {
+    width: 100%;
+    min-height: 44px;
+
+    display: flex;
+    align-items: center;
+
+    gap: var(--sidiko-space-3);
+
+    margin-bottom: var(--sidiko-space-1);
+
+    padding: 0.625rem 0.75rem;
+
+    border: 1px solid transparent;
+    border-radius: var(--sidiko-radius-md);
+
+    background: transparent;
+
+    color: var(--sidiko-text-secondary);
+
+    font-size: var(--sidiko-text-sm);
+    font-weight: var(--sidiko-weight-medium);
+
+    text-decoration: none;
+
+    transition:
+        background-color var(--sidiko-transition),
+        border-color var(--sidiko-transition),
+        color var(--sidiko-transition),
+        box-shadow var(--sidiko-transition);
+}
+
+
+/* ==========================================================================
+   HOVER
+   ========================================================================== */
+
+.sidiko-sidebar-link:hover {
+    background: var(--sidiko-surface-hover);
+
+    border-color: var(--sidiko-border-light);
+
+    color: var(--sidiko-text);
+}
+
+
+/* ==========================================================================
+   ACTIVE
+   ========================================================================== */
+
+.sidiko-sidebar-link.active {
+    background: var(--sidiko-primary-light);
+
+    border-color: transparent;
+
+    color: var(--sidiko-primary-dark);
+
+    font-weight: var(--sidiko-weight-semibold);
+}
+
+
+/* ==========================================================================
+   ACTIVE HOVER
+   ========================================================================== */
+
+.sidiko-sidebar-link.active:hover {
+    background: var(--sidiko-primary-light);
+
+    color: var(--sidiko-primary-dark);
+}
+
+
+/* ==========================================================================
+   ICON
+   ========================================================================== */
+
+.sidiko-sidebar-icon {
+    width: 20px;
+    min-width: 20px;
+    height: 20px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    color: currentColor;
+
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.sidiko-sidebar-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+
+/* ==========================================================================
+   FOOTER USER
+   ========================================================================== */
+
+.sidiko-sidebar-footer {
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: var(--sidiko-space-3);
+
+    padding: var(--sidiko-space-4);
+
+    background: var(--sidiko-surface);
+
+    border-top: 1px solid var(--sidiko-border);
+}
+
+
+/* ==========================================================================
+   USER INFO
+   ========================================================================== */
+
+.sidiko-sidebar-user-info {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.sidiko-sidebar-user-info strong {
+    display: block;
+
+    overflow: hidden;
+
+    color: var(--sidiko-text);
+
+    font-size: var(--sidiko-text-sm);
+    font-weight: var(--sidiko-weight-semibold);
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.sidiko-sidebar-user-info span {
+    display: block;
+
+    overflow: hidden;
+
+    margin-top: 1px;
+
+    color: var(--sidiko-text-muted);
+
+    font-size: var(--sidiko-text-xs);
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+/* ==========================================================================
+   SCROLLBAR
+   ========================================================================== */
+
+.sidiko-sidebar-menu {
+    scrollbar-width: thin;
+
+    scrollbar-color:
+        var(--sidiko-gray-300)
+        transparent;
+}
+
+.sidiko-sidebar-menu::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidiko-sidebar-menu::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidiko-sidebar-menu::-webkit-scrollbar-thumb {
+    background: var(--sidiko-gray-300);
+
+    border-radius: var(--sidiko-radius-full);
+}
+
+.sidiko-sidebar-menu::-webkit-scrollbar-thumb:hover {
+    background: var(--sidiko-gray-400);
+}
+
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 768px) {
+
+    .sidiko-sidebar {
+        width: 220px;
+        min-width: 220px;
+
+        height: calc(100vh - 60px);
+
+        top: 60px;
+    }
+
+    .sidiko-sidebar-menu {
+        padding: var(--sidiko-space-4) var(--sidiko-space-3);
+    }
+
+}
+
+
+@media (max-width: 640px) {
+
+    .sidiko-sidebar {
+        width: 100%;
+        min-width: 0;
+
+        height: auto;
+
+        position: relative;
+        top: auto;
+
+        border-right: 0;
+        border-bottom: 1px solid var(--sidiko-border);
+
+        box-shadow: none;
+    }
+
+    .sidiko-sidebar-menu {
+        max-height: 60vh;
+    }
+
+}

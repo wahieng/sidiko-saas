@@ -1,0 +1,832 @@
+/*
+|--------------------------------------------------------------------------
+| SIDIKO SaaS - Layouts
+|--------------------------------------------------------------------------
+| Layout global yang digunakan lintas halaman SIDIKO.
+|
+| Tidak berisi styling khusus modul.
+| Tidak berisi styling khusus login.
+|--------------------------------------------------------------------------
+*/
+
+
+/* ==========================================================================
+   APP ROOT
+   ========================================================================== */
+
+.sidiko-app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    background: var(--sidiko-bg);
+    color: var(--sidiko-text);
+}
+
+
+/* ==========================================================================
+   PAGE
+   ========================================================================== */
+
+.sidiko-page {
+    width: 100%;
+    min-height: 100vh;
+}
+
+.sidiko-page-container {
+    width: 100%;
+    max-width: 1440px;
+
+    margin-inline: auto;
+    padding-inline: var(--sidiko-space-6);
+
+    box-sizing: border-box;
+}
+
+
+/* ==========================================================================
+   PAGE HEADER
+   ========================================================================== */
+
+.sidiko-page-header {
+    width: 100%;
+
+    background: var(--sidiko-surface);
+
+    border-bottom: 1px solid var(--sidiko-border);
+}
+
+
+/* ==========================================================================
+   CENTERED PAGE
+   ========================================================================== */
+
+.sidiko-page-centered {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: var(--sidiko-space-6);
+
+    box-sizing: border-box;
+}
+
+
+/* ==========================================================================
+   AUTH LAYOUT
+   ========================================================================== */
+
+.sidiko-auth {
+    width: 100%;
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: var(--sidiko-space-8);
+
+    box-sizing: border-box;
+
+    background:
+        radial-gradient(
+            circle at top left,
+            var(--sidiko-primary-soft),
+            transparent 35%
+        ),
+        var(--sidiko-bg);
+}
+
+
+/* ==========================================================================
+   AUTH CONTAINER
+   ========================================================================== */
+
+.sidiko-auth-container {
+    width: 100%;
+    max-width: 460px;
+}
+
+
+/* ==========================================================================
+   AUTH BRAND
+   ========================================================================== */
+
+.sidiko-auth-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: var(--sidiko-space-3);
+
+    margin-bottom: var(--sidiko-space-6);
+}
+
+.sidiko-auth-logo {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: var(--sidiko-radius-lg);
+
+    background: var(--sidiko-primary);
+    color: var(--sidiko-white);
+
+    font-size: 1.25rem;
+    font-weight: 800;
+
+    box-shadow: var(--sidiko-shadow-md);
+}
+
+.sidiko-auth-name {
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+}
+
+.sidiko-auth-tagline {
+    margin-top: 2px;
+
+    color: var(--sidiko-text-muted);
+
+    font-size: 0.75rem;
+}
+
+
+/* ==========================================================================
+   AUTH CARD
+   ========================================================================== */
+
+.sidiko-auth-card {
+    width: 100%;
+
+    padding: var(--sidiko-space-8);
+
+    background: var(--sidiko-surface);
+
+    border: 1px solid var(--sidiko-border);
+    border-radius: var(--sidiko-radius-xl);
+
+    box-shadow: var(--sidiko-shadow-lg);
+
+    box-sizing: border-box;
+}
+
+
+/* ==========================================================================
+   AUTH HEADER
+   ========================================================================== */
+
+.sidiko-auth-header {
+    margin-bottom: var(--sidiko-space-6);
+
+    text-align: center;
+}
+
+.sidiko-auth-header h1 {
+    margin: 0;
+
+    color: var(--sidiko-text);
+
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.sidiko-auth-header p {
+    margin: var(--sidiko-space-2) 0 0;
+
+    color: var(--sidiko-text-muted);
+
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+
+/* ==========================================================================
+   AUTH FOOTER
+   ========================================================================== */
+
+.sidiko-auth-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: var(--sidiko-space-2);
+
+    margin-top: var(--sidiko-space-6);
+    padding-top: var(--sidiko-space-5);
+
+    border-top: 1px solid var(--sidiko-border);
+
+    color: var(--sidiko-text-muted);
+
+    font-size: 0.875rem;
+}
+
+
+/* ==========================================================================
+   AUTH COPYRIGHT
+   ========================================================================== */
+
+.sidiko-auth-copyright {
+    margin-top: var(--sidiko-space-6);
+
+    color: var(--sidiko-text-muted);
+
+    font-size: 0.75rem;
+
+    text-align: center;
+}
+
+
+/* ==========================================================================
+   SIDIKO NAVIGATION
+   ========================================================================== */
+
+.sidiko-nav {
+    position: relative;
+    z-index: 100;
+
+    width: 100%;
+
+    background: var(--sidiko-surface);
+
+    border-bottom: 1px solid var(--sidiko-border);
+
+    box-shadow: var(--sidiko-shadow-sm);
+}
+
+
+.sidiko-nav-container {
+    width: 100%;
+    max-width: 1440px;
+
+    min-height: 64px;
+
+    margin-inline: auto;
+
+    padding-inline: var(--sidiko-space-6);
+
+    display: flex;
+    align-items: center;
+
+    gap: var(--sidiko-space-6);
+
+    box-sizing: border-box;
+}
+
+
+/* ==========================================================================
+   NAV BRAND
+   ========================================================================== */
+
+.sidiko-nav-brand {
+    flex-shrink: 0;
+}
+
+.sidiko-brand {
+    display: inline-flex;
+    align-items: center;
+
+    gap: var(--sidiko-space-3);
+
+    color: var(--sidiko-text);
+
+    text-decoration: none;
+}
+
+.sidiko-brand-logo {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: var(--sidiko-radius-lg);
+
+    background: var(--sidiko-primary);
+    color: var(--sidiko-white);
+
+    font-size: 1.125rem;
+    font-weight: 800;
+
+    box-shadow: var(--sidiko-shadow-sm);
+}
+
+.sidiko-brand-text {
+    display: flex;
+    align-items: baseline;
+
+    gap: 0.25rem;
+
+    line-height: 1;
+}
+
+.sidiko-brand-text strong {
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+}
+
+.sidiko-brand-text span {
+    color: var(--sidiko-text-muted);
+
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+
+/* ==========================================================================
+   NAV LINKS
+   ========================================================================== */
+
+.sidiko-nav-links {
+    flex: 1;
+
+    display: flex;
+    align-items: center;
+
+    gap: 0.25rem;
+}
+
+.sidiko-nav-link {
+    display: inline-flex;
+    align-items: center;
+
+    min-height: 40px;
+
+    padding: 0.5rem 0.875rem;
+
+    border-radius: var(--sidiko-radius-md);
+
+    color: var(--sidiko-text-muted);
+
+    font-size: 0.875rem;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition:
+        background-color var(--sidiko-transition),
+        color var(--sidiko-transition);
+}
+
+.sidiko-nav-link:hover {
+    background: var(--sidiko-gray-100);
+    color: var(--sidiko-text);
+}
+
+.sidiko-nav-link.active {
+    background: var(--sidiko-primary-light);
+    color: var(--sidiko-primary-dark);
+}
+
+
+/* ==========================================================================
+   NAV USER
+   ========================================================================== */
+
+.sidiko-nav-user {
+    position: relative;
+
+    flex-shrink: 0;
+}
+
+.sidiko-user-button {
+    display: flex;
+    align-items: center;
+
+    gap: 0.625rem;
+
+    padding: 0.375rem 0.5rem;
+
+    border: 0;
+    border-radius: var(--sidiko-radius-lg);
+
+    background: transparent;
+
+    color: var(--sidiko-text);
+
+    cursor: pointer;
+
+    transition:
+        background-color var(--sidiko-transition);
+}
+
+.sidiko-user-button:hover {
+    background: var(--sidiko-gray-100);
+}
+
+.sidiko-user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    min-width: 0;
+}
+
+.sidiko-user-info strong {
+    max-width: 160px;
+
+    overflow: hidden;
+
+    color: var(--sidiko-text);
+
+    font-size: 0.8125rem;
+    font-weight: 600;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.sidiko-user-info span {
+    max-width: 160px;
+
+    overflow: hidden;
+
+    color: var(--sidiko-text-muted);
+
+    font-size: 0.6875rem;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.sidiko-user-chevron {
+    flex-shrink: 0;
+
+    color: var(--sidiko-text-muted);
+}
+
+
+/* ==========================================================================
+   USER MENU
+   ========================================================================== */
+
+.sidiko-user-menu {
+    position: absolute;
+
+    top: calc(100% + 0.5rem);
+    right: 0;
+
+    width: 280px;
+
+    padding: 0.5rem;
+
+    background: var(--sidiko-surface);
+
+    border: 1px solid var(--sidiko-border);
+    border-radius: var(--sidiko-radius-lg);
+
+    box-shadow: var(--sidiko-shadow-lg);
+
+    box-sizing: border-box;
+}
+
+.sidiko-user-menu-header {
+    display: flex;
+    align-items: center;
+
+    gap: 0.75rem;
+
+    padding: 0.75rem;
+}
+
+.sidiko-user-menu-header > div:last-child {
+    min-width: 0;
+}
+
+.sidiko-user-menu-header strong {
+    display: block;
+
+    overflow: hidden;
+
+    color: var(--sidiko-text);
+
+    font-size: 0.875rem;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.sidiko-user-menu-header span {
+    display: block;
+
+    overflow: hidden;
+
+    color: var(--sidiko-text-muted);
+
+    font-size: 0.75rem;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.sidiko-user-menu-item {
+    display: block;
+
+    width: 100%;
+
+    padding: 0.625rem 0.75rem;
+
+    border: 0;
+    border-radius: var(--sidiko-radius-md);
+
+    background: transparent;
+
+    color: var(--sidiko-text);
+
+    font: inherit;
+    font-size: 0.875rem;
+
+    text-align: left;
+    text-decoration: none;
+
+    cursor: pointer;
+
+    box-sizing: border-box;
+}
+
+.sidiko-user-menu-item:hover {
+    background: var(--sidiko-gray-100);
+}
+
+.sidiko-user-menu-danger {
+    color: var(--sidiko-danger);
+}
+
+.sidiko-user-menu-danger:hover {
+    background: #fef2f2;
+}
+
+
+/* ==========================================================================
+   MOBILE NAVIGATION
+   ========================================================================== */
+
+.sidiko-mobile-menu-button {
+    display: none;
+
+    width: 40px;
+    height: 40px;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-left: auto;
+
+    border: 0;
+    border-radius: var(--sidiko-radius-md);
+
+    background: transparent;
+
+    color: var(--sidiko-text);
+
+    cursor: pointer;
+}
+
+.sidiko-mobile-menu-button:hover {
+    background: var(--sidiko-gray-100);
+}
+
+.sidiko-mobile-menu {
+    padding: 0.75rem var(--sidiko-space-4);
+
+    border-top: 1px solid var(--sidiko-border);
+
+    background: var(--sidiko-surface);
+
+    box-sizing: border-box;
+}
+
+.sidiko-mobile-nav-link {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    min-height: 42px;
+
+    padding: 0.625rem 0.75rem;
+
+    border: 0;
+    border-radius: var(--sidiko-radius-md);
+
+    background: transparent;
+
+    color: var(--sidiko-text);
+
+    font: inherit;
+    font-size: 0.875rem;
+    font-weight: 600;
+
+    text-align: left;
+    text-decoration: none;
+
+    cursor: pointer;
+
+    box-sizing: border-box;
+}
+
+.sidiko-mobile-nav-link:hover {
+    background: var(--sidiko-gray-100);
+}
+
+.sidiko-mobile-nav-link.active {
+    background: var(--sidiko-primary-light);
+    color: var(--sidiko-primary-dark);
+}
+
+.sidiko-mobile-danger {
+    color: var(--sidiko-danger);
+}
+
+.sidiko-mobile-user {
+    display: flex;
+    align-items: center;
+
+    gap: 0.75rem;
+
+    margin: 0.5rem 0;
+    padding: 0.75rem;
+
+    border-top: 1px solid var(--sidiko-border);
+    border-bottom: 1px solid var(--sidiko-border);
+}
+
+.sidiko-mobile-user strong {
+    display: block;
+
+    color: var(--sidiko-text);
+
+    font-size: 0.875rem;
+}
+
+.sidiko-mobile-user span {
+    display: block;
+
+    color: var(--sidiko-text-muted);
+
+    font-size: 0.75rem;
+}
+
+
+/* ==========================================================================
+   MAIN CONTENT
+   ========================================================================== */
+
+.sidiko-main {
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+}
+
+.sidiko-content {
+    width: 100%;
+
+    padding: var(--sidiko-space-6);
+
+    box-sizing: border-box;
+}
+
+
+/* ==========================================================================
+   HEADER
+   ========================================================================== */
+
+.sidiko-header {
+    width: 100%;
+    min-height: 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding-inline: var(--sidiko-space-6);
+
+    background: var(--sidiko-surface);
+
+    border-bottom: 1px solid var(--sidiko-border);
+
+    box-sizing: border-box;
+}
+
+
+/* ==========================================================================
+   SIDEBAR
+   ========================================================================== */
+
+.sidiko-layout {
+    min-height: 100vh;
+
+    display: flex;
+}
+
+.sidiko-sidebar {
+    width: 260px;
+    min-width: 260px;
+
+    min-height: 100vh;
+
+    background: var(--sidiko-surface);
+
+    border-right: 1px solid var(--sidiko-border);
+}
+
+.sidiko-layout-content {
+    flex: 1;
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 768px) {
+
+    .sidiko-page-container {
+        padding-inline: var(--sidiko-space-4);
+    }
+
+    .sidiko-content {
+        padding: var(--sidiko-space-4);
+    }
+
+    .sidiko-nav-container {
+        min-height: 60px;
+
+        padding-inline: var(--sidiko-space-4);
+    }
+
+    .sidiko-nav-links,
+    .sidiko-nav-user {
+        display: none;
+    }
+
+    .sidiko-mobile-menu-button {
+        display: flex;
+    }
+
+    .sidiko-auth {
+        padding: var(--sidiko-space-4);
+    }
+
+    .sidiko-auth-card {
+        padding: var(--sidiko-space-6);
+    }
+
+    .sidiko-sidebar {
+        width: 220px;
+        min-width: 220px;
+    }
+}
+
+
+@media (max-width: 640px) {
+
+    .sidiko-auth {
+        justify-content: flex-start;
+
+        padding-top: var(--sidiko-space-8);
+    }
+
+    .sidiko-auth-container {
+        max-width: 100%;
+    }
+
+    .sidiko-auth-card {
+        padding: var(--sidiko-space-5);
+
+        border-radius: var(--sidiko-radius-lg);
+    }
+
+    .sidiko-auth-brand {
+        margin-bottom: var(--sidiko-space-5);
+    }
+
+    .sidiko-auth-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .sidiko-sidebar {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .sidiko-layout {
+        flex-direction: column;
+    }
+
+
+}
