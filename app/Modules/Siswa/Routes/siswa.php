@@ -3,7 +3,7 @@
 use App\Modules\Siswa\Controllers\SiswaController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth', 'verified'])
+Route::middleware(['auth', 'verified', 'tenant'])
     ->prefix('siswa')
     ->name('siswa.')
     ->group(function () {
@@ -41,3 +41,27 @@ Route::middleware(['auth', 'verified'])
 */
 
 require __DIR__ . '/siswatahun.php';
+
+/*
+|--------------------------------------------------------------------------
+| Orang Tua
+|--------------------------------------------------------------------------
+*/
+
+require __DIR__ . '/orangtua.php';
+
+/*
+|--------------------------------------------------------------------------
+| Wali
+|--------------------------------------------------------------------------
+*/
+
+require __DIR__ . '/wali.php';
+
+/*
+|--------------------------------------------------------------------------
+| Dokumen Siswa
+|--------------------------------------------------------------------------
+*/
+
+require __DIR__ . '/dokumensiswa.php';

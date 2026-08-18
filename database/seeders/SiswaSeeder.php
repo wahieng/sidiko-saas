@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Core\Tenant\Models\Tenant;
 use App\Modules\Siswa\Models\Siswa;
 use Illuminate\Database\Seeder;
 
@@ -9,6 +10,8 @@ class SiswaSeeder extends Seeder
 {
     public function run(): void
     {
+        $tenant = Tenant::where('code', 'DEMO')->firstOrFail();
+
         $siswa = [
             [
                 'nis' => '10001',
@@ -71,8 +74,13 @@ class SiswaSeeder extends Seeder
 
         foreach ($siswa as $data) {
             Siswa::updateOrCreate(
-                ['nis' => $data['nis']],
-                $data
+                [
+                    'tenant_id' => $tenant->id,
+                    'nis' => $data['nis'],
+                ],
+                array_merge($data, [
+                    'tenant_id' => $tenant->id,
+                ])
             );
         }
     }

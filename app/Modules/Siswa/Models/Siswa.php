@@ -15,6 +15,18 @@ class Siswa extends Model
     protected $table = 'siswa';
 
     protected $fillable = [
+        /*
+        |--------------------------------------------------------------------------
+        | Tenant
+        |--------------------------------------------------------------------------
+        */
+        'tenant_id',
+
+        /*
+        |--------------------------------------------------------------------------
+        | Identitas Utama
+        |--------------------------------------------------------------------------
+        */
         'nis',
         'nisn',
         'nik',
@@ -25,8 +37,20 @@ class Siswa extends Model
         'tempat_lahir',
         'tanggal_lahir',
         'agama',
+
+        /*
+        |--------------------------------------------------------------------------
+        | Kontak
+        |--------------------------------------------------------------------------
+        */
         'no_hp',
         'email',
+
+        /*
+        |--------------------------------------------------------------------------
+        | Alamat
+        |--------------------------------------------------------------------------
+        */
         'alamat',
         'rt',
         'rw',
@@ -35,15 +59,28 @@ class Siswa extends Model
         'kabupaten',
         'provinsi',
         'kode_pos',
+
+        /*
+        |--------------------------------------------------------------------------
+        | Informasi Tambahan
+        |--------------------------------------------------------------------------
+        */
         'anak_ke',
         'jumlah_saudara',
         'jenis_tinggal',
         'transportasi',
         'kebutuhan_khusus',
+
+        /*
+        |--------------------------------------------------------------------------
+        | Foto
+        |--------------------------------------------------------------------------
+        */
         'foto',
     ];
 
     protected $casts = [
+        'tenant_id' => 'integer',
         'tanggal_lahir' => 'date',
         'anak_ke' => 'integer',
         'jumlah_saudara' => 'integer',
@@ -78,6 +115,39 @@ class Siswa extends Model
             'id',
             'id',
             'tahun_ajaran_id'
+        );
+    }
+
+    /**
+     * Orang tua siswa.
+     */
+    public function orangTua(): HasMany
+    {
+        return $this->hasMany(
+            OrangTua::class,
+            'siswa_id'
+        );
+    }
+
+    /**
+     * Wali siswa.
+     */
+    public function wali(): HasMany
+    {
+        return $this->hasMany(
+            Wali::class,
+            'siswa_id'
+        );
+    }
+
+    /**
+     * Dokumen siswa.
+     */
+    public function dokumen(): HasMany
+    {
+        return $this->hasMany(
+            DokumenSiswa::class,
+            'siswa_id'
         );
     }
 }
