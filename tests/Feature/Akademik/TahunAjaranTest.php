@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Akademik;
 
-use App\Modules\Akademik\Models\TahunAjaran;
+use App\Modules\Akademik\TahunAjaran\Models\TahunAjaran;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

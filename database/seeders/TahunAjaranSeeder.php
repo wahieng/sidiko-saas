@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Modules\Akademik\Models\TahunAjaran;
+use App\Modules\Akademik\TahunAjaran\Models\TahunAjaran;
 use Illuminate\Database\Seeder;
 
 class TahunAjaranSeeder extends Seeder

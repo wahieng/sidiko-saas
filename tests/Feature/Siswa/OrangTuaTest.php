@@ -4,9 +4,9 @@ namespace Tests\Feature\Siswa;
 
 use App\Core\Tenant\Context\TenantContext;
 use App\Core\Tenant\Models\Tenant;
-use App\Modules\Siswa\Models\OrangTua;
-use App\Modules\Siswa\Models\Siswa;
-use App\Modules\Siswa\Services\OrangTuaService;
+use App\Modules\Siswa\OrangTua\Models\OrangTua;
+use App\Modules\Siswa\Siswa\Models\Siswa;
+use App\Modules\Siswa\OrangTua\Services\OrangTuaService;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

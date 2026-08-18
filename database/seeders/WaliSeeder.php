@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 use App\Core\Tenant\Context\TenantContext;
 use App\Core\Tenant\Models\Tenant;
-use App\Modules\Siswa\Models\Siswa;
-use App\Modules\Siswa\Models\Wali;
+use App\Modules\Siswa\Siswa\Models\Siswa;
+use App\Modules\Siswa\Wali\Models\Wali;
 use Illuminate\Database\Seeder;
 
 class WaliSeeder extends Seeder

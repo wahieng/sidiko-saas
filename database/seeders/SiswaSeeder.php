@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Core\Tenant\Models\Tenant;
-use App\Modules\Siswa\Models\Siswa;
+use App\Modules\Siswa\Siswa\Models\Siswa;
 use Illuminate\Database\Seeder;
 
 class SiswaSeeder extends Seeder

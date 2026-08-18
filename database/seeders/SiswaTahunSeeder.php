@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Modules\Akademik\Models\KelompokRombel;
-use App\Modules\Akademik\Models\TahunAjaran;
-use App\Modules\Siswa\Models\Siswa;
-use App\Modules\Siswa\Models\SiswaTahun;
+use App\Modules\Akademik\KelompokRombel\Models\KelompokRombel;
+use App\Modules\Akademik\TahunAjaran\Models\TahunAjaran;
+use App\Modules\Siswa\Siswa\Models\Siswa;
+use App\Modules\Siswa\SiswaTahun\Models\SiswaTahun;
 use Illuminate\Database\Seeder;
 
 class SiswaTahunSeeder extends Seeder

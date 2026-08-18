@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Core\Tenant\Models\Tenant;
-use App\Modules\Akademik\Models\Rombel;
+use App\Modules\Akademik\Rombel\Models\Rombel;
 use Illuminate\Database\Seeder;
 
 class RombelSeeder extends Seeder

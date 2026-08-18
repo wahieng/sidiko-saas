@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Akademik;
 
-use App\Modules\Akademik\Models\Rombel;
+use App\Modules\Akademik\Rombel\Models\Rombel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

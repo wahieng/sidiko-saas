@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Modules\Siswa\Models\OrangTua;
-use App\Modules\Siswa\Models\Siswa;
+use App\Modules\Siswa\OrangTua\Models\OrangTua;
+use App\Modules\Siswa\Siswa\Models\Siswa;
 use Illuminate\Database\Seeder;
 
 class OrangTuaSeeder extends Seeder

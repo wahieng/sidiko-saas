@@ -4,8 +4,8 @@ namespace Tests\Feature\Siswa;
 
 use App\Core\Tenant\Context\TenantContext;
 use App\Core\Tenant\Models\Tenant;
-use App\Modules\Siswa\Models\Wali;
-use App\Modules\Siswa\Services\WaliService;
+use App\Modules\Siswa\Wali\Models\Wali;
+use App\Modules\Siswa\Wali\Services\WaliService;
 use Database\Seeders\SiswaSeeder;
 use Database\Seeders\TenantSeeder;
 use Database\Seeders\WaliSeeder;
@@ -110,7 +110,7 @@ class WaliTest extends TestCase
 
     public function test_wali_bersifat_opsional(): void
     {
-        $siswaTanpaWali = \App\Modules\Siswa\Models\Siswa::query()
+        $siswaTanpaWali = \App\Modules\Siswa\Siswa\Models\Siswa::query()
             ->whereDoesntHave('wali')
             ->first();
 

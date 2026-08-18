@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Akademik;
 
-use App\Modules\Akademik\Models\Semester;
+use App\Modules\Akademik\Semester\Models\Semester;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -62,7 +62,7 @@ class SemesterTest extends TestCase
 
     public function test_tahun_ajaran_memiliki_dua_semester(): void
     {
-        $tahunAjaran = \App\Modules\Akademik\Models\TahunAjaran::with('semesters')
+        $tahunAjaran = \App\Modules\Akademik\TahunAjaran\Models\TahunAjaran::with('semesters')
             ->where('kode', '2026/2027')
             ->first();
 

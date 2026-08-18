@@ -38,5 +38,26 @@ require base_path('app/Core/Billing/Routes/billing.php');
 |--------------------------------------------------------------------------
 */
 
-require base_path('app/Modules/Akademik/Routes/akademik.php');
-require base_path('app/Modules/Siswa/Routes/siswa.php');
+    /*
+    |--------------------------------------------------------------------------
+    | Akademik
+    |--------------------------------------------------------------------------
+    */
+
+    require base_path(
+        'app/Modules/Akademik/TahunAjaran/Routes/tahunajaran.php'
+    );
+
+    require base_path(
+        'app/Modules/Akademik/Semester/Routes/semester.php'
+    );
+
+    require base_path(
+        'app/Modules/Akademik/Rombel/Routes/rombel.php'
+    );
+
+    require base_path(
+        'app/Modules/Akademik/KelompokRombel/Routes/kelompokrombel.php'
+    );
+require base_path('app/Modules/Siswa/Siswa/Routes/siswa.php');
+require base_path('app/Modules/Keuangan/JenisPembayaran/Routes/jenispembayaran.php');

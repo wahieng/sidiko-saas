@@ -6,17 +6,17 @@ use App\Core\Shared\Services\Storage\FileStorageService;
 use App\Core\Shared\Support\Storage\StoragePathHelper;
 use App\Core\Tenant\Context\TenantContext;
 use App\Core\Tenant\Models\Tenant;
-use App\Modules\Siswa\Models\DokumenSiswa;
-use App\Modules\Siswa\Models\Siswa;
-use App\Modules\Siswa\Services\DokumenSiswaService;
+use App\Modules\Siswa\DokumenSiswa\Models\DokumenSiswa;
+use App\Modules\Siswa\Siswa\Models\Siswa;
+use App\Modules\Siswa\DokumenSiswa\Services\DokumenSiswaService;
 use Database\Seeders\SiswaSeeder;
 use Database\Seeders\TenantSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use RuntimeException;
 use Tests\TestCase;
-use Illuminate\Support\Facades\DB;
 
 class DokumenSiswaServiceTest extends TestCase
 {

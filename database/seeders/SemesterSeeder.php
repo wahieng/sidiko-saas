@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Modules\Akademik\Models\TahunAjaran;
-use App\Modules\Akademik\Models\Semester;
+use App\Modules\Akademik\TahunAjaran\Models\TahunAjaran;
+use App\Modules\Akademik\Semester\Models\Semester;
 use Illuminate\Database\Seeder;
 
 class SemesterSeeder extends Seeder

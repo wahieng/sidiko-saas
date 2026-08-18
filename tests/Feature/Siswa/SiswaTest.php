@@ -4,8 +4,8 @@ namespace Tests\Feature\Siswa;
 
 use App\Core\Tenant\Context\TenantContext;
 use App\Core\Tenant\Models\Tenant;
-use App\Modules\Siswa\Models\Siswa;
-use App\Modules\Siswa\Services\SiswaService;
+use App\Modules\Siswa\Siswa\Models\Siswa;
+use App\Modules\Siswa\Siswa\Services\SiswaService;
 use Database\Seeders\SiswaSeeder;
 use Database\Seeders\TenantSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
