@@ -4,6 +4,7 @@ namespace Tests\Feature\Keuangan;
 
 use App\Core\Tenant\Context\TenantContext;
 use App\Core\Tenant\Models\Tenant;
+use App\Core\Identity\Models\User;
 use App\Modules\Akademik\KelompokRombel\Models\KelompokRombel;
 use App\Modules\Akademik\Rombel\Models\Rombel;
 use App\Modules\Akademik\TahunAjaran\Models\TahunAjaran;
@@ -22,6 +23,8 @@ class TarifPembayaranTest extends TestCase
     use RefreshDatabase;
 
     protected Tenant $tenant;
+
+    protected User $user;
 
     protected JenisPembayaran $jenisPembayaran;
 
@@ -44,6 +47,10 @@ class TarifPembayaranTest extends TestCase
             ->firstOrFail();
 
         app(TenantContext::class)->set($this->tenant);
+
+        $this->user = User::factory()->create([
+            'tenant_id' => $this->tenant->id,
+        ]);
 
         /*
         |--------------------------------------------------------------------------
@@ -319,4 +326,160 @@ class TarifPembayaranTest extends TestCase
             ]
         );
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | HTTP CRUD
+    |--------------------------------------------------------------------------
+    */
+
+    public function test_guest_tidak_dapat_mengakses_tarif_pembayaran(): void
+    {
+        $response = $this->getJson('/tarif-pembayaran');
+
+        $response->assertUnauthorized();
+    }
+
+    public function test_user_dapat_melihat_daftar_tarif_pembayaran(): void
+    {
+        $this->actingAs($this->user);
+
+        TarifPembayaran::create([
+            'jenis_pembayaran_id' => $this->jenisPembayaran->id,
+            'kelompok_rombel_id' => $this->kelompokRombel->id,
+            'nominal' => 150000,
+            'keterangan' => 'Tarif SPP VII-A',
+            'aktif' => true,
+        ]);
+
+        $response = $this->getJson('/tarif-pembayaran');
+
+        $response->assertOk()
+            ->assertJson([
+                'success' => true,
+            ])
+            ->assertJsonStructure([
+                'success',
+                'data',
+            ]);
+    }
+
+    public function test_user_dapat_membuat_tarif_melalui_http(): void
+    {
+        $this->actingAs($this->user);
+
+        $response = $this->postJson('/tarif-pembayaran', [
+            'jenis_pembayaran_id' => $this->jenisPembayaran->id,
+            'kelompok_rombel_id' => $this->kelompokRombel->id,
+            'nominal' => 150000,
+            'keterangan' => 'Tarif SPP VII-A',
+            'aktif' => true,
+        ]);
+
+        $response->assertCreated()
+            ->assertJson([
+                'success' => true,
+            ])
+            ->assertJsonStructure([
+                'success',
+                'message',
+                'data',
+            ]);
+
+        $this->assertDatabaseHas('tarif_pembayaran', [
+            'tenant_id' => $this->tenant->id,
+            'jenis_pembayaran_id' => $this->jenisPembayaran->id,
+            'kelompok_rombel_id' => $this->kelompokRombel->id,
+            'nominal' => 150000,
+        ]);
+    }
+
+    public function test_user_dapat_melihat_detail_tarif_melalui_http(): void
+    {
+        $this->actingAs($this->user);
+
+        $tarif = TarifPembayaran::create([
+            'jenis_pembayaran_id' => $this->jenisPembayaran->id,
+            'kelompok_rombel_id' => $this->kelompokRombel->id,
+            'nominal' => 150000,
+            'keterangan' => 'Tarif SPP VII-A',
+            'aktif' => true,
+        ]);
+
+        $response = $this->getJson(
+            "/tarif-pembayaran/{$tarif->id}"
+        );
+
+        $response->assertOk()
+            ->assertJson([
+                'success' => true,
+            ])
+            ->assertJsonStructure([
+                'success',
+                'data',
+            ]);
+    }
+
+    public function test_user_dapat_mengubah_tarif_melalui_http(): void
+    {
+        $this->actingAs($this->user);
+
+        $tarif = TarifPembayaran::create([
+            'jenis_pembayaran_id' => $this->jenisPembayaran->id,
+            'kelompok_rombel_id' => $this->kelompokRombel->id,
+            'nominal' => 150000,
+            'keterangan' => 'Tarif lama',
+            'aktif' => true,
+        ]);
+
+        $response = $this->putJson(
+            "/tarif-pembayaran/{$tarif->id}",
+            [
+                'jenis_pembayaran_id' => $this->jenisPembayaran->id,
+                'kelompok_rombel_id' => $this->kelompokRombel->id,
+                'nominal' => 175000,
+                'keterangan' => 'Tarif baru',
+                'aktif' => true,
+            ]
+        );
+
+        $response->assertOk()
+            ->assertJson([
+                'success' => true,
+            ]);
+
+        $this->assertDatabaseHas('tarif_pembayaran', [
+            'id' => $tarif->id,
+            'nominal' => 175000,
+            'keterangan' => 'Tarif baru',
+        ]);
+    }
+
+    public function test_user_dapat_menghapus_tarif_melalui_http(): void
+    {
+        $this->actingAs($this->user);
+
+        $tarif = TarifPembayaran::create([
+            'jenis_pembayaran_id' => $this->jenisPembayaran->id,
+            'kelompok_rombel_id' => $this->kelompokRombel->id,
+            'nominal' => 150000,
+            'keterangan' => 'Tarif SPP VII-A',
+            'aktif' => true,
+        ]);
+
+        $response = $this->deleteJson(
+            "/tarif-pembayaran/{$tarif->id}"
+        );
+
+        $response->assertOk()
+            ->assertJson([
+                'success' => true,
+            ]);
+
+        $this->assertDatabaseMissing('tarif_pembayaran', [
+            'id' => $tarif->id,
+        ]);
+    }
+
+    
 }

@@ -24,13 +24,29 @@ Route::get('/dashboard', function () {
 |--------------------------------------------------------------------------
 */
 
-require base_path('app/Core/Identity/Routes/web.php');
-require base_path('app/Core/Identity/Routes/auth.php');
+// Identity
+require base_path(
+    'app/Core/Identity/Routes/web.php'
+);
 
-require base_path('app/Core/Tenant/Routes/web.php');
+require base_path(
+    'app/Core/Identity/Routes/auth.php'
+);
 
-require base_path('app/Core/Subscription/Routes/subscription.php');
-require base_path('app/Core/Billing/Routes/billing.php');
+// Tenant
+require base_path(
+    'app/Core/Tenant/Routes/web.php'
+);
+
+// Subscription
+require base_path(
+    'app/Core/Subscription/Routes/subscription.php'
+);
+
+// Billing
+require base_path(
+    'app/Core/Billing/Routes/billing.php'
+);
 
 /*
 |--------------------------------------------------------------------------
@@ -38,26 +54,54 @@ require base_path('app/Core/Billing/Routes/billing.php');
 |--------------------------------------------------------------------------
 */
 
-    /*
-    |--------------------------------------------------------------------------
-    | Akademik
-    |--------------------------------------------------------------------------
-    */
+/*
+|--------------------------------------------------------------------------
+| Akademik
+|--------------------------------------------------------------------------
+*/
 
-    require base_path(
-        'app/Modules/Akademik/TahunAjaran/Routes/tahunajaran.php'
-    );
+// Tahun Ajaran
+require base_path(
+    'app/Modules/Akademik/TahunAjaran/Routes/tahunajaran.php'
+);
 
-    require base_path(
-        'app/Modules/Akademik/Semester/Routes/semester.php'
-    );
+// Semester
+require base_path(
+    'app/Modules/Akademik/Semester/Routes/semester.php'
+);
 
-    require base_path(
-        'app/Modules/Akademik/Rombel/Routes/rombel.php'
-    );
+// Rombel
+require base_path(
+    'app/Modules/Akademik/Rombel/Routes/rombel.php'
+);
 
-    require base_path(
-        'app/Modules/Akademik/KelompokRombel/Routes/kelompokrombel.php'
-    );
-require base_path('app/Modules/Siswa/Siswa/Routes/siswa.php');
-require base_path('app/Modules/Keuangan/JenisPembayaran/Routes/jenispembayaran.php');
+// Kelompok Rombel
+require base_path(
+    'app/Modules/Akademik/KelompokRombel/Routes/kelompokrombel.php'
+);
+
+/*
+|--------------------------------------------------------------------------
+| Siswa
+|--------------------------------------------------------------------------
+*/
+
+require base_path(
+    'app/Modules/Siswa/Siswa/Routes/siswa.php'
+);
+
+/*
+|--------------------------------------------------------------------------
+| Keuangan
+|--------------------------------------------------------------------------
+*/
+
+// Jenis Pembayaran
+require base_path(
+    'app/Modules/Keuangan/JenisPembayaran/Routes/jenispembayaran.php'
+);
+
+// Tarif Pembayaran
+require base_path(
+    'app/Modules/Keuangan/TarifPembayaran/Routes/tarifpembayaran.php'
+);
