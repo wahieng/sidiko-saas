@@ -3,6 +3,8 @@
 namespace Tests\Feature\Siswa;
 
 use App\Core\Identity\Models\User;
+use App\Core\Access\Models\Role;
+use App\Core\Access\Models\Permission;
 use App\Core\Tenant\Context\TenantContext;
 use App\Core\Tenant\Models\Tenant;
 use App\Modules\Siswa\DokumenSiswa\Models\DokumenSiswa;
@@ -66,10 +68,41 @@ class DokumenSiswaEndpointTest extends TestCase
         // USER
         // =========================================================
 
+       $permission = Permission::query()->firstOrCreate(
+            [
+                'code' => 'siswa.dokumen.create',
+            ],
+            [
+                'name' => 'Create Dokumen Siswa',
+                'description' => 'Membuat dokumen siswa',
+                'is_active' => true,
+            ]
+        );
+
+        $role = Role::query()->firstOrCreate(
+            [
+                'tenant_id' => $this->tenant->id,
+                'code' => 'operator',
+            ],
+            [
+                'name' => 'Operator',
+                'description' => 'Operator sekolah',
+                'is_active' => true,
+            ]
+        );
+
+        $role->permissions()->syncWithoutDetaching([
+            $permission->id,
+        ]);
+
         $this->user = User::factory()->create([
             'tenant_id' => $this->tenant->id,
             'email' => 'test@example.com',
             'email_verified_at' => now(),
+        ]);
+
+        $this->user->roles()->syncWithoutDetaching([
+            $role->id,
         ]);
 
         $this->actingAs($this->user);

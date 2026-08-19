@@ -118,8 +118,7 @@ class PermissionMiddleware
 
         $permission = "{$resource}.{$action}";
 
-
-        
+  
         /*
         |--------------------------------------------------------------------------
         | Check Permission

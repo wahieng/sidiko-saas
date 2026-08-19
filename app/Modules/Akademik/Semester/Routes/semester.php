@@ -3,7 +3,12 @@
 use App\Modules\Akademik\Semester\Controllers\SemesterController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth'])
+Route::middleware([
+    'auth',
+    'tenant',
+    'subscription',
+    'permission',
+])
     ->prefix('akademik/semester')
     ->name('akademik.semester.')
     ->group(function () {

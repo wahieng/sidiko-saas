@@ -3,7 +3,12 @@
 use App\Modules\Akademik\Rombel\Controllers\RombelController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth'])
+Route::middleware([
+    'auth',
+    'tenant',
+    'subscription',
+    'permission',
+])
     ->prefix('akademik/rombel')
     ->name('akademik.rombel.')
     ->group(function () {

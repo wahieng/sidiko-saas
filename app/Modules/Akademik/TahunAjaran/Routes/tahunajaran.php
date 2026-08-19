@@ -3,7 +3,12 @@
 use App\Modules\Akademik\TahunAjaran\Controllers\TahunAjaranController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth'])
+Route::middleware([
+    'auth',
+    'tenant',
+    'subscription',
+    'permission',
+])
     ->prefix('akademik/tahun-ajaran')
     ->name('akademik.tahun-ajaran.')
     ->group(function () {

@@ -4,10 +4,11 @@ use App\Modules\Keuangan\TarifPembayaran\Controllers\TarifPembayaranController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware([
-        'auth',
-        'tenant',
-        'subscription',
-    ])
+    'auth',
+    'tenant',
+    'subscription',
+    'permission',
+])
     ->prefix('tarif-pembayaran')
     ->name('tarif-pembayaran.')
     ->middleware(['auth'])
