@@ -105,3 +105,8 @@ require base_path(
 require base_path(
     'app/Modules/Keuangan/TarifPembayaran/Routes/tarifpembayaran.php'
 );
+
+// Diskon Pembayaran
+require base_path(
+    'app/Modules/Keuangan/DiskonPembayaran/Routes/diskonpembayaran.php'
+);
