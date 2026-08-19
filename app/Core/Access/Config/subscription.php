@@ -4,83 +4,50 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Subscription Status
+    | HTTP Method → Permission Action
     |--------------------------------------------------------------------------
+    |
+    | Core Access menggunakan HTTP method sebagai default action permission.
+    |
     */
 
-    'default_status' => 'active',
+    'method_map' => [
 
-    /*
-    |--------------------------------------------------------------------------
-    | Subscription Status
-    |--------------------------------------------------------------------------
-    */
+        'GET' => 'view',
 
-    'statuses' => [
-        'trial',
-        'active',
-        'past_due',
-        'expired',
-        'suspended',
-        'cancelled',
+        'POST' => 'create',
+
+        'PUT' => 'update',
+
+        'PATCH' => 'update',
+
+        'DELETE' => 'delete',
+
     ],
 
     /*
     |--------------------------------------------------------------------------
-    | Access Rules
+    | Permission Actions
+    |--------------------------------------------------------------------------
+    */
+
+    'actions' => [
+        'view',
+        'create',
+        'update',
+        'delete',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Route Permission
     |--------------------------------------------------------------------------
     |
-    | Menentukan akses aplikasi berdasarkan status subscription.
+    | Jika true, PermissionMiddleware akan menentukan permission
+    | berdasarkan route + HTTP method secara otomatis.
     |
     */
 
-    'access' => [
-
-        'trial' => [
-            'mode' => 'full',
-        ],
-
-        'active' => [
-            'mode' => 'full',
-        ],
-
-        'past_due' => [
-            'mode' => 'restricted',
-
-            'allowed_routes' => [
-                'dashboard',
-                'subscription.*',
-                'profile.*',
-            ],
-        ],
-
-        'expired' => [
-            'mode' => 'restricted',
-
-            'allowed_routes' => [
-                'dashboard',
-                'subscription.*',
-                'profile.*',
-            ],
-        ],
-
-        'suspended' => [
-            'mode' => 'restricted',
-
-            'allowed_routes' => [
-                'dashboard',
-                'subscription.*',
-            ],
-        ],
-
-        'cancelled' => [
-            'mode' => 'blocked',
-
-            'allowed_routes' => [
-                'subscription.*',
-            ],
-        ],
-
-    ],
+    'automatic' => true,
 
 ];
