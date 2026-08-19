@@ -81,6 +81,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             JenisPembayaranSeeder::class,
+            TarifPembayaranSeeder::class,
         ]);
 
         /*
