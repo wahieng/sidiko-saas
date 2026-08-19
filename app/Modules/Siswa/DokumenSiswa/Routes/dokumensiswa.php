@@ -7,6 +7,7 @@ Route::middleware([
         'auth',
         'tenant',
         'subscription',
+        
     ])
     ->prefix('siswa')
     ->name('siswa.')

@@ -91,8 +91,9 @@ class DokumenSiswaEndpointTest extends TestCase
                 'file' => $file,
                 'keterangan' => 'Kartu keluarga siswa',
             ]
+            
         );
-
+        
         $response->assertRedirect();
 
         $this->assertDatabaseHas(

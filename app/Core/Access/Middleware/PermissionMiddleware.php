@@ -9,7 +9,9 @@ use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class PermissionMiddleware
-{
+{   
+
+    
     public function __construct(
         protected PermissionService $permissionService
     ) {
@@ -116,6 +118,8 @@ class PermissionMiddleware
 
         $permission = "{$resource}.{$action}";
 
+
+        
         /*
         |--------------------------------------------------------------------------
         | Check Permission
@@ -173,6 +177,12 @@ class PermissionMiddleware
         |
         | module.resource.action
         |
+        | Contoh:
+        |
+        | siswa.dokumen.store
+        | siswa.dokumen.index
+        | keuangan.diskon-pembayaran.store
+        |
         */
 
         if (count($segments) < 3) {
@@ -181,17 +191,12 @@ class PermissionMiddleware
 
         /*
         |--------------------------------------------------------------------------
-        | Ambil resource
+        | Ambil Module + Resource
         |--------------------------------------------------------------------------
-        |
-        | Contoh:
-        |
-        | keuangan.diskon-pembayaran.index
-        |          ↑
-        |          resource
-        |
         */
 
-        return $segments[count($segments) - 2];
+        return $segments[count($segments) - 3]
+            . '.'
+            . $segments[count($segments) - 2];
     }
 }
