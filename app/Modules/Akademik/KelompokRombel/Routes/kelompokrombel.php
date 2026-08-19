@@ -3,7 +3,11 @@
 use App\Modules\Akademik\KelompokRombel\Controllers\KelompokRombelController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth'])
+Route::middleware([
+        'auth',
+        'tenant',
+        'subscription',
+    ])
     ->prefix('akademik/kelompok-rombel')
     ->name('akademik.kelompok-rombel.')
     ->group(function () {

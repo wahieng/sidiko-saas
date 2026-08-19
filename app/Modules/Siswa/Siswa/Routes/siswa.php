@@ -3,7 +3,11 @@
 use App\Modules\Siswa\Siswa\Controllers\SiswaController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth', 'verified', 'tenant'])
+Route::middleware([
+        'auth',
+        'tenant',
+        'subscription',
+    ])
     ->prefix('siswa')
     ->name('siswa.')
     ->group(function () {

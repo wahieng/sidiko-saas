@@ -3,7 +3,11 @@
 use App\Modules\Keuangan\JenisPembayaran\Controllers\JenisPembayaranController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth'])
+Route::middleware([
+        'auth',
+        'tenant',
+        'subscription',
+    ])
     ->prefix('keuangan/jenis-pembayaran')
     ->name('keuangan.jenis-pembayaran.')
     ->group(function () {

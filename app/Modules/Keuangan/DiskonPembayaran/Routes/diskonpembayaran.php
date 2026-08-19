@@ -3,7 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Modules\Keuangan\DiskonPembayaran\Controllers\DiskonPembayaranController;
 
-Route::middleware(['auth'])
+Route::middleware([
+        'auth',
+        'tenant',
+        'subscription',
+    ])
     ->prefix('keuangan/diskon-pembayaran')
     ->name('keuangan.diskon-pembayaran.')
     ->group(function () {

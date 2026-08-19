@@ -3,7 +3,11 @@
 use App\Modules\Siswa\OrangTua\Controllers\OrangTuaController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth'])
+Route::middleware([
+        'auth',
+        'tenant',
+        'subscription',
+    ])
     ->prefix('orang-tua')
     ->name('orang-tua.')
     ->group(function () {

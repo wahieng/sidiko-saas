@@ -3,7 +3,12 @@
 use App\Modules\Siswa\SiswaTahun\Controllers\SiswaTahunController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('siswa-tahun')
+Route::middleware([
+        'auth',
+        'tenant',
+        'subscription',
+    ])
+    ->prefix('siswa-tahun')
     ->name('siswa_tahun.')
     ->group(function () {
 

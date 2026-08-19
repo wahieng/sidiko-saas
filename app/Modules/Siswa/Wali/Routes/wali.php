@@ -3,7 +3,11 @@
 use App\Modules\Siswa\Wali\Controllers\WaliController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth'])
+Route::middleware([
+        'auth',
+        'tenant',
+        'subscription',
+    ])
     ->prefix('wali')
     ->name('wali.')
     ->group(function () {

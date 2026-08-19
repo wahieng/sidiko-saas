@@ -7,6 +7,7 @@ use App\Modules\Akademik\TahunAjaran\Models\TahunAjaran;
 use App\Modules\Siswa\DokumenSiswa\Models\DokumenSiswa;
 use App\Modules\Siswa\OrangTua\Models\OrangTua;
 use App\Modules\Siswa\Wali\Models\Wali;
+use App\Modules\Siswa\SiswaTahun\Models\SiswaTahun;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;

@@ -3,7 +3,12 @@
 use App\Modules\Keuangan\TarifPembayaran\Controllers\TarifPembayaranController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('tarif-pembayaran')
+Route::middleware([
+        'auth',
+        'tenant',
+        'subscription',
+    ])
+    ->prefix('tarif-pembayaran')
     ->name('tarif-pembayaran.')
     ->middleware(['auth'])
     ->group(function () {
