@@ -3,6 +3,7 @@
 namespace Tests\Feature\Keuangan;
 
 use App\Core\Tenant\Models\Tenant;
+use App\Core\Tenant\Context\TenantContext;
 use App\Modules\Keuangan\DiskonPembayaran\Models\DiskonPembayaran;
 use App\Modules\Keuangan\TarifPembayaran\Models\TarifPembayaran;
 use App\Modules\Siswa\Siswa\Models\Siswa;
@@ -174,5 +175,75 @@ class DiskonPembayaranTest extends TestCase
             $this->tenant->id,
             $diskon->tenant_id
         );
+    }
+
+    public function test_diskon_tidak_dapat_menggunakan_siswa_dari_tenant_lain(): void
+    {
+        $tenantB = Tenant::query()->create([
+            'name' => 'Tenant B',
+            'code' => 'TENANT-B',
+            'slug' => 'tenant-b',
+            'email' => 'admin@tenant-b.test',
+            'phone' => '081111111111',
+            'address' => 'Alamat Tenant B',
+            'is_active' => true,
+        ]);
+
+        $siswaB = $this->siswa->replicate();
+        $siswaB->tenant_id = $tenantB->id;
+        $siswaB->save();
+
+        $context = app(TenantContext::class);
+        $context->set($this->tenant);
+
+        $diskon = DiskonPembayaran::create([
+            'siswa_id' => $siswaB->id,
+            'tarif_pembayaran_id' => $this->tarifPembayaran->id,
+            'tipe_diskon' => 'PERSEN',
+            'nilai' => 10,
+            'keterangan' => 'Cross tenant test',
+            'tanggal_mulai' => now()->toDateString(),
+            'tanggal_selesai' => now()->addMonth()->toDateString(),
+            'aktif' => true,
+        ]);
+
+        $this->assertNull($diskon->fresh()->siswa);
+
+        $context->clear();
+    }
+
+    public function test_diskon_tidak_dapat_menggunakan_tarif_dari_tenant_lain(): void
+    {
+        $tenantB = Tenant::query()->create([
+            'name' => 'Tenant B',
+            'code' => 'TENANT-B',
+            'slug' => 'tenant-b',
+            'email' => 'admin@tenant-b.test',
+            'phone' => '081111111111',
+            'address' => 'Alamat Tenant B',
+            'is_active' => true,
+        ]);
+
+        $tarifB = $this->tarifPembayaran->replicate();
+        $tarifB->tenant_id = $tenantB->id;
+        $tarifB->save();
+
+        $context = app(TenantContext::class);
+        $context->set($this->tenant);
+
+        $diskon = DiskonPembayaran::create([
+            'siswa_id' => $this->siswa->id,
+            'tarif_pembayaran_id' => $tarifB->id,
+            'tipe_diskon' => 'PERSEN',
+            'nilai' => 10,
+            'keterangan' => 'Cross tenant test',
+            'tanggal_mulai' => now()->toDateString(),
+            'tanggal_selesai' => now()->addMonth()->toDateString(),
+            'aktif' => true,
+        ]);
+
+        $this->assertNull($diskon->fresh()->tarifPembayaran);
+
+        $context->clear();
     }
 }

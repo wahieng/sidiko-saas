@@ -4,7 +4,12 @@ use App\Core\Billing\Controllers\BillingController;
 use App\Core\Billing\Controllers\PembayaranBillingController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth'])
+Route::middleware([
+        'auth',
+        'tenant',
+        'subscription',
+        'permission',
+    ])
     ->prefix('billing')
     ->name('billing.')
     ->group(function () {

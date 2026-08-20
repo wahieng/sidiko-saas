@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Billings;
+namespace Tests\Feature\Core\Billings;
 
 use App\Core\Billing\Models\TagihanBilling;
 use App\Core\Billing\Services\BillingService;

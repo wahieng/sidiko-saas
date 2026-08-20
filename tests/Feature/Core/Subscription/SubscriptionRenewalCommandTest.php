@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Core\Subscription;
 
 use App\Core\Billing\Models\TagihanBilling;
 use App\Core\Billing\Services\BillingStatusService;

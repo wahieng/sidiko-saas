@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Tenant;
+namespace Tests\Feature\Core\Tenant;
 
 use App\Core\Tenant\Context\TenantContext;
 use App\Core\Tenant\Models\Tenant;
@@ -337,5 +337,195 @@ class CoreTenantTest extends TestCase
         $this->assertFalse(
             $context->has()
         );
+    }
+
+    public function test_tenant_aktif_tidak_dapat_menemukan_data_tenant_lain(): void
+    {
+        $demo = Tenant::query()
+            ->where('code', 'DEMO')
+            ->firstOrFail();
+
+        $other = Tenant::query()->create([
+            'name' => 'Other School',
+            'code' => 'OTHER',
+            'slug' => 'other-school',
+            'email' => 'admin@other-school.test',
+            'phone' => '0811111111',
+            'address' => 'Alamat Other School',
+            'is_active' => true,
+        ]);
+
+        $context = app(TenantContext::class);
+
+        $context->set($other);
+
+        $tahunOther = TahunAjaran::create([
+            'kode' => '2099/2100',
+            'nama' => 'Tahun Ajaran OTHER',
+            'tanggal_mulai' => '2099-07-01',
+            'tanggal_selesai' => '2100-06-30',
+            'aktif' => true,
+        ]);
+
+        $context->set($demo);
+
+        $this->assertNull(
+            TahunAjaran::query()->find($tahunOther->id)
+        );
+
+        $context->clear();
+    }
+
+    public function test_tenant_aktif_tidak_dapat_mengubah_data_tenant_lain(): void
+    {
+        $demo = Tenant::query()
+            ->where('code', 'DEMO')
+            ->firstOrFail();
+
+        $other = Tenant::query()->create([
+            'name' => 'Other School',
+            'code' => 'OTHER',
+            'slug' => 'other-school',
+            'email' => 'admin@other-school.test',
+            'phone' => '0811111111',
+            'address' => 'Alamat Other School',
+            'is_active' => true,
+        ]);
+
+        $context = app(TenantContext::class);
+
+        $context->set($other);
+
+        $tahunOther = TahunAjaran::create([
+            'kode' => '2099/2100',
+            'nama' => 'Tahun Ajaran OTHER',
+            'tanggal_mulai' => '2099-07-01',
+            'tanggal_selesai' => '2100-06-30',
+            'aktif' => true,
+        ]);
+
+        $context->set($demo);
+
+        $updated = TahunAjaran::query()
+            ->whereKey($tahunOther->id)
+            ->update([
+                'nama' => 'DIUBAH OLEH DEMO',
+            ]);
+
+        $this->assertSame(0, $updated);
+
+        $context->set($other);
+
+        $this->assertSame(
+            'Tahun Ajaran OTHER',
+            TahunAjaran::query()
+                ->findOrFail($tahunOther->id)
+                ->nama
+        );
+
+        $context->clear();
+    }
+
+    public function test_tenant_aktif_tidak_dapat_menghapus_data_tenant_lain(): void
+    {
+        $demo = Tenant::query()
+            ->where('code', 'DEMO')
+            ->firstOrFail();
+
+        $other = Tenant::query()->create([
+            'name' => 'Other School',
+            'code' => 'OTHER',
+            'slug' => 'other-school',
+            'email' => 'admin@other-school.test',
+            'phone' => '0811111111',
+            'address' => 'Alamat Other School',
+            'is_active' => true,
+        ]);
+
+        $context = app(TenantContext::class);
+
+        $context->set($other);
+
+        $tahunOther = TahunAjaran::create([
+            'kode' => '2099/2100',
+            'nama' => 'Tahun Ajaran OTHER',
+            'tanggal_mulai' => '2099-07-01',
+            'tanggal_selesai' => '2100-06-30',
+            'aktif' => true,
+        ]);
+
+        $context->set($demo);
+
+        $deleted = TahunAjaran::query()
+            ->whereKey($tahunOther->id)
+            ->delete();
+
+        $this->assertSame(0, $deleted);
+
+        $this->assertDatabaseHas('tahun_ajaran', [
+            'id' => $tahunOther->id,
+            'tenant_id' => $other->id,
+        ]);
+
+        $context->clear();
+    }
+
+    public function test_context_dapat_berpindah_tenant_tanpa_mencampur_data(): void
+    {
+        $demo = Tenant::query()
+            ->where('code', 'DEMO')
+            ->firstOrFail();
+
+        $other = Tenant::query()->create([
+            'name' => 'Other School',
+            'code' => 'OTHER',
+            'slug' => 'other-school',
+            'email' => 'admin@other-school.test',
+            'phone' => '0811111111',
+            'address' => 'Alamat Other School',
+            'is_active' => true,
+        ]);
+
+        $context = app(TenantContext::class);
+
+        $context->set($demo);
+
+        $tahunDemo = TahunAjaran::create([
+            'kode' => '2099/2100',
+            'nama' => 'Tahun Ajaran DEMO',
+            'tanggal_mulai' => '2099-07-01',
+            'tanggal_selesai' => '2100-06-30',
+            'aktif' => true,
+        ]);
+
+        $context->set($other);
+
+        $tahunOther = TahunAjaran::create([
+            'kode' => '2099/2100',
+            'nama' => 'Tahun Ajaran OTHER',
+            'tanggal_mulai' => '2099-07-01',
+            'tanggal_selesai' => '2100-06-30',
+            'aktif' => true,
+        ]);
+
+        $this->assertSame(
+            $tahunOther->id,
+            TahunAjaran::query()
+                ->where('kode', '2099/2100')
+                ->firstOrFail()
+                ->id
+        );
+
+        $context->set($demo);
+
+        $this->assertSame(
+            $tahunDemo->id,
+            TahunAjaran::query()
+                ->where('kode', '2099/2100')
+                ->firstOrFail()
+                ->id
+        );
+
+        $context->clear();
     }
 }

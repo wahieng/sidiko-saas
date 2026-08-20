@@ -127,6 +127,16 @@ class BillingService
         }
     }
 
+    public function all()
+    {
+        return TagihanBilling::query()->get();
+    }
+
+    public function find(int $id)
+    {
+        return TagihanBilling::query()->findOrFail($id);
+    }
+    
     protected function generateNomorTagihan(): string
     {
         return 'BILL-' .
