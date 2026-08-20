@@ -22,12 +22,27 @@ trait BelongsToTenant
         static::creating(function (Model $model): void {
             $context = app(TenantContext::class);
 
+            if ($context->has()) {
+                if (empty($model->tenant_id)) {
+                    $model->tenant_id = $context->require()->id;
+                }
+
+                return;
+            }
+
             /*
-             * Jika tenant context tersedia,
-             * otomatis isi tenant_id.
+             * Fail closed:
+             *
+             * Data tenant-owned tidak boleh dibuat tanpa
+             * tenant context tersedia. Superadmin boleh bekerja
+             * lintas tenant dengan diisi tenant_id eksplisit
+             * atau dengan dileng context tenant aktif.
              */
-            if ($context->check() && empty($model->tenant_id)) {
-                $model->tenant_id = $context->require();
+            if (empty($model->tenant_id)) {
+                abort(
+                    403,
+                    'Tenant context tidak tersedia untuk membuat data tenant-owned.'
+                );
             }
         });
     }

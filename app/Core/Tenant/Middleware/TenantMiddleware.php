@@ -67,7 +67,7 @@ class TenantMiddleware
         |--------------------------------------------------------------------------
         */
 
-        if (! $this->tenantContext->check()) {
+        if (! $this->tenantContext->has()) {
             abort(
                 403,
                 'Tenant tidak ditemukan atau tidak aktif.'

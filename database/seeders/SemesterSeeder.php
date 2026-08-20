@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Core\Tenant\Models\Tenant;
 use App\Modules\Akademik\TahunAjaran\Models\TahunAjaran;
 use App\Modules\Akademik\Semester\Models\Semester;
 use Illuminate\Database\Seeder;
@@ -10,6 +11,12 @@ class SemesterSeeder extends Seeder
 {
     public function run(): void
     {
+        $tenant = Tenant::query()
+            ->where('code', 'DEMO')
+            ->firstOrFail();
+
+        $tenantId = $tenant->id;
+
         $tahunAjaran = TahunAjaran::where(
             'kode',
             '2026/2027'
@@ -17,6 +24,7 @@ class SemesterSeeder extends Seeder
 
         Semester::updateOrCreate(
             [
+                'tenant_id' => $tenantId,
                 'tahun_ajaran_id' => $tahunAjaran->id,
                 'kode' => 'ganjil',
             ],
@@ -30,6 +38,7 @@ class SemesterSeeder extends Seeder
 
         Semester::updateOrCreate(
             [
+                'tenant_id' => $tenantId,
                 'tahun_ajaran_id' => $tahunAjaran->id,
                 'kode' => 'genap',
             ],

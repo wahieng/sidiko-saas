@@ -22,7 +22,7 @@ class TenantScope implements Scope
         |--------------------------------------------------------------------------
         */
 
-        if ($context->check()) {
+        if ($context->has()) {
             $builder->where(
                 $model->getTable() . '.tenant_id',
                 $context->id()

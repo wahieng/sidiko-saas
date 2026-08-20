@@ -4,7 +4,6 @@ namespace App\Core\Billing\Models;
 
 use App\Core\Subscription\Models\Langganan;
 use App\Core\Subscription\Models\PaketLangganan;
-use App\Core\Tenant\Scopes\TenantScope;
 use App\Core\Tenant\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,11 +12,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class TagihanBilling extends Model
 {
     use BelongsToTenant;
-
-    protected static function booted(): void
-    {
-        static::addGlobalScope(new TenantScope());
-    }
 
     protected $table = 'billing_tagihan';
 

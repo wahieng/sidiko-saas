@@ -2,7 +2,6 @@
 
 namespace App\Modules\Akademik\TahunAjaran\Models;
 
-use App\Core\Tenant\Scopes\TenantScope;
 use App\Core\Tenant\Traits\BelongsToTenant;
 use App\Modules\Akademik\KelompokRombel\Models\KelompokRombel;
 use App\Modules\Akademik\Semester\Models\Semester;
@@ -16,17 +15,6 @@ class TahunAjaran extends Model
     use BelongsToTenant;
 
     protected $table = 'tahun_ajaran';
-
-    /**
-     * Tenant scope.
-     *
-     * Semua query Tahun Ajaran otomatis
-     * dibatasi berdasarkan tenant aktif.
-     */
-    protected static function booted(): void
-    {
-        static::addGlobalScope(new TenantScope());
-    }
 
     protected $fillable = [
         'tenant_id',

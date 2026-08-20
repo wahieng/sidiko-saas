@@ -74,9 +74,9 @@ class TenantContext
     }
 
     /**
-     * Periksa apakah tenant context tersedia.
+     * Periksa apakah tenant aktif tersedia.
      */
-    public function check(): bool
+    public function has(): bool
     {
         return $this->tenant !== null;
     }
