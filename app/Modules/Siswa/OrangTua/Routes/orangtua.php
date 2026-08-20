@@ -4,13 +4,13 @@ use App\Modules\Siswa\OrangTua\Controllers\OrangTuaController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware([
-        'auth',
-        'tenant',
-        'subscription',
-        'permission',
-    ])
+    'auth',
+    'tenant',
+    'subscription',
+    'permission',
+])
     ->prefix('orang-tua')
-    ->name('orang-tua.')
+    ->name('siswa.orang-tua.')
     ->group(function () {
 
         Route::get('/', [OrangTuaController::class, 'index'])

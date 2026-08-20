@@ -4,13 +4,13 @@ use App\Modules\Siswa\Wali\Controllers\WaliController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware([
-        'auth',
-        'tenant',
-        'subscription',
-        'permission',
-    ])
-    ->prefix('wali')
-    ->name('wali.')
+    'auth',
+    'tenant',
+    'subscription',
+    'permission',
+])
+    ->prefix('{siswa}/wali')
+    ->name('siswa.wali.')
     ->group(function () {
 
         Route::get('/', [WaliController::class, 'index'])

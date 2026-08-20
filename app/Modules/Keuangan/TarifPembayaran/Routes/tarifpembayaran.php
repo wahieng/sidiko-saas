@@ -10,7 +10,7 @@ Route::middleware([
     'permission',
 ])
     ->prefix('tarif-pembayaran')
-    ->name('tarif-pembayaran.')
+    ->name('keuangan.tarif-pembayaran.')
     ->middleware(['auth'])
     ->group(function () {
 

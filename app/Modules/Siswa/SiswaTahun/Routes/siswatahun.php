@@ -4,13 +4,13 @@ use App\Modules\Siswa\SiswaTahun\Controllers\SiswaTahunController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware([
-        'auth',
-        'tenant',
-        'subscription',
-        'permission',
-    ])
+    'auth',
+    'tenant',
+    'subscription',
+    'permission',
+])
     ->prefix('siswa-tahun')
-    ->name('siswa_tahun.')
+    ->name('siswa.siswa-tahun.')
     ->group(function () {
 
         Route::get('/', [

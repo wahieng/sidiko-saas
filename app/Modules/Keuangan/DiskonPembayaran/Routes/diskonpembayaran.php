@@ -63,5 +63,5 @@ Route::middleware([
         Route::get('/siswa/{siswa}/aktif', [
             DiskonPembayaranController::class,
             'activeBySiswa',
-        ])->name('siswa.aktif');
+        ])->name('siswa-aktif');
     });
