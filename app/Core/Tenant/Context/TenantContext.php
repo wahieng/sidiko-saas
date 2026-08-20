@@ -2,6 +2,7 @@
 
 namespace App\Core\Tenant\Context;
 
+use App\Core\Identity\Models\User;
 use App\Core\Tenant\Models\Tenant;
 use RuntimeException;
 
@@ -20,9 +21,9 @@ class TenantContext
     /**
      * Set tenant berdasarkan user.
      */
-    public function setFromUser($user): void
+    public function setFromUser(User $user): void
     {
-        if (! $user || ! $user->tenant_id) {
+        if (! $user->tenant_id) {
             $this->clear();
 
             return;
@@ -51,9 +52,7 @@ class TenantContext
     }
 
     /**
-     * Ambil tenant aktif.
-     *
-     * Digunakan ketika tenant WAJIB tersedia.
+     * Ambil tenant aktif dan gagal jika tidak tersedia.
      */
     public function require(): Tenant
     {
@@ -75,7 +74,7 @@ class TenantContext
     }
 
     /**
-     * Periksa apakah tenant tersedia.
+     * Periksa apakah tenant context tersedia.
      */
     public function check(): bool
     {
