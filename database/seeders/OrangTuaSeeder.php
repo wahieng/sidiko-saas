@@ -92,8 +92,15 @@ class OrangTuaSeeder extends Seeder
                 continue;
             }
 
+            /*
+             * Orang Tua harus berada pada tenant
+             * yang sama dengan siswa.
+             */
+            $tenantId = $siswaItem->tenant_id;
+
             OrangTua::updateOrCreate(
                 [
+                    'tenant_id' => $tenantId,
                     'siswa_id' => $siswaItem->id,
                     'hubungan' => $item['hubungan'],
                 ],

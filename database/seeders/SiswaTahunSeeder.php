@@ -12,36 +12,72 @@ class SiswaTahunSeeder extends Seeder
 {
     public function run(): void
     {
-        $tahunAjaran = TahunAjaran::where(
-            'kode',
-            '2026/2027'
-        )->firstOrFail();
+        /*
+        |--------------------------------------------------------------------------
+        | Tahun Ajaran
+        |--------------------------------------------------------------------------
+        */
+        $tahunAjaran = TahunAjaran::query()
+            ->where('kode', '2026/2027')
+            ->firstOrFail();
 
-        $kelompokVIIA = KelompokRombel::where(
-            'tahun_ajaran_id',
-            $tahunAjaran->id
-        )
+        $tenantId = $tahunAjaran->tenant_id;
+
+        /*
+        |--------------------------------------------------------------------------
+        | Kelompok Rombel VII A
+        |--------------------------------------------------------------------------
+        */
+        $kelompokVIIA = KelompokRombel::query()
+            ->where('tenant_id', $tenantId)
+            ->where('tahun_ajaran_id', $tahunAjaran->id)
             ->where('kode', 'A')
-            ->whereHas('rombel', function ($query) {
-                $query->where('kode', 'VII');
+            ->whereHas('rombel', function ($query) use ($tenantId) {
+                $query
+                    ->where('tenant_id', $tenantId)
+                    ->where('kode', 'VII');
             })
             ->firstOrFail();
 
-        $kelompokVIIB = KelompokRombel::where(
-            'tahun_ajaran_id',
-            $tahunAjaran->id
-        )
+        /*
+        |--------------------------------------------------------------------------
+        | Kelompok Rombel VII B
+        |--------------------------------------------------------------------------
+        */
+        $kelompokVIIB = KelompokRombel::query()
+            ->where('tenant_id', $tenantId)
+            ->where('tahun_ajaran_id', $tahunAjaran->id)
             ->where('kode', 'B')
-            ->whereHas('rombel', function ($query) {
-                $query->where('kode', 'VII');
+            ->whereHas('rombel', function ($query) use ($tenantId) {
+                $query
+                    ->where('tenant_id', $tenantId)
+                    ->where('kode', 'VII');
             })
             ->firstOrFail();
 
-        $siswa1 = Siswa::where('nis', '10001')->firstOrFail();
-        $siswa2 = Siswa::where('nis', '10002')->firstOrFail();
+        /*
+        |--------------------------------------------------------------------------
+        | Siswa
+        |--------------------------------------------------------------------------
+        */
+        $siswa1 = Siswa::query()
+            ->where('tenant_id', $tenantId)
+            ->where('nis', '10001')
+            ->firstOrFail();
 
+        $siswa2 = Siswa::query()
+            ->where('tenant_id', $tenantId)
+            ->where('nis', '10002')
+            ->firstOrFail();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Siswa Tahun - Siswa 1
+        |--------------------------------------------------------------------------
+        */
         SiswaTahun::updateOrCreate(
             [
+                'tenant_id' => $tenantId,
                 'siswa_id' => $siswa1->id,
                 'tahun_ajaran_id' => $tahunAjaran->id,
             ],
@@ -54,8 +90,14 @@ class SiswaTahunSeeder extends Seeder
             ]
         );
 
+        /*
+        |--------------------------------------------------------------------------
+        | Siswa Tahun - Siswa 2
+        |--------------------------------------------------------------------------
+        */
         SiswaTahun::updateOrCreate(
             [
+                'tenant_id' => $tenantId,
                 'siswa_id' => $siswa2->id,
                 'tahun_ajaran_id' => $tahunAjaran->id,
             ],

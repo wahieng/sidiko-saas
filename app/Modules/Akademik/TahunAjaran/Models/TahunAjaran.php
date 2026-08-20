@@ -2,10 +2,14 @@
 
 namespace App\Modules\Akademik\TahunAjaran\Models;
 
+use App\Core\Tenant\Scopes\TenantScope;
 use App\Core\Tenant\Traits\BelongsToTenant;
+use App\Modules\Akademik\KelompokRombel\Models\KelompokRombel;
+use App\Modules\Akademik\Semester\Models\Semester;
+use App\Modules\Siswa\Models\SiswaTahun;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Modules\Akademik\Semester\Models\Semester;
 
 class TahunAjaran extends Model
 {
@@ -13,7 +17,19 @@ class TahunAjaran extends Model
 
     protected $table = 'tahun_ajaran';
 
+    /**
+     * Tenant scope.
+     *
+     * Semua query Tahun Ajaran otomatis
+     * dibatasi berdasarkan tenant aktif.
+     */
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new TenantScope());
+    }
+
     protected $fillable = [
+        'tenant_id',
         'kode',
         'nama',
         'tanggal_mulai',
@@ -22,6 +38,7 @@ class TahunAjaran extends Model
     ];
 
     protected $casts = [
+        'tenant_id' => 'integer',
         'tanggal_mulai' => 'date',
         'tanggal_selesai' => 'date',
         'aktif' => 'boolean',
@@ -61,7 +78,7 @@ class TahunAjaran extends Model
     public function siswaTahun(): HasMany
     {
         return $this->hasMany(
-            \App\Modules\Siswa\Models\SiswaTahun::class,
+            SiswaTahun::class,
             'tahun_ajaran_id'
         );
     }
@@ -75,7 +92,7 @@ class TahunAjaran extends Model
     /**
      * Hanya tahun ajaran aktif.
      */
-    public function scopeAktif($query)
+    public function scopeAktif(Builder $query): Builder
     {
         return $query->where('aktif', true);
     }

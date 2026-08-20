@@ -2,6 +2,7 @@
 
 namespace App\Modules\Akademik\TahunAjaran\Services;
 
+use App\Core\Tenant\Context\TenantContext;
 use App\Modules\Akademik\TahunAjaran\Models\TahunAjaran;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
@@ -9,11 +10,13 @@ use RuntimeException;
 
 class TahunAjaranService
 {
+    public function __construct(
+        protected TenantContext $tenantContext
+    ) {
+    }
+
     /**
      * Ambil semua tahun ajaran tenant aktif.
-     *
-     * Global scope BelongsToTenant akan otomatis
-     * membatasi query berdasarkan tenant aktif.
      */
     public function all(): Collection
     {
@@ -33,14 +36,14 @@ class TahunAjaranService
     }
 
     /**
-     * Buat tahun ajaran.
-     *
-     * tenant_id otomatis diisi oleh BelongsToTenant
-     * ketika model dibuat.
+     * Buat tahun ajaran untuk tenant aktif.
      */
     public function create(array $data): TahunAjaran
     {
         return DB::transaction(function () use ($data) {
+            $tenant = $this->tenantContext->require();
+
+            $data['tenant_id'] = $tenant->id;
 
             if (($data['aktif'] ?? false) === true) {
                 TahunAjaran::query()
@@ -56,9 +59,6 @@ class TahunAjaranService
 
     /**
      * Update tahun ajaran.
-     *
-     * Global scope memastikan model hanya berasal
-     * dari tenant aktif.
      */
     public function update(
         TahunAjaran $tahunAjaran,
@@ -68,6 +68,21 @@ class TahunAjaranService
             $tahunAjaran,
             $data
         ) {
+            /*
+             * Pastikan model berasal dari tenant aktif.
+             */
+            $tenant = $this->tenantContext->require();
+
+            if ((int) $tahunAjaran->tenant_id !== (int) $tenant->id) {
+                throw new RuntimeException(
+                    'Tahun ajaran bukan milik tenant aktif.'
+                );
+            }
+
+            /*
+             * Tenant ID tidak boleh diubah melalui update.
+             */
+            unset($data['tenant_id']);
 
             if (($data['aktif'] ?? false) === true) {
                 TahunAjaran::query()
@@ -93,6 +108,13 @@ class TahunAjaranService
         return DB::transaction(function () use (
             $tahunAjaran
         ) {
+            $tenant = $this->tenantContext->require();
+
+            if ((int) $tahunAjaran->tenant_id !== (int) $tenant->id) {
+                throw new RuntimeException(
+                    'Tahun ajaran bukan milik tenant aktif.'
+                );
+            }
 
             TahunAjaran::query()
                 ->where('id', '!=', $tahunAjaran->id)
@@ -112,13 +134,20 @@ class TahunAjaranService
     /**
      * Nonaktifkan tahun ajaran.
      *
-     * Tidak boleh jika tahun ajaran tersebut
-     * adalah satu-satunya tahun ajaran aktif
-     * pada tenant.
+     * Tidak boleh menonaktifkan satu-satunya
+     * tahun ajaran aktif pada tenant.
      */
     public function nonaktifkan(
         TahunAjaran $tahunAjaran
     ): TahunAjaran {
+        $tenant = $this->tenantContext->require();
+
+        if ((int) $tahunAjaran->tenant_id !== (int) $tenant->id) {
+            throw new RuntimeException(
+                'Tahun ajaran bukan milik tenant aktif.'
+            );
+        }
+
         if (! $tahunAjaran->aktif) {
             return $tahunAjaran;
         }

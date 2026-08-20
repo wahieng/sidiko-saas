@@ -4,7 +4,7 @@ namespace App\Modules\Keuangan\JenisPembayaran\Models;
 
 use App\Core\Tenant\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 
 class JenisPembayaran extends Model
 {

@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Core\Tenant\Context\TenantContext;
 use App\Core\Tenant\Models\Tenant;
 use App\Modules\Siswa\Siswa\Models\Siswa;
 use App\Modules\Siswa\Wali\Models\Wali;
@@ -12,13 +11,24 @@ class WaliSeeder extends Seeder
 {
     public function run(): void
     {
+        /*
+        |--------------------------------------------------------------------------
+        | Tenant
+        |--------------------------------------------------------------------------
+        */
         $tenant = Tenant::query()
             ->where('code', 'DEMO')
             ->firstOrFail();
 
-        app(TenantContext::class)->set($tenant);
+        $tenantId = $tenant->id;
 
+        /*
+        |--------------------------------------------------------------------------
+        | Siswa
+        |--------------------------------------------------------------------------
+        */
         $siswa = Siswa::query()
+            ->where('tenant_id', $tenantId)
             ->where('nis', '10001')
             ->first();
 
@@ -26,8 +36,14 @@ class WaliSeeder extends Seeder
             return;
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | Wali
+        |--------------------------------------------------------------------------
+        */
         Wali::updateOrCreate(
             [
+                'tenant_id' => $tenantId,
                 'siswa_id' => $siswa->id,
             ],
             [
