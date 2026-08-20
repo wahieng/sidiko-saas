@@ -3,6 +3,7 @@
 namespace App\Core\Subscription\Models;
 
 use App\Core\Tenant\Models\Tenant;
+use App\Core\Tenant\Scopes\TenantScope;
 use App\Core\Tenant\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,6 +11,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Langganan extends Model
 {
     use BelongsToTenant;
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new TenantScope());
+    }
 
     protected $table = 'langganan';
 
