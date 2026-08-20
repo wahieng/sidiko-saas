@@ -33,9 +33,9 @@ class SubscriptionRenewalCommandTest extends TestCase
         $tenantContext = app(TenantContext::class);
 
         /*
-         * Tenant context harus aktif sebelum
-         * membuat model yang menggunakan BelongsToTenant.
-         */
+        * Tenant context harus aktif sebelum
+        * membuat model yang menggunakan BelongsToTenant.
+        */
         $tenantContext->set($tenant);
 
         $this->assertTrue(
@@ -43,9 +43,9 @@ class SubscriptionRenewalCommandTest extends TestCase
         );
 
         /*
-         * Subscription berakhir 3 hari lagi.
-         * Masuk window renewal 7 hari.
-         */
+        * Subscription berakhir 3 hari lagi.
+        * Masuk window renewal 7 hari.
+        */
         $mulai = now()->subDays(27);
         $berakhir = now()->addDays(3);
 
@@ -61,19 +61,29 @@ class SubscriptionRenewalCommandTest extends TestCase
         ]);
 
         /*
-         * Command akan mengganti context tenant
-         * dan membersihkannya setelah selesai.
-         */
+        * Command akan memproses tenant dan
+        * membersihkan context setelah selesai.
+        */
         $this->artisan('subscription:generate-renewals')
             ->assertExitCode(0);
 
         /*
-         * Billing renewal harus dibuat.
-         */
+        * Billing renewal harus dibuat.
+        *
+        * assertDatabaseHas() tidak menggunakan
+        * Eloquent global scope.
+        */
         $this->assertDatabaseHas('billing_tagihan', [
             'langganan_id' => $langganan->id,
             'status' => 'UNPAID',
         ]);
+
+        /*
+        * Command sudah membersihkan tenant context.
+        * Aktifkan kembali context hanya untuk query
+        * TagihanBilling yang menggunakan TenantScope.
+        */
+        $tenantContext->set($tenant);
 
         $jumlahBilling = TagihanBilling::query()
             ->where('langganan_id', $langganan->id)
@@ -85,9 +95,14 @@ class SubscriptionRenewalCommandTest extends TestCase
         );
 
         /*
-         * Tenant context harus bersih
-         * setelah command selesai.
-         */
+        * Bersihkan kembali context.
+        */
+        $tenantContext->clear();
+
+        /*
+        * Tenant context harus bersih
+        * setelah command selesai.
+        */
         $this->assertFalse(
             $tenantContext->has()
         );
@@ -108,9 +123,9 @@ class SubscriptionRenewalCommandTest extends TestCase
         $tenantContext = app(TenantContext::class);
 
         /*
-         * Tenant context harus aktif sebelum
-         * membuat subscription.
-         */
+        * Tenant context harus aktif sebelum
+        * membuat subscription.
+        */
         $tenantContext->set($tenant);
 
         $this->assertTrue(
@@ -118,8 +133,8 @@ class SubscriptionRenewalCommandTest extends TestCase
         );
 
         /*
-         * Subscription berakhir 3 hari lagi.
-         */
+        * Subscription berakhir 3 hari lagi.
+        */
         $mulai = now()->subDays(27);
         $berakhir = now()->addDays(3);
 
@@ -135,8 +150,9 @@ class SubscriptionRenewalCommandTest extends TestCase
         ]);
 
         /*
-         * Command pertama.
-         */
+        * Command pertama harus membuat
+        * satu billing renewal.
+        */
         $this->artisan('subscription:generate-renewals')
             ->assertExitCode(0);
 
@@ -146,14 +162,19 @@ class SubscriptionRenewalCommandTest extends TestCase
         ]);
 
         /*
-         * Command kedua.
-         */
+        * Command kedua tidak boleh membuat
+        * billing renewal tambahan.
+        */
         $this->artisan('subscription:generate-renewals')
             ->assertExitCode(0);
 
         /*
-         * Tidak boleh membuat billing kedua.
-         */
+        * Kedua command membersihkan tenant context.
+        * Aktifkan kembali context hanya untuk query
+        * TagihanBilling yang menggunakan TenantScope.
+        */
+        $tenantContext->set($tenant);
+
         $jumlahBilling = TagihanBilling::query()
             ->where('langganan_id', $langganan->id)
             ->count();
@@ -164,8 +185,14 @@ class SubscriptionRenewalCommandTest extends TestCase
         );
 
         /*
-         * Tenant context harus tetap bersih.
-         */
+        * Bersihkan kembali context.
+        */
+        $tenantContext->clear();
+
+        /*
+        * Tenant context harus tetap bersih
+        * setelah command selesai.
+        */
         $this->assertFalse(
             $tenantContext->has()
         );

@@ -5,7 +5,7 @@ namespace App\Modules\Akademik\TahunAjaran\Models;
 use App\Core\Tenant\Traits\BelongsToTenant;
 use App\Modules\Akademik\KelompokRombel\Models\KelompokRombel;
 use App\Modules\Akademik\Semester\Models\Semester;
-use App\Modules\Siswa\Models\SiswaTahun;
+use App\Modules\Siswa\SiswaTahun\Models\SiswaTahun;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;

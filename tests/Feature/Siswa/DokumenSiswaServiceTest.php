@@ -251,9 +251,11 @@ class DokumenSiswaServiceTest extends TestCase
 
     public function test_tanpa_tenant_context_ditolak(): void
     {
-        app(TenantContext::class)->clear();
-
+        // Ambil siswa saat tenant context masih tersedia.
         $siswa = Siswa::query()->firstOrFail();
+
+        // Setelah objek siswa didapat, hapus tenant context.
+        app(TenantContext::class)->clear();
 
         $file = UploadedFile::fake()->create(
             'kk.pdf',
