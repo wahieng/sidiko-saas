@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'tenant', 'permission'])
     ->prefix('tenants')
-    ->name('tenant.')
+    ->name('core.tenant.')
     ->group(function () {
 
         /*
