@@ -80,19 +80,6 @@ class PermissionMiddleware
         |--------------------------------------------------------------------------
         | Action Override
         |--------------------------------------------------------------------------
-        |
-        | Digunakan untuk route yang HTTP method-nya tidak sesuai
-        | dengan aksi permission sebenarnya.
-        |
-        | Contoh:
-        |
-        | POST tenant.activate
-        |
-        | Secara default:
-        | POST = create
-        |
-        | Tetapi activate adalah update.
-        |
         */
 
         $overrides = config(
@@ -112,16 +99,15 @@ class PermissionMiddleware
         | Resolve Resource
         |--------------------------------------------------------------------------
         |
-        | Format route:
+        | Format standar SIDIKO:
         |
         | module.resource.action
         |
         | Contoh:
         |
+        | core.tenant.index
         | akademik.semester.index
-        | akademik.semester.store
-        | keuangan.tarif-pembayaran.index
-        | siswa.siswa.show
+        | keuangan.jenis-pembayaran.index
         |
         */
 
@@ -162,7 +148,7 @@ class PermissionMiddleware
     }
 
     /**
-     * Resolve resource dari nama route.
+     * Resolve resource dari route name.
      *
      * Format:
      *
@@ -170,68 +156,30 @@ class PermissionMiddleware
      *
      * Contoh:
      *
+     * core.tenant.index
+     *       ↓
+     * core.tenant
+     *
      * akademik.semester.index
      *       ↓
      * akademik.semester
-     *
-     * keuangan.tarif-pembayaran.store
-     *       ↓
-     * keuangan.tarif-pembayaran
      */
     protected function resolveResource(
         string $routeName
     ): ?string {
         $segments = explode('.', $routeName);
 
-        /*
-        |--------------------------------------------------------------------------
-        | Minimal route:
-        |
-        | module.resource.action
-        |--------------------------------------------------------------------------
-        */
-
-        if (count($segments) < 3) {
+        if (count($segments) !== 3) {
             return null;
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Action adalah segment terakhir.
-        |
-        | Resource adalah segment sebelum action.
-        |
-        | Module adalah segment sebelum resource.
-        |--------------------------------------------------------------------------
-        */
+        [$module, $resource, $routeAction] = $segments;
 
-        $action = array_pop($segments);
-        $resource = array_pop($segments);
-
-        if (! $action || ! $resource) {
-            return null;
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | Ambil module terakhir.
-        |
-        | Ini memungkinkan route bertingkat seperti:
-        |
-        | akademik.master.semester.index
-        |
-        | tetap menghasilkan:
-        |
-        | master.semester
-        |
-        | Namun untuk SIDIKO sebaiknya tetap menggunakan
-        | module.resource.action.
-        |--------------------------------------------------------------------------
-        */
-
-        $module = array_pop($segments);
-
-        if (! $module) {
+        if (
+            $module === ''
+            || $resource === ''
+            || $routeAction === ''
+        ) {
             return null;
         }
 
