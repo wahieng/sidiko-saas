@@ -40,31 +40,37 @@ class GenerateBillingService
             }
 
             /*
-             * Tentukan periode billing.
-             */
-            if ($langganan->status === 'trial') {
-
-                /*
-                 * Trial selesai pada periode_berakhir.
-                 *
-                 * Billing pertama dimulai sehari setelah
-                 * periode trial berakhir.
-                 */
-                $periodeMulai = Carbon::parse(
-                    $langganan->periode_berakhir
-                )->addDay();
-
-            } else {
-
-                /*
-                 * Subscription aktif:
-                 * billing berikutnya dimulai sehari setelah
-                 * periode terakhir.
-                 */
-                $periodeMulai = Carbon::parse(
-                    $langganan->periode_berakhir
-                )->addDay();
+            * Hanya subscription trial dan active
+            * yang boleh menghasilkan billing.
+            */
+            if (! in_array($langganan->status, [
+                'trial',
+                'active',
+            ], true)) {
+                throw new RuntimeException(
+                    'Subscription tidak dapat dibuatkan billing.'
+                );
             }
+
+            /*
+            * Subscription harus memiliki periode berakhir
+            * sebelum billing dibuat.
+            */
+            if (! $langganan->periode_berakhir) {
+                throw new RuntimeException(
+                    'Periode subscription belum ditentukan.'
+                );
+            }
+
+            /*
+            * Tentukan periode billing.
+            *
+            * Trial dan active sama-sama memulai
+            * billing sehari setelah periode terakhir.
+            */
+            $periodeMulai = Carbon::parse(
+                $langganan->periode_berakhir
+            )->addDay();
 
             $periodeBerakhir = $this->hitungPeriodeBerakhir(
                 $periodeMulai,
