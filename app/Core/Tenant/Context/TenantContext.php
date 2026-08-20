@@ -2,7 +2,6 @@
 
 namespace App\Core\Tenant\Context;
 
-use App\Core\Identity\Models\User;
 use App\Core\Tenant\Models\Tenant;
 
 class TenantContext
@@ -20,27 +19,26 @@ class TenantContext
     /**
      * Set tenant berdasarkan user.
      */
-    public function setFromUser(User $user): void
+    public function setFromUser($user): void
     {
-        if (! $user->tenant_id) {
-            $this->tenant = null;
+        if (! $user || ! $user->tenant_id) {
+            $this->clear();
 
             return;
         }
 
         $tenant = Tenant::query()
             ->whereKey($user->tenant_id)
+            ->where('is_active', true)
             ->first();
 
         if (! $tenant) {
-            abort(403, 'Tenant tidak ditemukan.');
+            $this->clear();
+
+            return;
         }
 
-        if (! $tenant->is_active) {
-            abort(403, 'Tenant tidak aktif.');
-        }
-
-        $this->tenant = $tenant;
+        $this->set($tenant);
     }
 
     /**
@@ -52,21 +50,17 @@ class TenantContext
     }
 
     /**
-     * Pastikan tenant aktif tersedia.
+     * Ambil ID tenant aktif.
      */
-    public function require(): Tenant
+    public function id(): ?int
     {
-        if (! $this->tenant) {
-            abort(403, 'Tenant context tidak tersedia.');
-        }
-
-        return $this->tenant;
+        return $this->tenant?->id;
     }
 
     /**
-     * Cek apakah context memiliki tenant.
+     * Pastikan tenant tersedia.
      */
-    public function has(): bool
+    public function check(): bool
     {
         return $this->tenant !== null;
     }

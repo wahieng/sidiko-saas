@@ -18,18 +18,61 @@ class TenantMiddleware
         Request $request,
         Closure $next
     ): Response {
+        /*
+        |--------------------------------------------------------------------------
+        | Pastikan context bersih sebelum request diproses.
+        |--------------------------------------------------------------------------
+        */
+
+        $this->tenantContext->clear();
+
         $user = $request->user();
+
+        /*
+        |--------------------------------------------------------------------------
+        | User belum login.
+        |
+        | Middleware auth biasanya menangani ini.
+        |--------------------------------------------------------------------------
+        */
 
         if (! $user) {
             return $next($request);
         }
 
-        // Superadmin tidak otomatis terikat pada tenant.
+        /*
+        |--------------------------------------------------------------------------
+        | Superadmin / user global.
+        |
+        | tenant_id = NULL berarti tidak terikat
+        | pada tenant tertentu.
+        |--------------------------------------------------------------------------
+        */
+
         if ($user->tenant_id === null) {
             return $next($request);
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | Set tenant dari user.
+        |--------------------------------------------------------------------------
+        */
+
         $this->tenantContext->setFromUser($user);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Tenant tidak ditemukan atau tidak aktif.
+        |--------------------------------------------------------------------------
+        */
+
+        if (! $this->tenantContext->check()) {
+            abort(
+                403,
+                'Tenant tidak ditemukan atau tidak aktif.'
+            );
+        }
 
         return $next($request);
     }
