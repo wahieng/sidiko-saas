@@ -16,8 +16,10 @@ class KelompokRombelSeeder extends Seeder
             ->where('code', 'DEMO')
             ->firstOrFail();
 
+        $tenantId = $tenant->id;
+
         $tahunAjaran = TahunAjaran::withoutGlobalScopes()
-            ->where('tenant_id', $tenant->id)
+            ->where('tenant_id', $tenantId)
             ->where('kode', '2026/2027')
             ->firstOrFail();
 
@@ -28,22 +30,23 @@ class KelompokRombelSeeder extends Seeder
         ];
 
         foreach ($kelompok as $kodeRombel => $daftarKelompok) {
+
             $rombel = Rombel::withoutGlobalScopes()
-                ->where('tenant_id', $tenant->id)
+                ->where('tenant_id', $tenantId)
                 ->where('kode', $kodeRombel)
                 ->firstOrFail();
 
             foreach ($daftarKelompok as $index => $kodeKelompok) {
+
                 KelompokRombel::withoutGlobalScopes()
                     ->updateOrCreate(
                         [
-                            'tenant_id' => $tenant->id,
+                            'tenant_id' => $tenantId,
                             'tahun_ajaran_id' => $tahunAjaran->id,
                             'rombel_id' => $rombel->id,
                             'kode' => $kodeKelompok,
                         ],
                         [
-                            'tenant_id' => $tenant->id,
                             'nama' => $rombel->nama . '-' . $kodeKelompok,
                             'urutan' => $index + 1,
                             'aktif' => true,

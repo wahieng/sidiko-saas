@@ -16,17 +16,34 @@ class TarifPembayaranSeeder extends Seeder
             ->where('code', 'DEMO')
             ->firstOrFail();
 
-        $jenisPembayaran = JenisPembayaran::query()
-            ->where('tenant_id', $tenant->id)
+        $tenantId = $tenant->id;
+
+        /*
+        |--------------------------------------------------------------------------
+        | Jenis Pembayaran
+        |--------------------------------------------------------------------------
+        */
+        $jenisPembayaran = JenisPembayaran::withoutGlobalScopes()
+            ->where('tenant_id', $tenantId)
             ->get()
             ->keyBy('kode');
 
+        /*
+        |--------------------------------------------------------------------------
+        | Kelompok Rombel
+        |--------------------------------------------------------------------------
+        */
         $kelompokRombel = KelompokRombel::withoutGlobalScopes()
-            ->where('tenant_id', $tenant->id)
+            ->where('tenant_id', $tenantId)
             ->where('aktif', true)
             ->with('rombel')
             ->get();
 
+        /*
+        |--------------------------------------------------------------------------
+        | Data Tarif
+        |--------------------------------------------------------------------------
+        */
         $data = [
             [
                 'jenis_kode' => 'SPP',
@@ -72,13 +89,18 @@ class TarifPembayaranSeeder extends Seeder
             ],
         ];
 
+        /*
+        |--------------------------------------------------------------------------
+        | Simpan Tarif
+        |--------------------------------------------------------------------------
+        */
         foreach ($data as $item) {
             $jenis = $jenisPembayaran->get($item['jenis_kode']);
 
             $kelompok = $kelompokRombel->first(
-                fn ($itemKelompok) =>
-                    $itemKelompok->rombel?->kode === $item['rombel_kode']
-                    && $itemKelompok->kode === $item['kelompok_kode']
+                fn ($kelompokItem) =>
+                    $kelompokItem->rombel?->kode === $item['rombel_kode']
+                    && $kelompokItem->kode === $item['kelompok_kode']
             );
 
             if (!$jenis || !$kelompok) {
@@ -87,7 +109,7 @@ class TarifPembayaranSeeder extends Seeder
 
             DB::table('tarif_pembayaran')->updateOrInsert(
                 [
-                    'tenant_id' => $tenant->id,
+                    'tenant_id' => $tenantId,
                     'jenis_pembayaran_id' => $jenis->id,
                     'kelompok_rombel_id' => $kelompok->id,
                 ],

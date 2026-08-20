@@ -10,6 +10,15 @@ class PaketLanggananSeeder extends Seeder
 {
     public function run(): void
     {
+        /*
+        |--------------------------------------------------------------------------
+        | Paket Langganan
+        |--------------------------------------------------------------------------
+        | Global SaaS.
+        | Tidak menggunakan tenant_id karena paket berlaku untuk seluruh tenant.
+        |--------------------------------------------------------------------------
+        */
+
         $paket = [
             [
                 'kode' => 'BASIC',
@@ -47,7 +56,6 @@ class PaketLanggananSeeder extends Seeder
         ];
 
         foreach ($paket as $data) {
-
             PaketLangganan::updateOrCreate(
                 [
                     'kode' => $data['kode'],
@@ -56,8 +64,13 @@ class PaketLanggananSeeder extends Seeder
             );
         }
 
-        $fitur = [
+        /*
+        |--------------------------------------------------------------------------
+        | Fitur Paket
+        |--------------------------------------------------------------------------
+        */
 
+        $fitur = [
             'BASIC' => [
                 'dashboard',
                 'master',
@@ -95,14 +108,11 @@ class PaketLanggananSeeder extends Seeder
         ];
 
         foreach ($fitur as $kodePaket => $daftarFitur) {
-
-            $paketModel = PaketLangganan::where(
-                'kode',
-                $kodePaket
-            )->first();
+            $paketModel = PaketLangganan::query()
+                ->where('kode', $kodePaket)
+                ->firstOrFail();
 
             foreach ($daftarFitur as $kodeFitur) {
-
                 FiturPaket::updateOrCreate(
                     [
                         'paket_langganan_id' => $paketModel->id,

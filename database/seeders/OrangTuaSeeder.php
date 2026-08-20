@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Core\Tenant\Models\Tenant;
 use App\Modules\Siswa\OrangTua\Models\OrangTua;
 use App\Modules\Siswa\Siswa\Models\Siswa;
 use Illuminate\Database\Seeder;
@@ -10,7 +11,14 @@ class OrangTuaSeeder extends Seeder
 {
     public function run(): void
     {
+        $tenant = Tenant::query()
+            ->where('code', 'DEMO')
+            ->firstOrFail();
+
+        $tenantId = $tenant->id;
+
         $siswa = Siswa::query()
+            ->where('tenant_id', $tenantId)
             ->whereIn('nis', [
                 '10001',
                 '10002',
@@ -91,12 +99,6 @@ class OrangTuaSeeder extends Seeder
             if (! $siswaItem) {
                 continue;
             }
-
-            /*
-             * Orang Tua harus berada pada tenant
-             * yang sama dengan siswa.
-             */
-            $tenantId = $siswaItem->tenant_id;
 
             OrangTua::updateOrCreate(
                 [

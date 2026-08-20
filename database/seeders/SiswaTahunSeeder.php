@@ -17,7 +17,8 @@ class SiswaTahunSeeder extends Seeder
         | Tahun Ajaran
         |--------------------------------------------------------------------------
         */
-        $tahunAjaran = TahunAjaran::query()
+        $tahunAjaran = TahunAjaran::withoutGlobalScopes()
+            ->where('tenant_id', 1)
             ->where('kode', '2026/2027')
             ->firstOrFail();
 
@@ -28,12 +29,13 @@ class SiswaTahunSeeder extends Seeder
         | Kelompok Rombel VII A
         |--------------------------------------------------------------------------
         */
-        $kelompokVIIA = KelompokRombel::query()
+        $kelompokVIIA = KelompokRombel::withoutGlobalScopes()
             ->where('tenant_id', $tenantId)
             ->where('tahun_ajaran_id', $tahunAjaran->id)
             ->where('kode', 'A')
             ->whereHas('rombel', function ($query) use ($tenantId) {
                 $query
+                    ->withoutGlobalScopes()
                     ->where('tenant_id', $tenantId)
                     ->where('kode', 'VII');
             })
@@ -44,12 +46,13 @@ class SiswaTahunSeeder extends Seeder
         | Kelompok Rombel VII B
         |--------------------------------------------------------------------------
         */
-        $kelompokVIIB = KelompokRombel::query()
+        $kelompokVIIB = KelompokRombel::withoutGlobalScopes()
             ->where('tenant_id', $tenantId)
             ->where('tahun_ajaran_id', $tahunAjaran->id)
             ->where('kode', 'B')
             ->whereHas('rombel', function ($query) use ($tenantId) {
                 $query
+                    ->withoutGlobalScopes()
                     ->where('tenant_id', $tenantId)
                     ->where('kode', 'VII');
             })
@@ -60,12 +63,12 @@ class SiswaTahunSeeder extends Seeder
         | Siswa
         |--------------------------------------------------------------------------
         */
-        $siswa1 = Siswa::query()
+        $siswa1 = Siswa::withoutGlobalScopes()
             ->where('tenant_id', $tenantId)
             ->where('nis', '10001')
             ->firstOrFail();
 
-        $siswa2 = Siswa::query()
+        $siswa2 = Siswa::withoutGlobalScopes()
             ->where('tenant_id', $tenantId)
             ->where('nis', '10002')
             ->firstOrFail();
@@ -75,39 +78,41 @@ class SiswaTahunSeeder extends Seeder
         | Siswa Tahun - Siswa 1
         |--------------------------------------------------------------------------
         */
-        SiswaTahun::updateOrCreate(
-            [
-                'tenant_id' => $tenantId,
-                'siswa_id' => $siswa1->id,
-                'tahun_ajaran_id' => $tahunAjaran->id,
-            ],
-            [
-                'kelompok_rombel_id' => $kelompokVIIA->id,
-                'status' => 'AKTIF',
-                'tanggal_masuk' => '2026-07-01',
-                'tanggal_keluar' => null,
-                'keterangan' => null,
-            ]
-        );
+        SiswaTahun::withoutGlobalScopes()
+            ->updateOrCreate(
+                [
+                    'tenant_id' => $tenantId,
+                    'siswa_id' => $siswa1->id,
+                    'tahun_ajaran_id' => $tahunAjaran->id,
+                ],
+                [
+                    'kelompok_rombel_id' => $kelompokVIIA->id,
+                    'status' => 'AKTIF',
+                    'tanggal_masuk' => '2026-07-01',
+                    'tanggal_keluar' => null,
+                    'keterangan' => null,
+                ]
+            );
 
         /*
         |--------------------------------------------------------------------------
         | Siswa Tahun - Siswa 2
         |--------------------------------------------------------------------------
         */
-        SiswaTahun::updateOrCreate(
-            [
-                'tenant_id' => $tenantId,
-                'siswa_id' => $siswa2->id,
-                'tahun_ajaran_id' => $tahunAjaran->id,
-            ],
-            [
-                'kelompok_rombel_id' => $kelompokVIIB->id,
-                'status' => 'AKTIF',
-                'tanggal_masuk' => '2026-07-01',
-                'tanggal_keluar' => null,
-                'keterangan' => null,
-            ]
-        );
+        SiswaTahun::withoutGlobalScopes()
+            ->updateOrCreate(
+                [
+                    'tenant_id' => $tenantId,
+                    'siswa_id' => $siswa2->id,
+                    'tahun_ajaran_id' => $tahunAjaran->id,
+                ],
+                [
+                    'kelompok_rombel_id' => $kelompokVIIB->id,
+                    'status' => 'AKTIF',
+                    'tanggal_masuk' => '2026-07-01',
+                    'tanggal_keluar' => null,
+                    'keterangan' => null,
+                ]
+            );
     }
 }

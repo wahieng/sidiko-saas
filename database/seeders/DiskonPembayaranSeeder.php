@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Core\Tenant\Models\Tenant;
 use App\Modules\Keuangan\DiskonPembayaran\Models\DiskonPembayaran;
 use App\Modules\Keuangan\TarifPembayaran\Models\TarifPembayaran;
-use App\Modules\Siswa\Siswa\Models\Siswa;
 use App\Modules\Siswa\SiswaTahun\Models\SiswaTahun;
 use Illuminate\Database\Seeder;
 
@@ -17,14 +16,19 @@ class DiskonPembayaranSeeder extends Seeder
             ->where('code', 'DEMO')
             ->firstOrFail();
 
+        $tenantId = $tenant->id;
+
         /*
-         * Ambil siswa yang memang sudah ditempatkan
-         * pada tahun ajaran dan kelompok rombel.
-         */
+        |--------------------------------------------------------------------------
+        | Siswa Tahun
+        |--------------------------------------------------------------------------
+        */
         $siswaTahun = SiswaTahun::withoutGlobalScopes()
-            ->where('tenant_id', $tenant->id)
-            ->whereHas('tahunAjaran', function ($query) {
-                $query->where('kode', '2026/2027');
+            ->where('tenant_id', $tenantId)
+            ->whereHas('tahunAjaran', function ($query) use ($tenantId) {
+                $query
+                    ->where('tenant_id', $tenantId)
+                    ->where('kode', '2026/2027');
             })
             ->where('status', 'AKTIF')
             ->with([
@@ -41,36 +45,47 @@ class DiskonPembayaranSeeder extends Seeder
             $siswa = $item->siswa;
             $kelompokRombel = $item->kelompokRombel;
 
-            if (!$siswa || !$kelompokRombel) {
+            if (! $siswa || ! $kelompokRombel) {
                 continue;
             }
 
             /*
-             * Cari tarif pembayaran berdasarkan
-             * kelompok rombel siswa.
-             *
-             * Tarif tidak memiliki kolom kode.
-             * Jenis pembayaran SPP berada di relasi tarif.
-             */
+            |--------------------------------------------------------------------------
+            | Pastikan relasi tetap satu tenant
+            |--------------------------------------------------------------------------
+            */
+            if (
+                $siswa->tenant_id !== $tenantId ||
+                $kelompokRombel->tenant_id !== $tenantId
+            ) {
+                continue;
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | Tarif SPP
+            |--------------------------------------------------------------------------
+            */
             $tarifSpp = TarifPembayaran::withoutGlobalScopes()
-                ->where('tenant_id', $tenant->id)
+                ->where('tenant_id', $tenantId)
                 ->where('kelompok_rombel_id', $kelompokRombel->id)
                 ->where('aktif', true)
-                ->whereHas('jenisPembayaran', function ($query) {
-                    $query->where('kode', 'SPP');
+                ->whereHas('jenisPembayaran', function ($query) use ($tenantId) {
+                    $query
+                        ->where('tenant_id', $tenantId)
+                        ->where('kode', 'SPP');
                 })
                 ->first();
 
-            if (!$tarifSpp) {
+            if (! $tarifSpp) {
                 continue;
             }
 
             /*
-             * Data contoh diskon berdasarkan siswa.
-             *
-             * Siswa 10001 → diskon saudara kandung 20%
-             * Siswa 10002 → diskon prestasi 25%
-             */
+            |--------------------------------------------------------------------------
+            | Contoh Diskon
+            |--------------------------------------------------------------------------
+            */
             $diskon = match ($siswa->nis) {
                 '10001' => [
                     'tipe_diskon' => 'PERSEN',
@@ -87,14 +102,19 @@ class DiskonPembayaranSeeder extends Seeder
                 default => null,
             };
 
-            if (!$diskon) {
+            if (! $diskon) {
                 continue;
             }
 
+            /*
+            |--------------------------------------------------------------------------
+            | Simpan Diskon
+            |--------------------------------------------------------------------------
+            */
             DiskonPembayaran::withoutGlobalScopes()
                 ->updateOrCreate(
                     [
-                        'tenant_id' => $tenant->id,
+                        'tenant_id' => $tenantId,
                         'siswa_id' => $siswa->id,
                         'tarif_pembayaran_id' => $tarifSpp->id,
                     ],

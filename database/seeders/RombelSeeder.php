@@ -14,6 +14,8 @@ class RombelSeeder extends Seeder
             ->where('code', 'DEMO')
             ->firstOrFail();
 
+        $tenantId = $tenant->id;
+
         $rombel = [
             [
                 'kode' => 'VII',
@@ -39,11 +41,10 @@ class RombelSeeder extends Seeder
             Rombel::withoutGlobalScopes()
                 ->updateOrCreate(
                     [
-                        'tenant_id' => $tenant->id,
+                        'tenant_id' => $tenantId,
                         'kode' => $data['kode'],
                     ],
                     [
-                        'tenant_id' => $tenant->id,
                         'nama' => $data['nama'],
                         'urutan' => $data['urutan'],
                         'aktif' => $data['aktif'],

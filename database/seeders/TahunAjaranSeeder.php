@@ -14,17 +14,20 @@ class TahunAjaranSeeder extends Seeder
             ->where('code', 'DEMO')
             ->firstOrFail();
 
-        TahunAjaran::updateOrCreate(
-            [
-                'tenant_id' => $tenant->id,
-                'kode' => '2026/2027',
-            ],
-            [
-                'nama' => 'Tahun Ajaran 2026/2027',
-                'tanggal_mulai' => '2026-07-01',
-                'tanggal_selesai' => '2027-06-30',
-                'aktif' => true,
-            ]
-        );
+        $tenantId = $tenant->id;
+
+        TahunAjaran::withoutGlobalScopes()
+            ->updateOrCreate(
+                [
+                    'tenant_id' => $tenantId,
+                    'kode' => '2026/2027',
+                ],
+                [
+                    'nama' => 'Tahun Ajaran 2026/2027',
+                    'tanggal_mulai' => '2026-07-01',
+                    'tanggal_selesai' => '2027-06-30',
+                    'aktif' => true,
+                ]
+            );
     }
 }

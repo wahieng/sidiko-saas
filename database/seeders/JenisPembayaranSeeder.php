@@ -14,9 +14,11 @@ class JenisPembayaranSeeder extends Seeder
             ->where('code', 'DEMO')
             ->firstOrFail();
 
+        $tenantId = $tenant->id;
+
         $data = [
             [
-                'tenant_id' => $tenant->id,
+                'tenant_id' => $tenantId,
                 'kode' => 'SPP',
                 'nama' => 'Sumbangan Pembinaan Pendidikan',
                 'kategori' => 'BULANAN',
@@ -24,7 +26,7 @@ class JenisPembayaranSeeder extends Seeder
                 'aktif' => true,
             ],
             [
-                'tenant_id' => $tenant->id,
+                'tenant_id' => $tenantId,
                 'kode' => 'UTS',
                 'nama' => 'Ujian Tengah Semester',
                 'kategori' => 'SEMESTER',
@@ -32,7 +34,7 @@ class JenisPembayaranSeeder extends Seeder
                 'aktif' => true,
             ],
             [
-                'tenant_id' => $tenant->id,
+                'tenant_id' => $tenantId,
                 'kode' => 'UAS',
                 'nama' => 'Ujian Akhir Semester',
                 'kategori' => 'SEMESTER',
@@ -40,7 +42,7 @@ class JenisPembayaranSeeder extends Seeder
                 'aktif' => true,
             ],
             [
-                'tenant_id' => $tenant->id,
+                'tenant_id' => $tenantId,
                 'kode' => 'DAFTAR_ULANG',
                 'nama' => 'Daftar Ulang',
                 'kategori' => 'TAHUNAN',
@@ -48,7 +50,7 @@ class JenisPembayaranSeeder extends Seeder
                 'aktif' => true,
             ],
             [
-                'tenant_id' => $tenant->id,
+                'tenant_id' => $tenantId,
                 'kode' => 'GEDUNG',
                 'nama' => 'Uang Gedung',
                 'kategori' => 'SEKALI',
@@ -60,10 +62,15 @@ class JenisPembayaranSeeder extends Seeder
         foreach ($data as $item) {
             DB::table('jenis_pembayaran')->updateOrInsert(
                 [
-                    'tenant_id' => $item['tenant_id'],
+                    'tenant_id' => $tenantId,
                     'kode' => $item['kode'],
                 ],
-                $item
+                [
+                    'nama' => $item['nama'],
+                    'kategori' => $item['kategori'],
+                    'keterangan' => $item['keterangan'],
+                    'aktif' => $item['aktif'],
+                ]
             );
         }
     }

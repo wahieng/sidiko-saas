@@ -10,7 +10,11 @@ class SiswaSeeder extends Seeder
 {
     public function run(): void
     {
-        $tenant = Tenant::where('code', 'DEMO')->firstOrFail();
+        $tenant = Tenant::query()
+            ->where('code', 'DEMO')
+            ->firstOrFail();
+
+        $tenantId = $tenant->id;
 
         $siswa = [
             [
@@ -41,7 +45,6 @@ class SiswaSeeder extends Seeder
                 'kebutuhan_khusus' => null,
                 'foto' => null,
             ],
-
             [
                 'nis' => '10002',
                 'nisn' => '0012345679',
@@ -73,15 +76,16 @@ class SiswaSeeder extends Seeder
         ];
 
         foreach ($siswa as $data) {
-            Siswa::updateOrCreate(
-                [
-                    'tenant_id' => $tenant->id,
-                    'nis' => $data['nis'],
-                ],
-                array_merge($data, [
-                    'tenant_id' => $tenant->id,
-                ])
-            );
+            Siswa::withoutGlobalScopes()
+                ->updateOrCreate(
+                    [
+                        'tenant_id' => $tenantId,
+                        'nis' => $data['nis'],
+                    ],
+                    $data + [
+                        'tenant_id' => $tenantId,
+                    ]
+                );
         }
     }
 }
