@@ -9,9 +9,7 @@ use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class PermissionMiddleware
-{   
-
-    
+{
     public function __construct(
         protected PermissionService $permissionService
     ) {
@@ -39,7 +37,7 @@ class PermissionMiddleware
 
         /*
         |--------------------------------------------------------------------------
-        | HTTP Method → Action
+        | HTTP Method → Permission Action
         |--------------------------------------------------------------------------
         */
 
@@ -63,7 +61,19 @@ class PermissionMiddleware
         $route = $request->route();
 
         if (! $route) {
-            abort(403, 'Route tidak ditemukan.');
+            abort(
+                403,
+                'Route tidak ditemukan.'
+            );
+        }
+
+        $routeName = $route->getName();
+
+        if (! $routeName) {
+            abort(
+                403,
+                'Route tidak memiliki nama.'
+            );
         }
 
         /*
@@ -71,27 +81,29 @@ class PermissionMiddleware
         | Action Override
         |--------------------------------------------------------------------------
         |
-        | Contoh:
-        | POST /toggle-status
+        | Digunakan untuk route yang HTTP method-nya tidak sesuai
+        | dengan aksi permission sebenarnya.
         |
-        | Secara default POST = create.
-        | Tetapi toggle-status sebenarnya update.
+        | Contoh:
+        |
+        | POST tenant.activate
+        |
+        | Secara default:
+        | POST = create
+        |
+        | Tetapi activate adalah update.
         |
         */
 
-        $routeName = $route->getName();
+        $overrides = config(
+            'permission.action_overrides',
+            []
+        );
 
-        if ($routeName) {
-            $overrides = config(
-                'permission.action_overrides',
-                []
-            );
-
-            foreach ($overrides as $pattern => $overrideAction) {
-                if (Str::is($pattern, $routeName)) {
-                    $action = $overrideAction;
-                    break;
-                }
+        foreach ($overrides as $pattern => $overrideAction) {
+            if (Str::is($pattern, $routeName)) {
+                $action = $overrideAction;
+                break;
             }
         }
 
@@ -99,9 +111,21 @@ class PermissionMiddleware
         |--------------------------------------------------------------------------
         | Resolve Resource
         |--------------------------------------------------------------------------
+        |
+        | Format route:
+        |
+        | module.resource.action
+        |
+        | Contoh:
+        |
+        | akademik.semester.index
+        | akademik.semester.store
+        | keuangan.tarif-pembayaran.index
+        | siswa.siswa.show
+        |
         */
 
-        $resource = $this->resolveResource($request);
+        $resource = $this->resolveResource($routeName);
 
         if (! $resource) {
             abort(
@@ -118,7 +142,6 @@ class PermissionMiddleware
 
         $permission = "{$resource}.{$action}";
 
-  
         /*
         |--------------------------------------------------------------------------
         | Check Permission
@@ -139,49 +162,33 @@ class PermissionMiddleware
     }
 
     /**
-     * Resolve resource permission dari route name.
+     * Resolve resource dari nama route.
+     *
+     * Format:
+     *
+     * module.resource.action
      *
      * Contoh:
      *
-     * keuangan.diskon-pembayaran.index
-     * keuangan.diskon-pembayaran.store
-     * keuangan.diskon-pembayaran.show
-     * keuangan.diskon-pembayaran.update
-     * keuangan.diskon-pembayaran.destroy
+     * akademik.semester.index
+     *       ↓
+     * akademik.semester
      *
-     * menjadi:
-     *
-     * diskon-pembayaran
+     * keuangan.tarif-pembayaran.store
+     *       ↓
+     * keuangan.tarif-pembayaran
      */
-    protected function resolveResource(Request $request): ?string
-    {
-        $route = $request->route();
-
-        if (! $route) {
-            return null;
-        }
-
-        $routeName = $route->getName();
-
-        if (! $routeName) {
-            return null;
-        }
-
+    protected function resolveResource(
+        string $routeName
+    ): ?string {
         $segments = explode('.', $routeName);
 
         /*
         |--------------------------------------------------------------------------
-        | Minimal format
-        |--------------------------------------------------------------------------
+        | Minimal route:
         |
         | module.resource.action
-        |
-        | Contoh:
-        |
-        | siswa.dokumen.store
-        | siswa.dokumen.index
-        | keuangan.diskon-pembayaran.store
-        |
+        |--------------------------------------------------------------------------
         */
 
         if (count($segments) < 3) {
@@ -190,12 +197,44 @@ class PermissionMiddleware
 
         /*
         |--------------------------------------------------------------------------
-        | Ambil Module + Resource
+        | Action adalah segment terakhir.
+        |
+        | Resource adalah segment sebelum action.
+        |
+        | Module adalah segment sebelum resource.
         |--------------------------------------------------------------------------
         */
 
-        return $segments[count($segments) - 3]
-            . '.'
-            . $segments[count($segments) - 2];
+        $action = array_pop($segments);
+        $resource = array_pop($segments);
+
+        if (! $action || ! $resource) {
+            return null;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Ambil module terakhir.
+        |
+        | Ini memungkinkan route bertingkat seperti:
+        |
+        | akademik.master.semester.index
+        |
+        | tetap menghasilkan:
+        |
+        | master.semester
+        |
+        | Namun untuk SIDIKO sebaiknya tetap menggunakan
+        | module.resource.action.
+        |--------------------------------------------------------------------------
+        */
+
+        $module = array_pop($segments);
+
+        if (! $module) {
+            return null;
+        }
+
+        return "{$module}.{$resource}";
     }
 }

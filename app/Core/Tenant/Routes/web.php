@@ -3,31 +3,37 @@
 use App\Core\Tenant\Controllers\TenantController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth', 'permission:tenant.view'])
+Route::middleware(['auth', 'tenant', 'permission'])
     ->prefix('tenants')
-    ->name('tenants.')
+    ->name('tenant.')
     ->group(function () {
+
+        /*
+        |--------------------------------------------------------------------------
+        | View
+        |--------------------------------------------------------------------------
+        */
 
         Route::get('/', [TenantController::class, 'index'])
             ->name('index');
 
-        Route::get('/{id}', [TenantController::class, 'show'])
+        Route::get('/{tenant}', [TenantController::class, 'show'])
             ->name('show');
-    });
 
-Route::middleware(['auth', 'permission:tenant.create'])
-    ->prefix('tenants')
-    ->name('tenants.')
-    ->group(function () {
+        /*
+        |--------------------------------------------------------------------------
+        | Create
+        |--------------------------------------------------------------------------
+        */
 
         Route::post('/', [TenantController::class, 'store'])
             ->name('store');
-    });
 
-Route::middleware(['auth', 'permission:tenant.update'])
-    ->prefix('tenants')
-    ->name('tenants.')
-    ->group(function () {
+        /*
+        |--------------------------------------------------------------------------
+        | Update
+        |--------------------------------------------------------------------------
+        */
 
         Route::put('/{tenant}', [TenantController::class, 'update'])
             ->name('update');

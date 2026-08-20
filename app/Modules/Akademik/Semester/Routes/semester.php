@@ -13,23 +13,35 @@ Route::middleware([
     ->name('akademik.semester.')
     ->group(function () {
 
-        Route::get('/aktif', [SemesterController::class, 'aktif'])
-            ->name('aktif');
+        Route::get('/aktif', [
+            SemesterController::class,
+            'aktif',
+        ])->name('aktif');
 
-        Route::get('/', [SemesterController::class, 'index'])
-            ->name('index');
+        Route::get('/', [
+            SemesterController::class,
+            'index',
+        ])->name('index');
 
-        Route::post('/', [SemesterController::class, 'store'])
-            ->name('store');
+        Route::post('/', [
+            SemesterController::class,
+            'store',
+        ])->name('store');
 
-        Route::get('/{semester}', [SemesterController::class, 'show'])
-            ->name('show');
+        Route::get('/{semester}', [
+            SemesterController::class,
+            'show',
+        ])->name('show');
 
-        Route::put('/{semester}', [SemesterController::class, 'update'])
-            ->name('update');
+        Route::put('/{semester}', [
+            SemesterController::class,
+            'update',
+        ])->name('update');
 
-        Route::delete('/{semester}', [SemesterController::class, 'destroy'])
-            ->name('destroy');
+        Route::delete('/{semester}', [
+            SemesterController::class,
+            'destroy',
+        ])->name('destroy');
 
         Route::post('/{semester}/aktifkan', [
             SemesterController::class,
@@ -37,16 +49,34 @@ Route::middleware([
         ])->name('aktifkan');
     });
 
-Route::middleware(['auth'])
+
+Route::middleware([
+    'auth',
+    'tenant',
+    'subscription',
+    'permission',
+])
     ->get(
         '/akademik/tahun-ajaran/{tahunAjaran}/semester',
-        [SemesterController::class, 'byTahunAjaran']
+        [
+            SemesterController::class,
+            'byTahunAjaran',
+        ]
     )
     ->name('akademik.tahun-ajaran.semester');
 
-Route::middleware(['auth'])
+
+Route::middleware([
+    'auth',
+    'tenant',
+    'subscription',
+    'permission',
+])
     ->get(
         '/akademik/tahun-ajaran/{tahunAjaran}/semester-aktif',
-        [SemesterController::class, 'aktifByTahunAjaran']
+        [
+            SemesterController::class,
+            'aktifByTahunAjaran',
+        ]
     )
     ->name('akademik.tahun-ajaran.semester-aktif');
