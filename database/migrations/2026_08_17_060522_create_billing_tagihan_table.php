@@ -58,6 +58,11 @@ return new class extends Migration
             $table->index(['langganan_id']);
             $table->index(['jatuh_tempo']);
             $table->index(['periode_mulai', 'periode_berakhir']);
+
+            $table->unique(
+                ['langganan_id', 'periode_mulai'],
+                'billing_tagihan_langganan_periode_unique'
+            );
         });
     }
 

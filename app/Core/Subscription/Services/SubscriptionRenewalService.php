@@ -55,6 +55,13 @@ class SubscriptionRenewalService
             ) {
                 return null;
             }
+            /*
+            * Subscription tanpa periode berakhir
+            * tidak dapat dibuatkan renewal.
+            */
+            if (! $langganan->periode_berakhir) {
+                return null;
+            }
 
             /*
              * Cek apakah billing untuk periode berikutnya

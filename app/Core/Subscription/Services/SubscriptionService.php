@@ -67,6 +67,16 @@ class SubscriptionService
     {
         return DB::transaction(function () use ($langganan) {
 
+            if (! in_array($langganan->status, [
+                'trial',
+                'past_due',
+                'suspended',
+            ], true)) {
+                throw new RuntimeException(
+                    "Subscription dengan status {$langganan->status} tidak dapat diaktifkan."
+                );
+            }
+
             $langganan->update([
                 'status' => 'active',
             ]);
@@ -79,12 +89,23 @@ class SubscriptionService
     }
 
 
+    
     /**
      * Batalkan subscription.
      */
     public function batalkan(Langganan $langganan): Langganan
     {
         return DB::transaction(function () use ($langganan) {
+
+            if (! in_array($langganan->status, [
+                'trial',
+                'active',
+                'past_due',
+            ], true)) {
+                throw new RuntimeException(
+                    "Subscription dengan status {$langganan->status} tidak dapat dibatalkan."
+                );
+            }
 
             $langganan->update([
                 'status' => 'cancelled',
@@ -104,14 +125,26 @@ class SubscriptionService
      */
     public function suspend(Langganan $langganan): Langganan
     {
-        $langganan->update([
-            'status' => 'suspended',
-        ]);
+        return DB::transaction(function () use ($langganan) {
 
-        return $langganan->fresh([
-            'tenant',
-            'paket',
-        ]);
+            if (! in_array($langganan->status, [
+                'active',
+                'past_due',
+            ], true)) {
+                throw new RuntimeException(
+                    "Subscription dengan status {$langganan->status} tidak dapat di-suspend."
+                );
+            }
+
+            $langganan->update([
+                'status' => 'suspended',
+            ]);
+
+            return $langganan->fresh([
+                'tenant',
+                'paket',
+            ]);
+        });
     }
 
 
@@ -120,14 +153,28 @@ class SubscriptionService
      */
     public function expire(Langganan $langganan): Langganan
     {
-        $langganan->update([
-            'status' => 'expired',
-        ]);
+        return DB::transaction(function () use ($langganan) {
 
-        return $langganan->fresh([
-            'tenant',
-            'paket',
-        ]);
+            if (! in_array($langganan->status, [
+                'trial',
+                'active',
+                'past_due',
+                'suspended',
+            ], true)) {
+                throw new RuntimeException(
+                    "Subscription dengan status {$langganan->status} tidak dapat di-expire."
+                );
+            }
+
+            $langganan->update([
+                'status' => 'expired',
+            ]);
+
+            return $langganan->fresh([
+                'tenant',
+                'paket',
+            ]);
+        });
     }
 
 
@@ -161,9 +208,17 @@ class SubscriptionService
     ): Langganan {
         return DB::transaction(function () use ($tagihan) {
 
+            if ($tagihan->status !== 'PAID') {
+                throw new RuntimeException(
+                    "Billing dengan status {$tagihan->status} belum dapat mengaktifkan subscription."
+                );
+            }
+
             $langganan = Langganan::query()
+                ->whereKey($tagihan->langganan_id)
+                ->where('tenant_id', $tagihan->tenant_id)
                 ->lockForUpdate()
-                ->findOrFail($tagihan->langganan_id);
+                ->firstOrFail();
 
             $langganan->update([
                 'status' => 'active',

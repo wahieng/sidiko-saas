@@ -435,4 +435,76 @@ class SubscriptionRenewalCommandTest extends TestCase
             $billing->status
         );
     }
+
+    public function test_subscription_from_different_tenant_cannot_generate_renewal(): void
+    {
+        $this->seed();
+
+        $tenant = Tenant::query()
+            ->where('code', 'DEMO')
+            ->firstOrFail();
+
+        $paket = PaketLangganan::query()
+            ->where('status', true)
+            ->firstOrFail();
+
+        $tenantLain = Tenant::create([
+            'name' => 'Tenant Renewal Test',
+            'code' => 'TEST-RENEWAL-OTHER',
+            'slug' => 'test-renewal-other',
+            'email' => 'test-renewal-other@example.test',
+            'phone' => '0800000002',
+            'address' => 'Alamat Tenant Renewal Test',
+            'is_active' => true,
+        ]);
+
+        app(TenantContext::class)->set($tenantLain);
+
+        $langganan = Langganan::create([
+            'tenant_id' => $tenant->id,
+            'paket_langganan_id' => $paket->id,
+            'status' => 'active',
+            'mulai_pada' => now()->subDays(30),
+            'trial_berakhir_pada' => null,
+            'periode_mulai' => now()->subDays(30)->toDateString(),
+            'periode_berakhir' => now()->addDays(3)->toDateString(),
+            'dibatalkan_pada' => null,
+        ]);
+
+        $this->expectException(\RuntimeException::class);
+
+        app(SubscriptionRenewalService::class)
+            ->buatBillingRenewal($langganan);
+    }
+
+    public function test_subscription_without_end_period_cannot_generate_renewal(): void
+    {
+        $this->seed();
+
+        $tenant = Tenant::query()
+            ->where('code', 'DEMO')
+            ->firstOrFail();
+
+        $paket = PaketLangganan::query()
+            ->where('status', true)
+            ->firstOrFail();
+
+        app(TenantContext::class)->set($tenant);
+
+        $langganan = Langganan::create([
+            'tenant_id' => $tenant->id,
+            'paket_langganan_id' => $paket->id,
+            'status' => 'active',
+            'mulai_pada' => now()->subDays(30),
+            'trial_berakhir_pada' => null,
+            'periode_mulai' => now()->subDays(30)->toDateString(),
+            'periode_berakhir' => null,
+            'dibatalkan_pada' => null,
+        ]);
+
+        $hasil = app(SubscriptionRenewalService::class)
+            ->buatBillingRenewal($langganan);
+
+        $this->assertNull($hasil);
+    }
 }
