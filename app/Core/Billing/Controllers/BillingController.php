@@ -6,6 +6,7 @@ use App\Core\Billing\Requests\GenerateBillingRequest;
 use App\Core\Billing\Services\BillingService;
 use App\Core\Billing\Services\GenerateBillingService;
 use App\Core\Subscription\Models\Langganan;
+use App\Core\Pagination\Resources\PaginationResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -27,7 +28,9 @@ class BillingController
             $request->integer('per_page', 15)
         );
 
-        return response()->json($tagihan);
+        return response()->json(
+            PaginationResource::make($tagihan)
+        );
     }
 
     /**
