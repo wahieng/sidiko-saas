@@ -48,6 +48,9 @@ require base_path(
     'app/Core/Billing/Routes/billing.php'
 );
 
+// Billing
+require base_path('app/Core/Access/Routes/role.php');
+
 /*
 |--------------------------------------------------------------------------
 | Application Modules
