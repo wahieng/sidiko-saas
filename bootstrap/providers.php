@@ -6,4 +6,5 @@ return [
     App\Core\Identity\Providers\IdentityServiceProvider::class,
     App\Core\Subscription\Providers\SubscriptionServiceProvider::class,
     App\Core\Access\Providers\AccessServiceProvider::class,
+    App\Core\TransactionNumber\Providers\TransactionNumberServiceProvider::class,
 ];

@@ -110,3 +110,8 @@ require base_path(
 require base_path(
     'app/Modules/Keuangan/DiskonPembayaran/Routes/diskonpembayaran.php'
 );
+
+// Tagihan 
+require base_path(
+    'app/Modules/Keuangan/Tagihan/Routes/tagihan.php'
+);
