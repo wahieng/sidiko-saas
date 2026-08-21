@@ -4,45 +4,49 @@ namespace App\Modules\Keuangan\DiskonPembayaran\Models;
 
 use App\Core\Tenant\Traits\BelongsToTenant;
 use App\Modules\Keuangan\TarifPembayaran\Models\TarifPembayaran;
-use App\Modules\Siswa\Siswa\Models\Siswa;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Modules\Siswa\SiswaTahun\Models\SiswaTahun;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class DiskonPembayaran extends Model
 {
-    use HasFactory;
     use BelongsToTenant;
 
     protected $table = 'diskon_pembayaran';
 
     protected $fillable = [
         'tenant_id',
-        'siswa_id',
+        'siswa_tahun_id',
         'tarif_pembayaran_id',
         'tipe_diskon',
         'nilai',
-        'keterangan',
         'tanggal_mulai',
         'tanggal_selesai',
-        'aktif',
+        'is_active',
+        'keterangan',
     ];
 
     protected $casts = [
         'nilai' => 'decimal:2',
         'tanggal_mulai' => 'date',
         'tanggal_selesai' => 'date',
-        'aktif' => 'boolean',
+        'is_active' => 'boolean',
     ];
 
-    public function siswa(): BelongsTo
+    /**
+     * Siswa dalam konteks tahun ajaran.
+     */
+    public function siswaTahun(): BelongsTo
     {
         return $this->belongsTo(
-            Siswa::class,
-            'siswa_id'
+            SiswaTahun::class,
+            'siswa_tahun_id'
         );
     }
 
+    /**
+     * Tarif pembayaran yang mendapatkan diskon.
+     */
     public function tarifPembayaran(): BelongsTo
     {
         return $this->belongsTo(

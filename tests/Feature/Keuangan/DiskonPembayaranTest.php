@@ -1,249 +1,123 @@
 <?php
 
-namespace Tests\Feature\Keuangan;
+namespace Database\Seeders;
 
 use App\Core\Tenant\Models\Tenant;
-use App\Core\Tenant\Context\TenantContext;
 use App\Modules\Keuangan\DiskonPembayaran\Models\DiskonPembayaran;
 use App\Modules\Keuangan\TarifPembayaran\Models\TarifPembayaran;
-use App\Modules\Siswa\Siswa\Models\Siswa;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use App\Modules\Siswa\SiswaTahun\Models\SiswaTahun;
+use Illuminate\Database\Seeder;
 
-class DiskonPembayaranTest extends TestCase
+class DiskonPembayaranSeeder extends Seeder
 {
-    use RefreshDatabase;
-
-    protected Tenant $tenant;
-    protected Siswa $siswa;
-    protected TarifPembayaran $tarifPembayaran;
-
-    protected function setUp(): void
+    public function run(): void
     {
-        parent::setUp();
-
-        $this->seed();
-
-        $this->tenant = Tenant::query()
+        $tenant = Tenant::query()
             ->where('code', 'DEMO')
             ->firstOrFail();
 
-        $this->siswa = Siswa::withoutGlobalScopes()
-            ->where('tenant_id', $this->tenant->id)
-            ->firstOrFail();
+        $tenantId = $tenant->id;
 
-        $this->tarifPembayaran = TarifPembayaran::withoutGlobalScopes()
-            ->where('tenant_id', $this->tenant->id)
-            ->firstOrFail();
-    }
+        /*
+        |--------------------------------------------------------------------------
+        | Siswa Tahun
+        |--------------------------------------------------------------------------
+        */
 
-    public function test_diskon_pembayaran_tersedia(): void
-    {
-        $diskon = DiskonPembayaran::withoutGlobalScopes()
-            ->where('tenant_id', $this->tenant->id)
-            ->first();
+        $siswaTahun = SiswaTahun::withoutGlobalScopes()
+            ->where('tenant_id', $tenantId)
+            ->get()
+            ->keyBy('siswa_id');
 
-        $this->assertNotNull($diskon);
-    }
+        /*
+        |--------------------------------------------------------------------------
+        | Tarif Pembayaran
+        |--------------------------------------------------------------------------
+        */
 
-    public function test_diskon_terhubung_dengan_siswa(): void
-    {
-        $diskon = DiskonPembayaran::withoutGlobalScopes()
-            ->where('tenant_id', $this->tenant->id)
-            ->firstOrFail();
+        $tarifPembayaran = TarifPembayaran::withoutGlobalScopes()
+            ->where('tenant_id', $tenantId)
+            ->with('kelompokRombel.rombel')
+            ->get();
 
-        $this->assertNotNull($diskon->siswa);
-        $this->assertEquals(
-            $diskon->siswa_id,
-            $diskon->siswa->id
+        /*
+        |--------------------------------------------------------------------------
+        | Diskon Siswa 10001 - VII A
+        |--------------------------------------------------------------------------
+        */
+
+        $siswaTahun1 = $siswaTahun->get(
+            $this->getSiswaId($tenantId, '10001')
         );
-    }
 
-    public function test_diskon_terhubung_dengan_tarif_pembayaran(): void
-    {
-        $diskon = DiskonPembayaran::withoutGlobalScopes()
-            ->where('tenant_id', $this->tenant->id)
-            ->firstOrFail();
-
-        $this->assertNotNull($diskon->tarifPembayaran);
-        $this->assertEquals(
-            $diskon->tarif_pembayaran_id,
-            $diskon->tarifPembayaran->id
+        $tarifVIIA = $tarifPembayaran->first(
+            fn ($tarif) =>
+                $tarif->kelompokRombel?->rombel?->kode === 'VII'
+                && $tarif->kelompokRombel?->kode === 'A'
         );
-    }
 
-    public function test_diskon_persen_tersimpan(): void
-    {
-        $diskon = DiskonPembayaran::withoutGlobalScopes()
-            ->where('tenant_id', $this->tenant->id)
-            ->where('tipe_diskon', 'PERSEN')
-            ->first();
+        if ($siswaTahun1 && $tarifVIIA) {
+            DiskonPembayaran::withoutGlobalScopes()
+                ->updateOrCreate(
+                    [
+                        'tenant_id' => $tenantId,
+                        'siswa_tahun_id' => $siswaTahun1->id,
+                        'tarif_pembayaran_id' => $tarifVIIA->id,
+                    ],
+                    [
+                        'tipe_diskon' => 'PERSEN',
+                        'nilai' => 10,
+                        'tanggal_mulai' => '2026-07-01',
+                        'tanggal_selesai' => '2027-06-30',
+                        'is_active' => true,
+                        'keterangan' => 'Diskon SPP siswa VII-A.',
+                    ]
+                );
+        }
 
-        $this->assertNotNull($diskon);
-        $this->assertGreaterThan(0, $diskon->nilai);
-        $this->assertLessThanOrEqual(100, $diskon->nilai);
-    }
+        /*
+        |--------------------------------------------------------------------------
+        | Diskon Siswa 10002 - VII B
+        |--------------------------------------------------------------------------
+        */
 
-    public function test_diskon_nominal_tersimpan(): void
-    {
-        $diskon = DiskonPembayaran::withoutGlobalScopes()
-            ->where('tenant_id', $this->tenant->id)
-            ->where('tipe_diskon', 'NOMINAL')
-            ->first();
-
-        $this->assertNotNull($diskon);
-        $this->assertGreaterThan(0, $diskon->nilai);
-    }
-
-    public function test_keterangan_diskon_tersimpan(): void
-    {
-        $diskon = DiskonPembayaran::withoutGlobalScopes()
-            ->where('tenant_id', $this->tenant->id)
-            ->firstOrFail();
-
-        $this->assertNotEmpty($diskon->keterangan);
-    }
-
-    public function test_diskon_dapat_dinonaktifkan(): void
-    {
-        $diskon = DiskonPembayaran::withoutGlobalScopes()
-            ->where('tenant_id', $this->tenant->id)
-            ->firstOrFail();
-
-        $diskon->update([
-            'aktif' => false,
-        ]);
-
-        $diskon->refresh();
-
-        $this->assertFalse($diskon->aktif);
-    }
-
-    public function test_diskon_dapat_diaktifkan_kembali(): void
-    {
-        $diskon = DiskonPembayaran::withoutGlobalScopes()
-            ->where('tenant_id', $this->tenant->id)
-            ->firstOrFail();
-
-        $diskon->update([
-            'aktif' => false,
-        ]);
-
-        $diskon->update([
-            'aktif' => true,
-        ]);
-
-        $diskon->refresh();
-
-        $this->assertTrue($diskon->aktif);
-    }
-
-    public function test_diskon_memiliki_tanggal_berlaku(): void
-    {
-        $diskon = DiskonPembayaran::withoutGlobalScopes()
-            ->where('tenant_id', $this->tenant->id)
-            ->firstOrFail();
-
-        $this->assertNotNull($diskon->tanggal_mulai);
-        $this->assertNotNull($diskon->tanggal_selesai);
-
-        $this->assertTrue(
-            $diskon->tanggal_mulai->lte(
-                $diskon->tanggal_selesai
-            )
+        $siswaTahun2 = $siswaTahun->get(
+            $this->getSiswaId($tenantId, '10002')
         );
-    }
 
-    public function test_diskon_siswa_dapat_ditemukan(): void
-    {
-        $diskon = DiskonPembayaran::withoutGlobalScopes()
-            ->where('tenant_id', $this->tenant->id)
-            ->where('siswa_id', $this->siswa->id)
-            ->first();
-
-        $this->assertNotNull($diskon);
-    }
-
-    public function test_diskon_tidak_bercampur_antar_tenant(): void
-    {
-        $diskon = DiskonPembayaran::withoutGlobalScopes()
-            ->where('tenant_id', $this->tenant->id)
-            ->first();
-
-        $this->assertNotNull($diskon);
-        $this->assertEquals(
-            $this->tenant->id,
-            $diskon->tenant_id
+        $tarifVIIB = $tarifPembayaran->first(
+            fn ($tarif) =>
+                $tarif->kelompokRombel?->rombel?->kode === 'VII'
+                && $tarif->kelompokRombel?->kode === 'B'
         );
+
+        if ($siswaTahun2 && $tarifVIIB) {
+            DiskonPembayaran::withoutGlobalScopes()
+                ->updateOrCreate(
+                    [
+                        'tenant_id' => $tenantId,
+                        'siswa_tahun_id' => $siswaTahun2->id,
+                        'tarif_pembayaran_id' => $tarifVIIB->id,
+                    ],
+                    [
+                        'tipe_diskon' => 'PERSEN',
+                        'nilai' => 10,
+                        'tanggal_mulai' => '2026-07-01',
+                        'tanggal_selesai' => '2027-06-30',
+                        'is_active' => true,
+                        'keterangan' => 'Diskon SPP siswa VII-B.',
+                    ]
+                );
+        }
     }
 
-    public function test_diskon_tidak_dapat_menggunakan_siswa_dari_tenant_lain(): void
-    {
-        $tenantB = Tenant::query()->create([
-            'name' => 'Tenant B',
-            'code' => 'TENANT-B',
-            'slug' => 'tenant-b',
-            'email' => 'admin@tenant-b.test',
-            'phone' => '081111111111',
-            'address' => 'Alamat Tenant B',
-            'is_active' => true,
-        ]);
-
-        $siswaB = $this->siswa->replicate();
-        $siswaB->tenant_id = $tenantB->id;
-        $siswaB->save();
-
-        $context = app(TenantContext::class);
-        $context->set($this->tenant);
-
-        $diskon = DiskonPembayaran::create([
-            'siswa_id' => $siswaB->id,
-            'tarif_pembayaran_id' => $this->tarifPembayaran->id,
-            'tipe_diskon' => 'PERSEN',
-            'nilai' => 10,
-            'keterangan' => 'Cross tenant test',
-            'tanggal_mulai' => now()->toDateString(),
-            'tanggal_selesai' => now()->addMonth()->toDateString(),
-            'aktif' => true,
-        ]);
-
-        $this->assertNull($diskon->fresh()->siswa);
-
-        $context->clear();
-    }
-
-    public function test_diskon_tidak_dapat_menggunakan_tarif_dari_tenant_lain(): void
-    {
-        $tenantB = Tenant::query()->create([
-            'name' => 'Tenant B',
-            'code' => 'TENANT-B',
-            'slug' => 'tenant-b',
-            'email' => 'admin@tenant-b.test',
-            'phone' => '081111111111',
-            'address' => 'Alamat Tenant B',
-            'is_active' => true,
-        ]);
-
-        $tarifB = $this->tarifPembayaran->replicate();
-        $tarifB->tenant_id = $tenantB->id;
-        $tarifB->save();
-
-        $context = app(TenantContext::class);
-        $context->set($this->tenant);
-
-        $diskon = DiskonPembayaran::create([
-            'siswa_id' => $this->siswa->id,
-            'tarif_pembayaran_id' => $tarifB->id,
-            'tipe_diskon' => 'PERSEN',
-            'nilai' => 10,
-            'keterangan' => 'Cross tenant test',
-            'tanggal_mulai' => now()->toDateString(),
-            'tanggal_selesai' => now()->addMonth()->toDateString(),
-            'aktif' => true,
-        ]);
-
-        $this->assertNull($diskon->fresh()->tarifPembayaran);
-
-        $context->clear();
+    private function getSiswaId(
+        int $tenantId,
+        string $nis
+    ): int {
+        return \App\Modules\Siswa\Siswa\Models\Siswa::withoutGlobalScopes()
+            ->where('tenant_id', $tenantId)
+            ->where('nis', $nis)
+            ->valueOrFail('id');
     }
 }

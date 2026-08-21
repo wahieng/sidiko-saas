@@ -11,7 +11,7 @@ class DiskonPembayaranService
     {
         return DiskonPembayaran::query()
             ->with([
-                'siswa',
+                'siswaTahun',
                 'tarifPembayaran',
             ])
             ->latest()
@@ -22,7 +22,7 @@ class DiskonPembayaranService
     {
         return DiskonPembayaran::query()
             ->with([
-                'siswa',
+                'siswaTahun',
                 'tarifPembayaran',
             ])
             ->findOrFail($id);
@@ -40,7 +40,7 @@ class DiskonPembayaranService
         $diskonPembayaran->update($data);
 
         return $diskonPembayaran->fresh([
-            'siswa',
+            'siswaTahun',
             'tarifPembayaran',
         ]);
     }
@@ -54,37 +54,50 @@ class DiskonPembayaranService
         DiskonPembayaran $diskonPembayaran
     ): DiskonPembayaran {
         $diskonPembayaran->update([
-            'aktif' => !$diskonPembayaran->aktif,
+            'is_active' => !$diskonPembayaran->is_active,
         ]);
 
-        return $diskonPembayaran->fresh();
+        return $diskonPembayaran->fresh([
+            'siswaTahun',
+            'tarifPembayaran',
+        ]);
     }
 
-    public function getBySiswa(int $siswaId): Collection
+    public function getBySiswaTahun(int $siswaTahunId): Collection
     {
         return DiskonPembayaran::query()
             ->with('tarifPembayaran')
-            ->where('siswa_id', $siswaId)
+            ->where('siswa_tahun_id', $siswaTahunId)
             ->latest()
             ->get();
     }
 
-    public function getActiveBySiswa(int $siswaId): Collection
-    {
+    public function getActiveBySiswaTahun(
+        int $siswaTahunId
+    ): Collection {
         return DiskonPembayaran::query()
             ->with('tarifPembayaran')
-            ->where('siswa_id', $siswaId)
-            ->where('aktif', true)
+            ->where('siswa_tahun_id', $siswaTahunId)
+            ->where('is_active', true)
             ->where(function ($query) {
                 $query
                     ->whereNull('tanggal_mulai')
-                    ->orWhereDate('tanggal_mulai', '<=', now());
+                    ->orWhereDate(
+                        'tanggal_mulai',
+                        '<=',
+                        now()
+                    );
             })
             ->where(function ($query) {
                 $query
                     ->whereNull('tanggal_selesai')
-                    ->orWhereDate('tanggal_selesai', '>=', now());
+                    ->orWhereDate(
+                        'tanggal_selesai',
+                        '>=',
+                        now()
+                    );
             })
+            ->latest()
             ->get();
     }
 }

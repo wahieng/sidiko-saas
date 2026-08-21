@@ -15,10 +15,10 @@ class UpdateDiskonPembayaranRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'siswa_id' => [
+            'siswa_tahun_id' => [
                 'required',
                 'integer',
-                'exists:siswa,id',
+                'exists:siswa_tahun,id',
             ],
 
             'tarif_pembayaran_id' => [
@@ -58,7 +58,7 @@ class UpdateDiskonPembayaranRequest extends FormRequest
                 'after_or_equal:tanggal_mulai',
             ],
 
-            'aktif' => [
+            'is_active' => [
                 'sometimes',
                 'boolean',
             ],

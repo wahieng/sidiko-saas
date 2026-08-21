@@ -41,7 +41,7 @@ class DiskonPembayaranController
         return response()->json([
             'message' => 'Diskon pembayaran berhasil ditambahkan.',
             'data' => $diskonPembayaran->load([
-                'siswa',
+                'siswaTahun',
                 'tarifPembayaran',
             ]),
         ], 201);
@@ -85,20 +85,19 @@ class DiskonPembayaranController
         ]);
     }
 
-    public function bySiswa(
-        Request $request,
-        int $siswa
+    public function bySiswaTahun(
+        int $siswaTahun
     ): JsonResponse {
         return response()->json(
-            $this->service->getBySiswa($siswa)
+            $this->service->getBySiswaTahun($siswaTahun)
         );
     }
 
-    public function activeBySiswa(
-        int $siswa
+    public function activeBySiswaTahun(
+        int $siswaTahun
     ): JsonResponse {
         return response()->json(
-            $this->service->getActiveBySiswa($siswa)
+            $this->service->getActiveBySiswaTahun($siswaTahun)
         );
     }
 }
