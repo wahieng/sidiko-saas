@@ -83,6 +83,7 @@ class DatabaseSeeder extends Seeder
             JenisPembayaranSeeder::class,
             TarifPembayaranSeeder::class,
             DiskonPembayaranSeeder::class,
+            TagihanSeeder::class,
         ]);
 
         /*

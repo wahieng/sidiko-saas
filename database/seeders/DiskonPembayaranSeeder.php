@@ -115,7 +115,7 @@ class DiskonPembayaranSeeder extends Seeder
                 ->updateOrCreate(
                     [
                         'tenant_id' => $tenantId,
-                        'siswa_id' => $siswa->id,
+                        'siswa_tahun_id' => $item->id,
                         'tarif_pembayaran_id' => $tarifSpp->id,
                     ],
                     [
@@ -124,7 +124,7 @@ class DiskonPembayaranSeeder extends Seeder
                         'keterangan' => $diskon['keterangan'],
                         'tanggal_mulai' => '2026-07-01',
                         'tanggal_selesai' => '2027-06-30',
-                        'aktif' => true,
+                        'is_active' => true,
                     ]
                 );
         }

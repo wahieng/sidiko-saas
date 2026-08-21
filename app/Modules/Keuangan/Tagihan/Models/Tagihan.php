@@ -2,71 +2,81 @@
 
 namespace App\Modules\Keuangan\Tagihan\Models;
 
+use App\Core\Tenant\Models\Tenant;
 use App\Core\Tenant\Traits\BelongsToTenant;
+use App\Modules\Keuangan\TarifPembayaran\Models\TarifPembayaran;
+use App\Modules\Siswa\SiswaTahun\Models\SiswaTahun;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Tagihan extends Model
 {
+    use HasFactory;
+
     use BelongsToTenant;
 
     protected $table = 'tagihan';
 
     protected $fillable = [
         'tenant_id',
-        'siswa_id',
-        'jenis_pembayaran_id',
+        'siswa_tahun_id',
         'tarif_pembayaran_id',
-        'diskon_pembayaran_id',
         'nomor_tagihan',
+        'nominal_awal',
+        'tipe_diskon',
+        'nilai_diskon',
+        'nominal_diskon',
+        'nominal',
+        'jumlah_dibayar',
+        'sisa_tagihan',
         'tanggal_tagihan',
         'tanggal_jatuh_tempo',
-        'nominal',
-        'diskon',
-        'total',
-        'dibayar',
         'status',
         'keterangan',
     ];
 
     protected $casts = [
+        'nominal_awal' => 'decimal:2',
+        'nilai_diskon' => 'decimal:2',
+        'nominal_diskon' => 'decimal:2',
+        'nominal' => 'decimal:2',
+        'jumlah_dibayar' => 'decimal:2',
+        'sisa_tagihan' => 'decimal:2',
         'tanggal_tagihan' => 'date',
         'tanggal_jatuh_tempo' => 'date',
-        'nominal' => 'decimal:2',
-        'diskon' => 'decimal:2',
-        'total' => 'decimal:2',
-        'dibayar' => 'decimal:2',
     ];
 
-    public function siswa(): BelongsTo
+    /**
+     * Tenant pemilik tagihan.
+     */
+    public function tenant(): BelongsTo
     {
         return $this->belongsTo(
-            \App\Modules\Akademik\Siswa\Models\Siswa::class,
-            'siswa_id'
+            Tenant::class,
+            'tenant_id'
         );
     }
 
-    public function jenisPembayaran(): BelongsTo
+    /**
+     * Siswa dalam konteks tahun ajaran.
+     */
+    public function siswaTahun(): BelongsTo
     {
         return $this->belongsTo(
-            \App\Modules\Keuangan\JenisPembayaran\Models\JenisPembayaran::class,
-            'jenis_pembayaran_id'
+            SiswaTahun::class,
+            'siswa_tahun_id'
         );
     }
 
+    /**
+     * Tarif yang menjadi sumber tagihan.
+     */
     public function tarifPembayaran(): BelongsTo
     {
         return $this->belongsTo(
-            \App\Modules\Keuangan\TarifPembayaran\Models\TarifPembayaran::class,
+            TarifPembayaran::class,
             'tarif_pembayaran_id'
-        );
-    }
-
-    public function diskonPembayaran(): BelongsTo
-    {
-        return $this->belongsTo(
-            \App\Modules\Keuangan\DiskonPembayaran\Models\DiskonPembayaran::class,
-            'diskon_pembayaran_id'
         );
     }
 }
