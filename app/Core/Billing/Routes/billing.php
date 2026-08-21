@@ -4,52 +4,69 @@ use App\Core\Billing\Controllers\BillingController;
 use App\Core\Billing\Controllers\PembayaranBillingController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware([
-        'auth',
-        'tenant',
-        'subscription',
-        'permission',
-    ])
-    ->prefix('billing')
-    ->name('billing.')
-    ->group(function () {
+/*
+|--------------------------------------------------------------------------
+| BILLING
+|--------------------------------------------------------------------------
+*/
 
-        /*
-        |--------------------------------------------------------------------------
-        | BILLING
-        |--------------------------------------------------------------------------
-        */
+Route::middleware([
+    'auth',
+    'tenant',
+    'subscription',
+    'permission',
+])
+    ->prefix('billing')
+    ->name('core.billing.')
+    ->group(function () {
 
         Route::get('/', [
             BillingController::class,
-            'index'
+            'index',
         ])->name('index');
 
         Route::get('/{tagihan}', [
             BillingController::class,
-            'show'
+            'show',
         ])->name('show');
 
         Route::post('/generate', [
             BillingController::class,
-            'generate'
+            'generate',
         ])->name('generate');
+    });
 
+/*
+|--------------------------------------------------------------------------
+| PEMBAYARAN
+|--------------------------------------------------------------------------
+|
+| URL tetap:
+| billing/{tagihan}/pembayaran
+|
+| Route name:
+| core.pembayaran.index
+| core.pembayaran.store
+|
+*/
 
-        /*
-        |--------------------------------------------------------------------------
-        | PEMBAYARAN
-        |--------------------------------------------------------------------------
-        */
+Route::middleware([
+    'auth',
+    'tenant',
+    'subscription',
+    'permission',
+])
+    ->prefix('billing')
+    ->name('core.pembayaran.')
+    ->group(function () {
 
         Route::get('/{tagihan}/pembayaran', [
             PembayaranBillingController::class,
-            'index'
-        ])->name('pembayaran.index');
+            'index',
+        ])->name('index');
 
         Route::post('/{tagihan}/pembayaran', [
             PembayaranBillingController::class,
-            'store'
-        ])->name('pembayaran.store');
-
+            'store',
+        ])->name('store');
     });
