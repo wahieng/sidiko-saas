@@ -9,6 +9,7 @@ use App\Modules\Siswa\SiswaTahun\Models\SiswaTahun;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Tagihan extends Model
 {
@@ -77,6 +78,14 @@ class Tagihan extends Model
         return $this->belongsTo(
             TarifPembayaran::class,
             'tarif_pembayaran_id'
+        );
+    }
+
+    public function riwayat(): HasMany
+    {
+        return $this->hasMany(
+            TagihanRiwayat::class,
+            'tagihan_id'
         );
     }
 }
