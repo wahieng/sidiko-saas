@@ -6,10 +6,15 @@ use App\Core\Billing\Models\TagihanBilling;
 use App\Core\Subscription\Models\Langganan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use App\Core\Pagination\Services\PaginationService;
 use RuntimeException;
 
 class BillingService
-{
+{   
+     public function __construct(
+        protected PaginationService $paginationService
+    ) {
+    }
     public function create(array $data): TagihanBilling
     {
         return DB::transaction(function () use ($data) {
@@ -127,9 +132,13 @@ class BillingService
         }
     }
 
-    public function all()
+    public function paginate(int $page = 1, int $perPage = 15)
     {
-        return TagihanBilling::query()->get();
+        return $this->paginationService->paginate(
+            TagihanBilling::query(),
+            $page,
+            $perPage
+        );
     }
 
     public function find(int $id)

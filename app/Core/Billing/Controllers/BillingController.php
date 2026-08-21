@@ -22,7 +22,10 @@ class BillingController
      */
     public function index(Request $request): JsonResponse
     {
-        $tagihan = $this->billingService->all();
+        $tagihan = $this->billingService->paginate(
+            $request->integer('page', 1),
+            $request->integer('per_page', 15)
+        );
 
         return response()->json($tagihan);
     }
